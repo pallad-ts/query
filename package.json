@@ -14,6 +14,9 @@
     "type": "git",
     "url": "git+https://github.com/pallad-ts/query.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com> (http://wookieb.pl/)",
   "license": "MIT",
   "bugs": {
