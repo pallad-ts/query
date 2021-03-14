@@ -15,6 +15,7 @@
     "url": "git+https://github.com/pallad-ts/query.git"
   },
   "publishConfig": {
+    "cache": "~/.npm",
     "access": "public"
   },
   "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com> (http://wookieb.pl/)",
