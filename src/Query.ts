@@ -54,7 +54,7 @@ export namespace Query {
     }
 
     export namespace Paginable {
-        export type ByNode<TId = string> = ({ after: TId } | { before: TId }) & { limit: number };
+        export type ByNode<TId = string> = Partial<{ after: TId } | { before: TId }> & { limit: number };
 
         export namespace ByNode {
             export function is<TId = string>(value: any): value is ByNode<TId> {
