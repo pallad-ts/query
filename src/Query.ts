@@ -53,6 +53,10 @@ export namespace Query {
         }
     }
 
+    export interface SingleSortable<TField = string> {
+        sortBy: Sortable.Definition<TField>;
+    }
+
     export namespace Paginable {
         export type ByNode<TId = string> = Partial<{ after: TId } | { before: TId }> & { limit: number };
 
