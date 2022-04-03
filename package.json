@@ -2,6 +2,7 @@
   "private": true,
   "devDependencies": {
     "@pallad/scripts": "^2",
+    "conditional-type-checks": "^1.0.5",
     "lerna": "^4.0.0"
   }
 }

@@ -1,14 +1,14 @@
 import {Query, Result} from '@pallad/query';
 
-export class Engine<TResult, TQuery extends Query<any>, TContext extends Engine.Context<TQuery> = any> {
+export class Engine<TResult, TQuery extends Query<unknown>, TContext extends Engine.Context<TQuery> = any> {
 	private middlewares: Array<Engine.MiddlewareType<TResult, TQuery, TContext>> = [];
 
 	constructor(private contextFactory: Engine.ContextFactory<TQuery>) {
 
 	}
 
-	static create<TResult, TQuery extends Query<any>, TContextFactory extends Engine.ContextFactory<TQuery> = any>(factory: TContextFactory) {
-		return new Engine<TResult, TQuery, Awaited<ReturnType<TContextFactory>>>(factory);
+	static create<TResult, TQuery extends Query<unknown> = Query<unknown>, TContextFactory extends Engine.ContextFactory<TQuery> = Engine.ContextFactory<TQuery>>(factory: TContextFactory) {
+		return new Engine<TResult, Parameters<TContextFactory>[0], Awaited<ReturnType<TContextFactory>>>(factory);
 	}
 
 	use(...middlewares: Array<Engine.MiddlewareType<TResult, TQuery, TContext>>): this {
