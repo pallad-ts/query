@@ -7,7 +7,7 @@ export class Engine<TResult, TQuery extends Query<any>, TContext extends Engine.
 
 	}
 
-	static create<TResult, TQuery extends Query<any>, TContextFactory extends Engine.ContextFactory<TQuery>>(factory: TContextFactory) {
+	static create<TResult, TQuery extends Query<any>, TContextFactory extends Engine.ContextFactory<TQuery> = any>(factory: TContextFactory) {
 		return new Engine<TResult, TQuery, Awaited<ReturnType<TContextFactory>>>(factory);
 	}
 
