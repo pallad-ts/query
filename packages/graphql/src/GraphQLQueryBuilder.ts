@@ -1,7 +1,7 @@
 import {Builder as _Builder} from '@pallad/builder';
 import {InputTypeComposer, ObjectTypeComposer, ResolverResolveParams} from "graphql-compose";
 import {GraphQLEnumType, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString} from "graphql";
-import {Query, Result, SortableFieldDefinition, SortDirection} from "@pallad/query";
+import {Query, Result, SortableFieldDefinition} from "@pallad/query";
 import {
 	ObjectTypeComposerFieldConfigAsObjectDefinition,
 	ObjectTypeComposerFieldConfigMapDefinition
