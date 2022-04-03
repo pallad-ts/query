@@ -1,0 +1,37 @@
+{
+  "name": "@pallad/query-graphql",
+  "version": "0.1.0",
+  "description": "Helper for graphql to create @pallad/query related types",
+  "main": "compiled/index.js",
+  "types": "compiled/index.d.ts",
+  "scripts": {
+    "test": "pallad-scripts test",
+    "lint": "pallad-scripts lint",
+    "compile": "pallad-scripts compile",
+    "prepublishOnly": "npm run compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pallad-ts/query.git",
+    "directory": "packages/main"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com> (http://wookieb.pl/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pallad-ts/query/issues"
+  },
+  "homepage": "https://github.com/pallad-ts/query#readme",
+  "peerDependencies": {
+    "@pallad/dataloader-manager": "^1.0.1",
+    "graphql": "^16.3.0",
+    "graphql-compose": "^9.0.8"
+  },
+  "dependencies": {
+    "@pallad/builder": "^1.0.1",
+    "@pallad/query": "*",
+    "predicates": "^2.0.3"
+  }
+}

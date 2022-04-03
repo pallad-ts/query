@@ -1,32 +1,7 @@
 {
-  "name": "@pallad/query",
-  "version": "1.1.0",
-  "description": "",
-  "main": "compiled/index.js",
-  "types": "compiled/index.d.ts",
-  "scripts": {
-    "test": "pallad-scripts test",
-    "lint": "pallad-scripts lint",
-    "compile": "pallad-scripts compile",
-    "prepublishOnly": "npm run compile"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pallad-ts/query.git"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "author": "Łukasz Kużyński <lukasz.kuzynski@gmail.com> (http://wookieb.pl/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pallad-ts/query/issues"
-  },
-  "homepage": "https://github.com/pallad-ts/query#readme",
+  "private": true,
   "devDependencies": {
-    "@pallad/scripts": "^2.0.0-alpha.12"
-  },
-  "dependencies": {
-    "predicates": "^2.0.3"
+    "@pallad/scripts": "^2",
+    "lerna": "^4.0.0"
   }
 }
