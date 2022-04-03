@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-graphql",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "Helper for graphql to create @pallad/query related types",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@pallad/builder": "^1.0.1",
-    "@pallad/query": "*",
+    "@pallad/query": "^2.0.0",
     "predicates": "^2.0.3"
   }
 }
