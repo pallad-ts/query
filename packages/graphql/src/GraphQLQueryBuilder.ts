@@ -1,5 +1,5 @@
 import {Builder as _Builder} from '@pallad/builder';
-import {InputTypeComposer, ObjectTypeComposer} from "graphql-compose";
+import {InputTypeComposer, ObjectTypeComposer, ResolverResolveParams} from "graphql-compose";
 import {GraphQLEnumType, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString} from "graphql";
 import {Query, Result, SortableFieldDefinition, SortDirection} from "@pallad/query";
 import {
@@ -9,6 +9,9 @@ import {
 import {ThunkWithSchemaComposer} from "graphql-compose/lib/utils/definitions";
 import {InputTypeComposerFieldConfigMapDefinition} from "graphql-compose/lib/InputTypeComposer";
 import {GraphQLSortDirection} from "./types";
+import * as is from 'predicates'
+
+const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
 
 export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContext, TSortableField extends string> extends _Builder {
 	private paginationType?: 'byCursor' | 'byOffset';
@@ -217,6 +220,29 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 		if (Array.isArray(this.defaultSorting) && this.sortableType === 'single') {
 			throw new Error('Cannot apply default sort order on multiple fields while query was configured for single sort order only');
 		}
+	}
+
+	asResolver(name: string = 'query') {
+		this.assertResolverConfig();
+
+		const entityType = this.options.entityType as ObjectTypeComposer;
+		const queryField = this.getQueryField();
+
+		entityType.addResolver({
+			name,
+			args: queryField.args,
+			type: queryField.type,
+
+			resolve: (rp: ResolverResolveParams<any, any>) => {
+				return queryField.resolve!(rp.source, rp.args, rp.context, rp.info);
+			}
+		});
+
+		return entityType.getResolver(name);
+	}
+
+	private assertResolverConfig() {
+		assertEntityTypeIsObjectTypeComposer(this.options.entityType);
 	}
 }
 
