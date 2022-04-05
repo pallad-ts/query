@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-engine",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Simple query engine to handle @pallad/query results",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/pallad-ts/query#readme",
   "dependencies": {
-    "@pallad/query": "^2.0.2",
+    "@pallad/query": "^2.0.3",
     "alpha-errors": "^0.4.0"
   },
   "gitHead": "3a67b5f523077c2e980fbe84b0c1feada5e59e46"
