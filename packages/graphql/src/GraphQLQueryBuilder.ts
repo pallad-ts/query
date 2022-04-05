@@ -21,7 +21,7 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 	private defaultSorting?: SortableFieldDefinition<TSortableField> | Array<SortableFieldDefinition<TSortableField>>;
 
 	constructor(
-		private fetcher: (query: TQuery, context: TContext) => Result<TEntityType>,
+		private fetcher: (query: TQuery, context: TContext) => Promise<Result<TEntityType>> | Result<TEntityType>,
 		private options: GraphQLQueryBuilder.Options<TEntityType, TContext>) {
 		super();
 	}
