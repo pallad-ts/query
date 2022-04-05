@@ -13,9 +13,23 @@ import * as is from 'predicates'
 
 const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
 
+function computePaginationOptions(currentOptions: GraphQLQueryBuilder.PaginationOptions, options?: Partial<GraphQLQueryBuilder.PaginationOptions>) {
+	const finalOptions = {
+		...currentOptions,
+		...(options || {})
+	};
+
+	if (finalOptions.defaultLimit <= 0) {
+		throw new Error('Pagination default limit cannot be less than 0');
+	}
+
+	return finalOptions;
+}
+
 export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContext, TSortableField extends string> extends _Builder {
 	private paginationType?: 'byCursor' | 'byOffset';
 	private sortableType?: 'multi' | 'single';
+	private paginationOptions: GraphQLQueryBuilder.PaginationOptions = {defaultLimit: 50};
 	private extraMetaFields?: ObjectTypeComposerFieldConfigMapDefinition<TEntityType, TContext>;
 	private sortableFields?: string[];
 	private defaultSorting?: SortableFieldDefinition<TSortableField> | Array<SortableFieldDefinition<TSortableField>>;
@@ -35,12 +49,14 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 	}
 
 	paginateByCursor(): this {
-		this.paginationType = 'byCursor'
+		this.paginationType = 'byCursor';
+		this.paginationOptions = computePaginationOptions(this.paginationOptions, options);
 		return this;
 	}
 
-	paginateByOffset(): this {
+	paginateByOffset(options?: Partial<GraphQLQueryBuilder.PaginationOptions>): this {
 		this.paginationType = 'byOffset';
+		this.paginationOptions = computePaginationOptions(this.paginationOptions, options);
 		return this;
 	}
 
@@ -140,7 +156,7 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 		}
 
 		if (this.paginationType) {
-			fields.limit = {type: GraphQLInt};
+			fields.limit = {type: GraphQLInt, defaultValue: this.paginationOptions.defaultLimit};
 			if (this.paginationType === 'byOffset') {
 				fields.offset = {type: GraphQLInt};
 			} else if (this.paginationType === 'byCursor') {
@@ -251,5 +267,9 @@ export namespace GraphQLQueryBuilder {
 		name?: string;
 		entityType: ObjectTypeComposer<TEntityType, TContext> | GraphQLObjectType<TEntityType, TContext>
 		filtersType: GraphQLInputObjectType | InputTypeComposer<TContext>;
+	}
+
+	export interface PaginationOptions {
+		defaultLimit: number;
 	}
 }
