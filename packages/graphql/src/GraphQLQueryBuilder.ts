@@ -48,7 +48,7 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 		return this.options.entityType instanceof GraphQLObjectType ? this.options.entityType.name : this.options.entityType.getTypeName();
 	}
 
-	paginateByCursor(): this {
+	paginateByCursor(options?: Partial<GraphQLQueryBuilder.PaginationOptions>): this {
 		this.paginationType = 'byCursor';
 		this.paginationOptions = computePaginationOptions(this.paginationOptions, options);
 		return this;
@@ -218,7 +218,7 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 			resolve: (source, args, context) => {
 				let query = args.query;
 				if (!query) {
-					query = {filters: {}} as TQuery;
+					query = {filters: {}} as unknown as TQuery;
 				}
 				if (!query.filters) {
 					query.filters = {};

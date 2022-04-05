@@ -27,5 +27,6 @@
   "dependencies": {
     "@pallad/query": "^2.0.2",
     "alpha-errors": "^0.4.0"
-  }
+  },
+  "gitHead": "3a67b5f523077c2e980fbe84b0c1feada5e59e46"
 }

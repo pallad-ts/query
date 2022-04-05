@@ -23,5 +23,6 @@
   "bugs": {
     "url": "https://github.com/pallad-ts/query/issues"
   },
-  "homepage": "https://github.com/pallad-ts/query#readme"
+  "homepage": "https://github.com/pallad-ts/query#readme",
+  "gitHead": "3a67b5f523077c2e980fbe84b0c1feada5e59e46"
 }
