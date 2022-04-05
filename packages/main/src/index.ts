@@ -1,6 +1,7 @@
 export * from './PaginableByCursor';
 export * from './PaginableByOffset';
 export * from './Query';
+export * from './QueryRunner';
 export * from './Result';
 export * from './SortableFieldDefinition';
 export * from './SortableMulti';
