@@ -3,7 +3,7 @@ export interface PaginableByOffset {
     limit: number;
 }
 
-export namespace PaginationByOffset {
+export namespace PaginableByOffset {
     export interface ResultMeta {
         offset: number;
         limit: number;

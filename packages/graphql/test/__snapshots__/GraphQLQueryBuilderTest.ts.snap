@@ -1,0 +1,336 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphQLQueryBuilder cursor pagination resolving query fails if violates filters schema 1`] = `
+Array [
+  [GraphQLError: Invalid query],
+]
+`;
+
+exports[`GraphQLQueryBuilder cursor pagination schema 1`] = `
+"type Entity {
+  id: ID
+  name: String
+}
+
+input Entity_Query {
+  filters: Filters
+  sortBy: Entity_Sort_Input
+  limit: PositiveInt
+  after: String
+  before: String
+}
+
+type Entity_Result {
+  results: [Entity]!
+  meta: Entity_Result_Meta!
+}
+
+type Entity_Result_Meta {
+  nextPage: String
+  previousPage: String
+  limit: PositiveInt!
+  sortBy: Entity_Sort!
+}
+
+type Entity_Sort {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
+}
+
+enum Entity_Sort_Field {
+  foo
+  bar
+}
+
+enum Entity_Sort_Field {
+  foo
+  bar
+}
+
+input Entity_Sort_Input {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
+}
+
+input Filters {
+  test: String
+}
+
+\\"\\"\\"
+The \`ID\` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as \`\\"4\\"\`) or integer (such as \`4\`) input value will be accepted as an ID.
+\\"\\"\\"
+scalar ID
+
+\\"\\"\\"Integers that will have a value greater than 0.\\"\\"\\"
+scalar PositiveInt
+
+\\"\\"\\"Integers that will have a value greater than 0.\\"\\"\\"
+scalar PositiveInt
+
+type Query {
+  query(query: Entity_Query): Entity_Result!
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String"
+`;
+
+exports[`GraphQLQueryBuilder multi sorting schema 1`] = `
+"type Entity {
+  id: ID
+  name: String
+}
+
+input Entity_Query {
+  filters: Filters
+  sortBy: [Entity_Sort_Input]
+}
+
+type Entity_Result {
+  results: [Entity]!
+  meta: Entity_Result_Meta!
+}
+
+type Entity_Result_Meta {
+  sortBy: [Entity_Sort]!
+}
+
+type Entity_Sort {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
+}
+
+enum Entity_Sort_Field {
+  foo
+  bar
+}
+
+enum Entity_Sort_Field {
+  foo
+  bar
+}
+
+input Entity_Sort_Input {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
+}
+
+input Filters {
+  test: String
+}
+
+\\"\\"\\"
+The \`ID\` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as \`\\"4\\"\`) or integer (such as \`4\`) input value will be accepted as an ID.
+\\"\\"\\"
+scalar ID
+
+type Query {
+  query(query: Entity_Query): Entity_Result!
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String"
+`;
+
+exports[`GraphQLQueryBuilder offset pagination schema 1`] = `
+"type Entity {
+  id: ID
+  name: String
+}
+
+input Entity_Query {
+  filters: Filters
+  limit: PositiveInt
+  offset: PositiveInt
+}
+
+type Entity_Result {
+  results: [Entity]!
+  meta: Entity_Result_Meta!
+}
+
+type Entity_Result_Meta {
+  limit: PositiveInt!
+  offset: PositiveInt!
+}
+
+input Filters {
+  test: String
+}
+
+\\"\\"\\"
+The \`ID\` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as \`\\"4\\"\`) or integer (such as \`4\`) input value will be accepted as an ID.
+\\"\\"\\"
+scalar ID
+
+\\"\\"\\"Integers that will have a value greater than 0.\\"\\"\\"
+scalar PositiveInt
+
+\\"\\"\\"Integers that will have a value greater than 0.\\"\\"\\"
+scalar PositiveInt
+
+type Query {
+  query(query: Entity_Query): Entity_Result!
+}
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String"
+`;
+
+exports[`GraphQLQueryBuilder simple schema 1`] = `
+"type Entity {
+  id: ID
+  name: String
+}
+
+input Entity_Query {
+  filters: Filters
+}
+
+type Entity_Result {
+  results: [Entity]!
+}
+
+input Filters {
+  test: String
+}
+
+\\"\\"\\"
+The \`ID\` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as \`\\"4\\"\`) or integer (such as \`4\`) input value will be accepted as an ID.
+\\"\\"\\"
+scalar ID
+
+type Query {
+  query(query: Entity_Query): Entity_Result!
+}
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String"
+`;
+
+exports[`GraphQLQueryBuilder single sorting schema 1`] = `
+"type Entity {
+  id: ID
+  name: String
+}
+
+input Entity_Query {
+  filters: Filters
+  sortBy: Entity_Sort_Input
+}
+
+type Entity_Result {
+  results: [Entity]!
+  meta: Entity_Result_Meta!
+}
+
+type Entity_Result_Meta {
+  sortBy: Entity_Sort!
+}
+
+type Entity_Sort {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
+}
+
+enum Entity_Sort_Field {
+  foo
+  bar
+}
+
+enum Entity_Sort_Field {
+  foo
+  bar
+}
+
+input Entity_Sort_Input {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
+}
+
+input Filters {
+  test: String
+}
+
+\\"\\"\\"
+The \`ID\` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as \`\\"4\\"\`) or integer (such as \`4\`) input value will be accepted as an ID.
+\\"\\"\\"
+scalar ID
+
+type Query {
+  query(query: Entity_Query): Entity_Result!
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String
+
+\\"\\"\\"
+The \`String\` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+\\"\\"\\"
+scalar String"
+`;

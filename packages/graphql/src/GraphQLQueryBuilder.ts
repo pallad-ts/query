@@ -1,7 +1,7 @@
 import {Builder as _Builder} from '@pallad/builder';
-import {InputTypeComposer, ObjectTypeComposer, ResolverResolveParams} from "graphql-compose";
-import {GraphQLEnumType, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString} from "graphql";
-import {Query, Result, SortableFieldDefinition} from "@pallad/query";
+import {InputTypeComposer, ListComposer, ObjectTypeComposer, Resolver, ResolverResolveParams, SchemaComposer} from "graphql-compose";
+import {GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString} from "graphql";
+import {Result} from "@pallad/query";
 import {
 	ObjectTypeComposerFieldConfigAsObjectDefinition,
 	ObjectTypeComposerFieldConfigMapDefinition
@@ -10,33 +10,23 @@ import {ThunkWithSchemaComposer} from "graphql-compose/lib/utils/definitions";
 import {InputTypeComposerFieldConfigMapDefinition} from "graphql-compose/lib/InputTypeComposer";
 import {GraphQLSortDirection} from "./types";
 import * as is from 'predicates'
+import {QueryBuilder} from "@pallad/query-builder";
+import {GraphQLPositiveInt} from "graphql-scalars";
+import {NonNullComposer} from "graphql-compose/lib/NonNullComposer";
 
 const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
 
-function computePaginationOptions(currentOptions: GraphQLQueryBuilder.PaginationOptions, options?: Partial<GraphQLQueryBuilder.PaginationOptions>) {
-	const finalOptions = {
-		...currentOptions,
-		...(options || {})
-	};
-
-	if (finalOptions.defaultLimit <= 0) {
-		throw new Error('Pagination default limit cannot be less than 0');
-	}
-
-	return finalOptions;
-}
-
-export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContext, TSortableField extends string> extends _Builder {
-	private paginationType?: 'byCursor' | 'byOffset';
-	private sortableType?: 'multi' | 'single';
-	private paginationOptions: GraphQLQueryBuilder.PaginationOptions = {defaultLimit: 50};
+export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder<any>, TContext> extends _Builder {
 	private extraMetaFields?: ObjectTypeComposerFieldConfigMapDefinition<TEntityType, TContext>;
-	private sortableFields?: string[];
-	private defaultSorting?: SortableFieldDefinition<TSortableField> | Array<SortableFieldDefinition<TSortableField>>;
+
+	private sortFieldType?: GraphQLEnumType;
+	private queryType?: InputTypeComposer;
+	private resultMetaType?: NonNullComposer<ObjectTypeComposer>;
+	private resultType?: NonNullComposer<ObjectTypeComposer>;
 
 	constructor(
-		private fetcher: (query: TQuery, context: TContext) => Promise<Result<TEntityType>> | Result<TEntityType>,
-		private options: GraphQLQueryBuilder.Options<TEntityType, TContext>) {
+		private queryBuilder: TQueryBuilder,
+		private options: GraphQLQueryBuilder.Options<TQueryBuilder['config']['query'], TEntityType, TContext>) {
 		super();
 	}
 
@@ -48,166 +38,180 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 		return this.options.entityType instanceof GraphQLObjectType ? this.options.entityType.name : this.options.entityType.getTypeName();
 	}
 
-	paginateByCursor(options?: Partial<GraphQLQueryBuilder.PaginationOptions>): this {
-		this.paginationType = 'byCursor';
-		this.paginationOptions = computePaginationOptions(this.paginationOptions, options);
-		return this;
-	}
-
-	paginateByOffset(options?: Partial<GraphQLQueryBuilder.PaginationOptions>): this {
-		this.paginationType = 'byOffset';
-		this.paginationOptions = computePaginationOptions(this.paginationOptions, options);
-		return this;
-	}
-
-	multiSortable(sortableFields: TSortableField[]): this {
-		this.sortableType = 'multi';
-		this.sortableFields = sortableFields;
-		return this;
-	}
-
-	defaultSortOrder(order: SortableFieldDefinition<TSortableField> | Array<SortableFieldDefinition<TSortableField>>): this {
-		this.defaultSorting = order;
-		return this;
-	}
-
-	singleSortable(sortableFields: TSortableField[]): this {
-		this.sortableType = 'single';
-		this.sortableFields = sortableFields;
-		return this;
-	}
-
 	useExtraMetaFields(extraMetaFields: ObjectTypeComposerFieldConfigMapDefinition<TEntityType, TContext>): this {
 		this.extraMetaFields = extraMetaFields;
 		return this;
 	}
 
 	private getResultMetaType() {
-		const metaFields: ObjectTypeComposerFieldConfigMapDefinition<any, TContext> = {};
-		const metaPaginationFields = this.getMetaPaginationFields();
-		if (metaPaginationFields) {
-			Object.assign(metaFields, metaPaginationFields);
-		}
+		if (!this.resultMetaType) {
+			const metaFields: ObjectTypeComposerFieldConfigMapDefinition<any, TContext> = {};
+			const metaPaginationFields = this.getMetaPaginationFields();
+			if (metaPaginationFields) {
+				Object.assign(metaFields, metaPaginationFields);
+			}
 
-		if (this.extraMetaFields) {
-			Object.assign(metaFields, this.extraMetaFields);
-		}
+			const metaSortingFields = this.getMetaSortingFields();
 
-		if (!Object.keys(metaFields).length) {
-			return;
-		}
+			if (metaSortingFields) {
+				Object.assign(metaFields, metaSortingFields);
+			}
 
-		return ObjectTypeComposer.createTemp<any, TContext>({
-			name: `${this.getName()}_Query_Result_Meta`,
-			fields: metaFields
-		});
+			if (this.extraMetaFields) {
+				Object.assign(metaFields, this.extraMetaFields);
+			}
+
+			if (!Object.keys(metaFields).length) {
+				return;
+			}
+
+			this.resultMetaType = ObjectTypeComposer.createTemp<any, TContext>({
+				name: `${this.getName()}_Result_Meta`,
+				fields: metaFields
+			}).NonNull;
+		}
+		return this.resultMetaType;
 	}
 
 	private getMetaPaginationFields() {
-		if (!this.paginationType) {
+		const pagination = this.queryBuilder.config.getPagination();
+
+		if (!pagination) {
 			return;
 		}
 
-		if (this.paginationType === 'byCursor') {
+		if (pagination.type === 'byCursor') {
 			return {
 				nextPage: {type: GraphQLString},
 				previousPage: {type: GraphQLString},
-				limit: {type: new GraphQLNonNull(GraphQLInt)}
+				limit: {type: new GraphQLNonNull(GraphQLPositiveInt)}
 			};
 		}
 
-		if (this.paginationType === 'byOffset') {
+		if (pagination.type === 'byOffset') {
 			return {
-				limit: {type: new GraphQLNonNull(GraphQLInt)},
-				offset: {type: GraphQLInt}
+				limit: {type: new GraphQLNonNull(GraphQLPositiveInt)},
+				offset: {type: new GraphQLNonNull(GraphQLPositiveInt)}
 			}
 		}
 	}
 
-	getResultType(): ObjectTypeComposer<Result<TEntityType>, TContext> {
-		const metaType = this.getResultMetaType();
-		return ObjectTypeComposer.createTemp<Result<TEntityType>, TContext>({
-			name: `${this.getName()}_Query_Result`,
-			fields: {
-				results: {type: this.getEntityTypePlural()},
-				...(metaType ? {meta: {type: metaType}} : {})
-			}
-		});
+	private getMetaSortingFields() {
+		const sorting = this.queryBuilder.config.getSorting();
+		if (!sorting) {
+			return;
+		}
+		return {
+			sortBy: {type: this.createSortByType('output').NonNull}
+		};
 	}
 
-	private getEntityTypePlural() {
+	getResultType(): NonNullComposer<ObjectTypeComposer<Result<TEntityType>, TContext>> {
+		if (!this.resultType) {
+			const metaType = this.getResultMetaType();
+			this.resultType = ObjectTypeComposer.createTemp<Result<TEntityType>, TContext>({
+				name: `${this.getName()}_Result`,
+				fields: {
+					results: {type: this.getResultsListType()},
+					...(metaType ? {meta: {type: metaType}} : {})
+				}
+			}).NonNull;
+		}
+		return this.resultType;
+	}
+
+	private getResultsListType() {
 		const entityType = this.options.entityType;
 		if (entityType instanceof GraphQLObjectType) {
-			return new GraphQLList(new GraphQLNonNull(entityType));
+			return new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(entityType)));
 		}
-		return entityType.getTypePlural();
+		return entityType.getTypePlural().NonNull;
 	}
 
 	getQueryArgType() {
-		const fields: ThunkWithSchemaComposer<InputTypeComposerFieldConfigMapDefinition, any> = {
-			filters: {type: this.options.filtersType}
-		};
-
-		const sortByType = this.getSortByInputType();
-		if (sortByType) {
-			fields.sortBy = {
-				type: sortByType
+		if (!this.queryType) {
+			const fields: ThunkWithSchemaComposer<InputTypeComposerFieldConfigMapDefinition, any> = {
+				filters: {type: this.getFiltersType()}
 			};
-		}
 
-		if (this.paginationType) {
-			fields.limit = {type: GraphQLInt, defaultValue: this.paginationOptions.defaultLimit};
-			if (this.paginationType === 'byOffset') {
-				fields.offset = {type: GraphQLInt};
-			} else if (this.paginationType === 'byCursor') {
-				fields.after = {type: GraphQLString};
-				fields.before = {type: GraphQLString}
+			const sortByType = this.createSortByType('input');
+			if (sortByType) {
+				fields.sortBy = {
+					type: sortByType
+				};
 			}
-		}
 
-		return InputTypeComposer.createTemp<TContext>({
-			name: this.getName() + '_Query',
-			fields
-		});
+			const pagination = this.queryBuilder.config.getPagination();
+			if (pagination) {
+				fields.limit = {type: GraphQLPositiveInt};
+				if (pagination.type === 'byOffset') {
+					fields.offset = {type: GraphQLPositiveInt};
+				} else if (pagination.type === 'byCursor') {
+					fields.after = {type: GraphQLString};
+					fields.before = {type: GraphQLString};
+				}
+			}
+
+			this.queryType = InputTypeComposer.createTemp<TContext>({
+				name: this.getName() + '_Query',
+				fields
+			});
+		}
+		return this.queryType;
 	}
 
-	private getSortByInputType() {
-		if (!this.sortableFields) {
+	private createSortByType(type: 'input'): InputTypeComposer | ListComposer<InputTypeComposer>;
+	private createSortByType(type: 'output'): ObjectTypeComposer | ListComposer<ObjectTypeComposer>;
+	private createSortByType(type: 'input' | 'output') {
+		const sorting = this.queryBuilder.config.getSorting();
+		if (!sorting) {
 			return;
 		}
-		const baseType = InputTypeComposer.createTemp({
-			name: this.getName() + '_Query_Sort',
+
+		let baseType: ObjectTypeComposer | InputTypeComposer = ObjectTypeComposer.createTemp({
+			name: `${this.getName()}_Sort`,
 			fields: {
-				direction: {type: GraphQLSortDirection},
+				direction: {type: new GraphQLNonNull(GraphQLSortDirection)},
 				field: {
-					type: new GraphQLEnumType({
-						name: this.getName() + '_Query_Sort_Field',
-						values: this.sortableFields!.reduce((result, field) => {
-							result[field] = {value: field};
-							return result;
-						}, {} as Record<string, { value: string }>)
-					})
+					type: new GraphQLNonNull(
+						this.getSortFieldType()
+					)
 				}
 			}
 		});
 
-		if (this.sortableType === 'single') {
+		if (type === 'input') {
+			baseType = baseType.getInputTypeComposer({postfix: '_Input'});
+		}
+
+		if (sorting.type === 'single') {
 			return baseType;
 		}
-		return baseType.getTypePlural();
+		return baseType.List;
+	}
+
+	private getSortFieldType() {
+		if (!this.sortFieldType) {
+			this.sortFieldType = new GraphQLEnumType({
+				name: this.getName() + '_Sort_Field',
+				values: this.queryBuilder
+					.config
+					.getSorting()!
+					.sortableFields
+					.reduce((result: Record<string, { value: string }>, field: string) => {
+						result[field] = {value: field};
+						return result;
+					}, {})
+			});
+		}
+		return this.sortFieldType;
 	}
 
 	private getFiltersType() {
-		const filtersType = this.options.filtersType;
-		if (filtersType instanceof GraphQLInputObjectType) {
-			return new GraphQLNonNull(filtersType);
-		}
-
-		return filtersType.getTypeNonNull();
+		return this.options.filtersType;
 	}
 
-	getQueryField(): ObjectTypeComposerFieldConfigAsObjectDefinition<unknown, TContext, { query: TQuery }> {
-		this.assertConfigurationSanity();
+	getQueryField(): ObjectTypeComposerFieldConfigAsObjectDefinition<unknown, TContext, { query: TQueryBuilder['config']['query'] }> {
 		return {
 			type: this.getResultType(),
 			args: {
@@ -215,46 +219,31 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 					type: this.getQueryArgType()
 				}
 			},
-			resolve: (source, args, context) => {
-				let query = args.query;
-				if (!query) {
-					query = {filters: {}} as unknown as TQuery;
-				}
-				if (!query.filters) {
-					query.filters = {};
-				}
-				return this.fetcher(query, context);
+			resolve: async (source, args, context) => {
+				const query = await this.queryBuilder.buildOrFail(args.query, 'Invalid query');
+				return this.options.fetcher(query, context);
 			}
 		}
 	}
 
-	private assertConfigurationSanity() {
-		this.assertDefaultSortingType();
-	}
-
-	private assertDefaultSortingType() {
-		if (Array.isArray(this.defaultSorting) && this.sortableType === 'single') {
-			throw new Error('Cannot apply default sort order on multiple fields while query was configured for single sort order only');
-		}
-	}
-
-	asResolver(name: string = 'query') {
-		this.assertResolverConfig();
-
-		const entityType = this.options.entityType as ObjectTypeComposer;
+	getResolver(schemaComposer: SchemaComposer, name: string = 'query') {
 		const queryField = this.getQueryField();
-
-		entityType.addResolver({
+		return new Resolver({
 			name,
 			args: queryField.args,
 			type: queryField.type,
-
 			resolve: (rp: ResolverResolveParams<any, any>) => {
 				return queryField.resolve!(rp.source, rp.args, rp.context, rp.info);
 			}
-		});
+		}, schemaComposer);
+	}
 
-		return entityType.getResolver(name);
+	attachQueryResolverToEntity(name: string = 'query') {
+		this.assertResolverConfig();
+		const entityType = this.options.entityType as ObjectTypeComposer;
+		const resolver = this.getResolver(entityType.schemaComposer, name);
+		entityType.addResolver(resolver);
+		return resolver;
 	}
 
 	private assertResolverConfig() {
@@ -263,13 +252,10 @@ export class GraphQLQueryBuilder<TEntityType, TQuery extends Query<any>, TContex
 }
 
 export namespace GraphQLQueryBuilder {
-	export interface Options<TEntityType, TContext> {
+	export interface Options<TQuery, TEntityType, TContext> {
 		name?: string;
+		fetcher: (query: TQuery, context: TContext) => Promise<Result<TEntityType>> | Result<TEntityType>,
 		entityType: ObjectTypeComposer<TEntityType, TContext> | GraphQLObjectType<TEntityType, TContext>
 		filtersType: GraphQLInputObjectType | InputTypeComposer<TContext>;
-	}
-
-	export interface PaginationOptions {
-		defaultLimit: number;
 	}
 }

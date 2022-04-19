@@ -8,7 +8,7 @@
     "test": "pallad-scripts test",
     "lint": "pallad-scripts lint",
     "compile": "pallad-scripts compile",
-    "prepublishOnly": "npm run compile"
+    "prepack": "npm run compile"
   },
   "repository": {
     "type": "git",

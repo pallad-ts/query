@@ -6,8 +6,8 @@ export interface PaginableByCursor {
 
 export namespace PaginableByCursor {
     export interface ResultMeta {
-        nextPage: string;
-        previousPage: string;
+        nextPage?: string;
+        previousPage?: string;
         limit: number;
     }
 }

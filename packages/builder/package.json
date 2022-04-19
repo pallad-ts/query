@@ -1,7 +1,7 @@
 {
-  "name": "@pallad/query-graphql",
-  "version": "2.9.9",
-  "description": "Helper for graphql to create @pallad/query related types",
+  "name": "@pallad/query-builder",
+  "version": "0.9.9",
+  "description": "",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
   "scripts": {
@@ -13,7 +13,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pallad-ts/query.git",
-    "directory": "packages/main"
+    "directory": "packages/builder"
   },
   "publishConfig": {
     "access": "public"
@@ -24,16 +24,14 @@
     "url": "https://github.com/pallad-ts/query/issues"
   },
   "homepage": "https://github.com/pallad-ts/query#readme",
-  "peerDependencies": {
-    "graphql": "^16.3.0",
-    "graphql-compose": "^9.0.8"
-  },
+  "gitHead": "3a67b5f523077c2e980fbe84b0c1feada5e59e46",
   "dependencies": {
     "@pallad/builder": "^1.0.1",
-    "@pallad/query": "^2.0.3",
-    "@pallad/query-builder": "*",
-    "graphql-scalars": "^1.17.0",
-    "predicates": "^2.0.3"
-  },
-  "gitHead": "3a67b5f523077c2e980fbe84b0c1feada5e59e46"
+    "@pallad/query": "^2",
+    "alpha-errors": "^0.4.0",
+    "alpha-validator": "^0.6.0",
+    "alpha-validator-bridge-yup": "^0.4.2",
+    "monet": "^0.9.3",
+    "yup": "^0.32.11"
+  }
 }
