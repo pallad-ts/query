@@ -182,7 +182,7 @@ describe('QueryConfig', () => {
 				.filters<Filters>()
 				.getResultBuilder();
 
-			type Expected = ResultBuilder<QueryConfig<Filters, SortableSingle<'foo' | 'bar'> & PaginableByCursor>>;
+			type Expected = ResultBuilder<QueryConfig<Filters, SortableSingle<'foo' | 'bar'> & PaginableByCursor>, unknown>;
 			assert<IsExact<typeof builder, Expected>>(true);
 		});
 	});

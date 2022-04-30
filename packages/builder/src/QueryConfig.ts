@@ -101,7 +101,7 @@ export class QueryConfig<TFilters, TQueryProperties, TResultMeta = unknown> exte
 		}
 	}
 
-	getResultBuilder(): ResultBuilder<this> {
+	getResultBuilder<TEntity = unknown>(): ResultBuilder<this, TEntity> {
 		this.validate();
 		return new ResultBuilder(this);
 	}
