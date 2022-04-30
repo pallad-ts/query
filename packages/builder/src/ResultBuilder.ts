@@ -57,14 +57,3 @@ export namespace ResultBuilder {
 		previousPageCursor?: string;
 	}
 }
-
-type Test<T> = { foo: 'bar' } & (T extends {} ? { bar: T } : unknown);
-
-const o: Test<{ zee: 'zee' }> = {
-	foo: 'bar',
-	bar: {zee: 'zee'}
-}
-
-const o2: Test<unknown> = {
-	foo: 'bar'
-}
