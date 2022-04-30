@@ -72,11 +72,10 @@ describe('ResultBuilder', () => {
 	describe('offset pagination', () => {
 		const builder = new QueryConfig()
 			.offsetPagination()
-			.getResultBuilder();
-
+			.getResultBuilder<number>();
 
 		it('types', () => {
-			type Expected = Result<unknown> & ResultMeta<PaginableByOffset.ResultMeta>;
+			type Expected = Result<number> & ResultMeta<PaginableByOffset.ResultMeta>;
 			type Input = ReturnType<typeof builder['build']>;
 
 			assert<IsExact<Input, Expected>>(true);
@@ -144,7 +143,3 @@ describe('ResultBuilder', () => {
 		});
 	});
 });
-
-
-type T = unknown extends unknown ? 'T' : 'F';
-const o: T = 'T';

@@ -3,12 +3,12 @@ import {QueryConfig} from "./QueryConfig";
 import {Builder} from "@pallad/builder";
 import {Maybe} from "monet";
 
-export class ResultBuilder<T extends QueryConfig<any, any>, TDefaultEntity> extends Builder {
+export class ResultBuilder<T extends QueryConfig<any, any>, TEntity> extends Builder {
 	constructor(readonly config: T) {
 		super();
 	}
 
-	build<TEntity = TDefaultEntity>(options: ResultBuilder.Options<TEntity, T['query']>) {
+	build(options: ResultBuilder.Options<TEntity, T['query']>) {
 		let meta: any = {};
 		this.composeMetaForPagination(options).foldLeft(meta)(Object.assign)
 		this.composeMetaForSorting(options).foldLeft(meta)(Object.assign);
