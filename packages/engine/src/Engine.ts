@@ -30,7 +30,8 @@ export class Engine<TQuery extends Query<any> = Query<unknown>,
 		return this;
 	}
 
-	find(query: TQuery): Promise<TFinalResult> {
+	// eslint-disable-next-line @typescript-eslint/require-await
+	async find(query: TQuery): Promise<TFinalResult> {
 		const baseContext = this.contextFactory ? this.contextFactory(query) : {};
 		const context = {...baseContext, query} as TContext & Engine.BaseContext<TQuery>;
 
@@ -50,7 +51,7 @@ export class Engine<TQuery extends Query<any> = Query<unknown>,
 			throw ERRORS.NO_FURTHER_MIDDLEWARE();
 		};
 
-		return Promise.resolve(next(context));
+		return next(context);
 	}
 
 	asQueryRunner(): QueryRunner<TQuery, TFinalResult> {
