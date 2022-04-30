@@ -1,5 +1,5 @@
 import {Engine} from "@src/Engine";
-import {Query as _Query, Result} from "@pallad/query";
+import {Query as _Query, Result, ResultMeta} from "@pallad/query";
 import {assert, IsExact} from "conditional-type-checks";
 import * as sinon from 'sinon';
 import {ERRORS} from "@src/errors";
@@ -22,6 +22,10 @@ describe('Engine', () => {
 		another: 'query'
 	}>;
 
+	interface ResultMetaFields {
+		foo: 'bar'
+	}
+
 	const EMPTY_QUERY: _Query<any> = {filters: {}};
 
 	const EMPTY_RESULT: Result<any> = {results: []};
@@ -31,78 +35,84 @@ describe('Engine', () => {
 		it('no types provided', () => {
 			const engine = new Engine();
 
-			type Expected = Engine<unknown, _Query<any>, object>;
+			type Expected = Engine<_Query<any>, object, Result<unknown>>;
 			assert<IsExact<typeof engine, Expected>>(true);
 
 			assert<IsExact<ReturnType<(typeof engine)['find']>, Promise<Result<unknown>>>>(true);
 		});
 
-		it('simple engine', () => {
-			const engine = new Engine<Entity>();
-
-			type Expected = Engine<Entity, _Query<any>, object>;
-			assert<IsExact<typeof engine, Expected>>(true);
-
-			assert<IsExact<ReturnType<(typeof engine)['find']>, Promise<Result<Entity>>>>(true);
-		});
-
 		describe('with context factory', () => {
 			it('with context factory query arg', () => {
-				const engine = new Engine<Entity>()
+				const engine = new Engine()
 					.useContextFactory((query: Query) => {
 						return {zee: 'zee'} as Context
 					});
 
-				type Expected = Engine<Entity, Query, Context>;
+				type Expected = Engine<Query, Context, Result<unknown>>;
 				assert<IsExact<typeof engine, Expected>>(true);
 			});
 
 			it('with async context factory query arg', () => {
-				const engine = new Engine<Entity>()
+				const engine = new Engine()
 					// eslint-disable-next-line @typescript-eslint/require-await
 					.useContextFactory(async (query: Query) => {
 						return {zee: 'zee'} as Context
 					});
 
-				type Expected = Engine<Entity, Query, Context>;
+				type Expected = Engine<Query, Context, Result<any>>;
 				assert<IsExact<typeof engine, Expected>>(true);
 			});
 
 			it('context factory query arg overrides engine query type', () => {
-				const engine = new Engine<Entity, AnotherQuery>()
+				const engine = new Engine<AnotherQuery>()
 					.useContextFactory((query: Query) => {
 						return {zee: 'zee'} as Context
 					});
 
-				type Expected = Engine<Entity, Query, Context>;
+				type Expected = Engine<Query, Context, Result<any>>;
 				assert<IsExact<typeof engine, Expected>>(true);
 			});
 
 			it('without context factory query arg takes default query type from constructors', () => {
-				const engine = new Engine<Entity>()
+				const engine = new Engine()
 					.useContextFactory(() => {
 						return {zee: 'zee'} as Context
 					});
 
-				type Expected = Engine<Entity, _Query<unknown>, Context>;
+				type Expected = Engine<_Query<unknown>, Context, Result<any>>;
 				assert<IsExact<typeof engine, Expected>>(true);
 			});
 
 			it('without context factory query arg takes query type from constructor', () => {
-				const engine = new Engine<Entity, Query>()
+				const engine = new Engine<Query>()
 					.useContextFactory(() => {
 						return {zee: 'zee'} as Context
 					})
 
-				type Expected = Engine<Entity, Query, Context>;
+				type Expected = Engine<Query, Context, Result<any>>;
 				assert<IsExact<typeof engine, Expected>>(true);
 			});
+		});
+
+		describe('result factory', () => {
+			it('default result type', () => {
+				const engine = new Engine();
+
+				assert<IsExact<Result<unknown>, typeof engine['result']>>(true);
+			});
+
+			it('overriding result type from result factory', () => {
+				const engine = new Engine()
+					.useResultFactory(() => {
+						return {} as Result<Entity> & ResultMeta<ResultMetaFields>;
+					});
+
+				assert<IsExact<Result<Entity> & ResultMeta<ResultMetaFields>, typeof engine['result']>>(true);
+			})
 		});
 	});
 
 	describe('context', () => {
-
-
 		it('uses default context if context factory is not provided', async () => {
 			const stub = sinon.stub();
 			const engine = new Engine();
