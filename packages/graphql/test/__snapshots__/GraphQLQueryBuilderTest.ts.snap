@@ -14,10 +14,15 @@ exports[`GraphQLQueryBuilder cursor pagination schema 1`] = `
 
 input Entity_Query {
   filters: Filters
-  sortBy: Entity_Sort_Input
+  sortBy: Entity_Query_Sort_Input
   limit: PositiveInt
   after: String
   before: String
+}
+
+input Entity_Query_Sort_Input {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
 }
 
 type Entity_Result {
@@ -29,10 +34,10 @@ type Entity_Result_Meta {
   nextPage: String
   previousPage: String
   limit: PositiveInt!
-  sortBy: Entity_Sort!
+  sortBy: Entity_Result_Sort!
 }
 
-type Entity_Sort {
+type Entity_Result_Sort {
   direction: SortDirection!
   field: Entity_Sort_Field!
 }
@@ -45,11 +50,6 @@ enum Entity_Sort_Field {
 enum Entity_Sort_Field {
   foo
   bar
-}
-
-input Entity_Sort_Input {
-  direction: SortDirection!
-  field: Entity_Sort_Field!
 }
 
 input Filters {
@@ -105,7 +105,12 @@ exports[`GraphQLQueryBuilder multi sorting schema 1`] = `
 
 input Entity_Query {
   filters: Filters
-  sortBy: [Entity_Sort_Input]
+  sortBy: [Entity_Query_Sort_Input]
+}
+
+input Entity_Query_Sort_Input {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
 }
 
 type Entity_Result {
@@ -114,10 +119,10 @@ type Entity_Result {
 }
 
 type Entity_Result_Meta {
-  sortBy: [Entity_Sort]!
+  sortBy: [Entity_Result_Sort]!
 }
 
-type Entity_Sort {
+type Entity_Result_Sort {
   direction: SortDirection!
   field: Entity_Sort_Field!
 }
@@ -130,11 +135,6 @@ enum Entity_Sort_Field {
 enum Entity_Sort_Field {
   foo
   bar
-}
-
-input Entity_Sort_Input {
-  direction: SortDirection!
-  field: Entity_Sort_Field!
 }
 
 input Filters {
@@ -269,7 +269,12 @@ exports[`GraphQLQueryBuilder single sorting schema 1`] = `
 
 input Entity_Query {
   filters: Filters
-  sortBy: Entity_Sort_Input
+  sortBy: Entity_Query_Sort_Input
+}
+
+input Entity_Query_Sort_Input {
+  direction: SortDirection!
+  field: Entity_Sort_Field!
 }
 
 type Entity_Result {
@@ -278,10 +283,10 @@ type Entity_Result {
 }
 
 type Entity_Result_Meta {
-  sortBy: Entity_Sort!
+  sortBy: Entity_Result_Sort!
 }
 
-type Entity_Sort {
+type Entity_Result_Sort {
   direction: SortDirection!
   field: Entity_Sort_Field!
 }
@@ -294,11 +299,6 @@ enum Entity_Sort_Field {
 enum Entity_Sort_Field {
   foo
   bar
-}
-
-input Entity_Sort_Input {
-  direction: SortDirection!
-  field: Entity_Sort_Field!
 }
 
 input Filters {

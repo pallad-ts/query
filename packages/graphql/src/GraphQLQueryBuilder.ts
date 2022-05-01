@@ -169,7 +169,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 		}
 
 		let baseType: ObjectTypeComposer | InputTypeComposer = ObjectTypeComposer.createTemp({
-			name: `${this.getName()}_Sort`,
+			name: type === 'input' ? `${this.getName()}_Query_Sort` : `${this.getName()}_Result_Sort`,
 			fields: {
 				direction: {type: new GraphQLNonNull(GraphQLSortDirection)},
 				field: {
@@ -193,7 +193,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 	private getSortFieldType() {
 		if (!this.sortFieldType) {
 			this.sortFieldType = new GraphQLEnumType({
-				name: this.getName() + '_Query_Sort_Field',
+				name: this.getName() + '_Sort_Field',
 				values: this.queryBuilder
 					.config
 					.getSorting()!
