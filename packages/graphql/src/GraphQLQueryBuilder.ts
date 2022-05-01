@@ -193,7 +193,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 	private getSortFieldType() {
 		if (!this.sortFieldType) {
 			this.sortFieldType = new GraphQLEnumType({
-				name: this.getName() + '_Sort_Field',
+				name: this.getName() + '_Query_Sort_Field',
 				values: this.queryBuilder
 					.config
 					.getSorting()!
