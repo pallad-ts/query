@@ -26,7 +26,7 @@ input Entity_Query_Sort_Input {
 }
 
 type Entity_Result {
-  results: [Entity]!
+  results: [Entity!]!
   meta: Entity_Result_Meta!
 }
 
@@ -105,7 +105,7 @@ exports[`GraphQLQueryBuilder multi sorting schema 1`] = `
 
 input Entity_Query {
   filters: Filters
-  sortBy: [Entity_Query_Sort_Input]
+  sortBy: [Entity_Query_Sort_Input!]
 }
 
 input Entity_Query_Sort_Input {
@@ -114,12 +114,12 @@ input Entity_Query_Sort_Input {
 }
 
 type Entity_Result {
-  results: [Entity]!
+  results: [Entity!]!
   meta: Entity_Result_Meta!
 }
 
 type Entity_Result_Meta {
-  sortBy: [Entity_Result_Sort]!
+  sortBy: [Entity_Result_Sort!]!
 }
 
 type Entity_Result_Sort {
@@ -184,7 +184,7 @@ input Entity_Query {
 }
 
 type Entity_Result {
-  results: [Entity]!
+  results: [Entity!]!
   meta: Entity_Result_Meta!
 }
 
@@ -234,7 +234,7 @@ input Entity_Query {
 }
 
 type Entity_Result {
-  results: [Entity]!
+  results: [Entity!]!
 }
 
 input Filters {
@@ -278,7 +278,7 @@ input Entity_Query_Sort_Input {
 }
 
 type Entity_Result {
-  results: [Entity]!
+  results: [Entity!]!
   meta: Entity_Result_Meta!
 }
 

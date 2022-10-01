@@ -33,7 +33,8 @@
     "@pallad/query": "^2.1.0",
     "@pallad/query-builder": "^1.1.1",
     "graphql-scalars": "^1.17.0",
-    "predicates": "^2.0.3"
+    "predicates": "^2.0.3",
+    "camel-case": "^4.1.2"
   },
   "gitHead": "3a67b5f523077c2e980fbe84b0c1feada5e59e46"
 }

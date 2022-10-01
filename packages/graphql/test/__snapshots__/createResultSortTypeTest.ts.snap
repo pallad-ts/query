@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createResultSortType crates object type: { isMulti: false } 1`] = `
+"type Base_Result_Sort {
+  direction: SortDirection!
+  field: Base_Sort_Field!
+}"
+`;
+
+exports[`createResultSortType crates object type: { isMulti: false } 2`] = `
+"type Base {
+  sortBy: Base_Result_Sort!
+}"
+`;
+
+exports[`createResultSortType crates object type: { isMulti: true } 1`] = `
+"type Base_Result_Sort {
+  direction: SortDirection!
+  field: Base_Sort_Field!
+}"
+`;
+
+exports[`createResultSortType crates object type: { isMulti: true } 2`] = `
+"type Base {
+  sortBy: [Base_Result_Sort!]!
+}"
+`;

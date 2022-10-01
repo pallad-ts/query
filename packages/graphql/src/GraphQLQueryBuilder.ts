@@ -8,11 +8,14 @@ import {
 } from "graphql-compose/lib/ObjectTypeComposer";
 import {ThunkWithSchemaComposer} from "graphql-compose/lib/utils/definitions";
 import {InputTypeComposerFieldConfigMapDefinition} from "graphql-compose/lib/InputTypeComposer";
-import {GraphQLSortDirection} from "./types";
 import * as is from 'predicates'
 import {QueryBuilder} from "@pallad/query-builder";
 import {GraphQLPositiveInt} from "graphql-scalars";
 import {NonNullComposer} from "graphql-compose/lib/NonNullComposer";
+import {createResultListType} from "./createResultListType";
+import {createSortFieldType} from "./createSortFieldType";
+import {createInputSortType} from "./createInputSortType";
+import {createResultSortType} from "./createResultSortType";
 
 const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
 
@@ -102,7 +105,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 			return;
 		}
 		return {
-			sortBy: {type: this.createSortByType('output').NonNull}
+			sortBy: {type: this.createOutputSortType()}
 		};
 	}
 
@@ -112,20 +115,12 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 			this.resultType = ObjectTypeComposer.createTemp<Result<TEntityType>, TContext>({
 				name: `${this.getName()}_Result`,
 				fields: {
-					results: {type: this.getResultsListType()},
+					results: {type: createResultListType(this.options.entityType)},
 					...(metaType ? {meta: {type: metaType}} : {})
 				}
 			}).NonNull;
 		}
 		return this.resultType;
-	}
-
-	private getResultsListType() {
-		const entityType = this.options.entityType;
-		if (entityType instanceof GraphQLObjectType) {
-			return new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(entityType)));
-		}
-		return entityType.getTypePlural().NonNull;
 	}
 
 	getQueryArgType() {
@@ -134,7 +129,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 				filters: {type: this.getFiltersType()}
 			};
 
-			const sortByType = this.createSortByType('input');
+			const sortByType = this.createInputSortType();
 			if (sortByType) {
 				fields.sortBy = {
 					type: sortByType
@@ -160,49 +155,33 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 		return this.queryType;
 	}
 
-	private createSortByType(type: 'input'): InputTypeComposer | ListComposer<InputTypeComposer>;
-	private createSortByType(type: 'output'): ObjectTypeComposer | ListComposer<ObjectTypeComposer>;
-	private createSortByType(type: 'input' | 'output') {
+	private createInputSortType() {
 		const sorting = this.queryBuilder.config.getSorting();
 		if (!sorting) {
 			return;
 		}
-
-		let baseType: ObjectTypeComposer | InputTypeComposer = ObjectTypeComposer.createTemp({
-			name: type === 'input' ? `${this.getName()}_Query_Sort` : `${this.getName()}_Result_Sort`,
-			fields: {
-				direction: {type: new GraphQLNonNull(GraphQLSortDirection)},
-				field: {
-					type: new GraphQLNonNull(
-						this.getSortFieldType()
-					)
-				}
-			}
+		return createInputSortType({
+			baseName: this.getName(),
+			sortFieldType: this.getSortFieldType(),
+			isMulti: sorting.type === 'multi'
 		});
+	}
 
-		if (type === 'input') {
-			baseType = baseType.getInputTypeComposer({postfix: '_Input'});
+	private createOutputSortType() {
+		const sorting = this.queryBuilder.config.getSorting();
+		if (!sorting) {
+			return;
 		}
-
-		if (sorting.type === 'single') {
-			return baseType;
-		}
-		return baseType.List;
+		return createResultSortType({
+			baseName: this.getName(),
+			sortFieldType: this.getSortFieldType(),
+			isMulti: sorting.type === 'multi'
+		});
 	}
 
 	private getSortFieldType() {
 		if (!this.sortFieldType) {
-			this.sortFieldType = new GraphQLEnumType({
-				name: this.getName() + '_Sort_Field',
-				values: this.queryBuilder
-					.config
-					.getSorting()!
-					.sortableFields
-					.reduce((result: Record<string, { value: string }>, field: string) => {
-						result[field] = {value: field};
-						return result;
-					}, {})
-			});
+			this.sortFieldType = createSortFieldType(this.getName(), this.queryBuilder.config.getSorting()!.sortableFields)
 		}
 		return this.sortFieldType;
 	}

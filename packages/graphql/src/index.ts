@@ -1,2 +1,3 @@
-export * as GraphQLTypes from './types';
+export * from './types';
 export * from './GraphQLQueryBuilder';
+export * from './createResultListType';

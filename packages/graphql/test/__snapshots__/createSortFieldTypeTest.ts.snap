@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createSortFieldType creates enum field with camel cased values: %S 1`] = `
+Object {
+  "astNode": undefined,
+  "description": undefined,
+  "extensionASTNodes": Array [],
+  "extensions": Object {},
+  "name": "EntityName_Sort_Field",
+  "values": Object {
+    "lastName": Object {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": Object {},
+      "value": "last_name",
+    },
+    "name": Object {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": Object {},
+      "value": "name",
+    },
+  },
+}
+`;
+
+exports[`createSortFieldType creates enum field with camel cased values: %S 2`] = `
+Object {
+  "astNode": undefined,
+  "description": undefined,
+  "extensionASTNodes": Array [],
+  "extensions": Object {},
+  "name": "EntityName_Sort_Field",
+  "values": Object {
+    "createdAt": Object {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": Object {},
+      "value": "createdAt",
+    },
+    "firstName": Object {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": Object {},
+      "value": "first_name",
+    },
+    "id": Object {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": Object {},
+      "value": "id",
+    },
+    "updatedAt": Object {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": Object {},
+      "value": "updatedAt",
+    },
+  },
+}
+`;
+
+exports[`createSortFieldType fails if sortable fields is empty array 1`] = `"Assertion failed. Must be not an empty array"`;

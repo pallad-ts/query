@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createInputSortType creates input sort type 1`] = `
+"input Base_Query_Sort_Input {
+  direction: SortDirection!
+  field: Base_Sort_Field!
+}"
+`;
+
+exports[`createInputSortType creates input sort type 2`] = `
+"input Base {
+  sortBy: [Base_Query_Sort_Input!]
+}"
+`;
+
+exports[`createInputSortType creates input sort type 3`] = `
+"input Base_Query_Sort_Input {
+  direction: SortDirection!
+  field: Base_Sort_Field!
+}"
+`;
+
+exports[`createInputSortType creates input sort type 4`] = `
+"input Base {
+  sortBy: Base_Query_Sort_Input
+}"
+`;
