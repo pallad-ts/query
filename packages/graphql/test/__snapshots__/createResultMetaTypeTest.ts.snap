@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createResultMetaType creates result meta type: with extra meta fields 1`] = `
+"type Base_Result_Meta {
+  name: String
+}"
+`;
+
+exports[`createResultMetaType creates result meta type: with pagination fields 1`] = `
+"type Base_Result_Meta {
+  nextPage: String
+  previousPage: String
+  limit: PositiveInt!
+}"
+`;
+
+exports[`createResultMetaType creates result meta type: with sort type 1`] = `
+"type Base_Result_Meta {
+  sortBy: [Base_Result_Sort!]!
+}"
+`;

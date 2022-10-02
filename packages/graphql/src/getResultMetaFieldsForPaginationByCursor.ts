@@ -1,0 +1,12 @@
+import {GraphQLNonNull, GraphQLString} from "graphql";
+import {GraphQLPositiveInt} from "graphql-scalars";
+import {ObjectTypeComposerFieldConfigMapDefinition} from "graphql-compose/lib/ObjectTypeComposer";
+import {PaginableByCursor} from '@pallad/query';
+
+export function getResultMetaFieldsForPaginationByCursor(): ObjectTypeComposerFieldConfigMapDefinition<PaginableByCursor.ResultMeta, unknown> {
+	return {
+		nextPage: {type: GraphQLString},
+		previousPage: {type: GraphQLString},
+		limit: {type: new GraphQLNonNull(GraphQLPositiveInt)}
+	};
+}

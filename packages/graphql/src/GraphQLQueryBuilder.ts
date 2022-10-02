@@ -16,6 +16,8 @@ import {createResultListType} from "./createResultListType";
 import {createSortFieldType} from "./createSortFieldType";
 import {createInputSortType} from "./createInputSortType";
 import {createResultSortType} from "./createResultSortType";
+import {getResultMetaFieldsForPaginationByCursor} from "./getResultMetaFieldsForPaginationByCursor";
+import {getResultMetaFieldsForPaginationByOffset} from "./getResultMetaFieldsForPaginationByOffset";
 
 const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
 
@@ -84,18 +86,11 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 		}
 
 		if (pagination.type === 'byCursor') {
-			return {
-				nextPage: {type: GraphQLString},
-				previousPage: {type: GraphQLString},
-				limit: {type: new GraphQLNonNull(GraphQLPositiveInt)}
-			};
+			return getResultMetaFieldsForPaginationByCursor();
 		}
 
 		if (pagination.type === 'byOffset') {
-			return {
-				limit: {type: new GraphQLNonNull(GraphQLPositiveInt)},
-				offset: {type: new GraphQLNonNull(GraphQLPositiveInt)}
-			}
+			return getResultMetaFieldsForPaginationByOffset();
 		}
 	}
 
