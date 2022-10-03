@@ -32,8 +32,8 @@ export function createResultMetaType({baseName, paginationFields, sortType, extr
 export namespace createResultMetaType {
 	export interface Options {
 		baseName: string;
-		paginationFields?: ObjectTypeComposerFieldConfigMapDefinition<PaginableByCursor.ResultMeta | PaginableByOffset.ResultMeta, unknown>,
+		paginationFields?: ObjectTypeComposerFieldConfigMapDefinition<PaginableByCursor.ResultMeta, any> | ObjectTypeComposerFieldConfigMapDefinition<PaginableByOffset.ResultMeta, any>,
 		sortType?: ObjectTypeComposer | NonNullComposer;
-		extraMetaFields?: ObjectTypeComposerFieldConfigMapDefinition<unknown, unknown>
+		extraMetaFields?: ObjectTypeComposerFieldConfigMapDefinition<any, any>
 	}
 }

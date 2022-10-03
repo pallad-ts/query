@@ -18,6 +18,7 @@ import {createInputSortType} from "./createInputSortType";
 import {createResultSortType} from "./createResultSortType";
 import {getResultMetaFieldsForPaginationByCursor} from "./getResultMetaFieldsForPaginationByCursor";
 import {getResultMetaFieldsForPaginationByOffset} from "./getResultMetaFieldsForPaginationByOffset";
+import {createResultMetaType} from "./createResultMetaType";
 
 const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
 
@@ -35,7 +36,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 		super();
 	}
 
-	getName() {
+	getBaseName() {
 		if (this.options.name) {
 			return this.options.name;
 		}
@@ -50,30 +51,12 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 
 	private getResultMetaType() {
 		if (!this.resultMetaType) {
-			const metaFields: ObjectTypeComposerFieldConfigMapDefinition<any, TContext> = {};
-			const metaPaginationFields = this.getMetaPaginationFields();
-			if (metaPaginationFields) {
-				Object.assign(metaFields, metaPaginationFields);
-			}
-
-			const metaSortingFields = this.getMetaSortingFields();
-
-			if (metaSortingFields) {
-				Object.assign(metaFields, metaSortingFields);
-			}
-
-			if (this.extraMetaFields) {
-				Object.assign(metaFields, this.extraMetaFields);
-			}
-
-			if (!Object.keys(metaFields).length) {
-				return;
-			}
-
-			this.resultMetaType = ObjectTypeComposer.createTemp<any, TContext>({
-				name: `${this.getName()}_Result_Meta`,
-				fields: metaFields
-			}).NonNull;
+			this.resultMetaType = createResultMetaType({
+				paginationFields: this.getMetaPaginationFields(),
+				sortType: this.createOutputSortType(),
+				baseName: this.getBaseName(),
+				extraMetaFields: this.extraMetaFields
+			});
 		}
 		return this.resultMetaType;
 	}
@@ -81,34 +64,20 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 	private getMetaPaginationFields() {
 		const pagination = this.queryBuilder.config.getPagination();
 
-		if (!pagination) {
-			return;
-		}
-
-		if (pagination.type === 'byCursor') {
+		if (pagination?.type === 'byCursor') {
 			return getResultMetaFieldsForPaginationByCursor();
 		}
 
-		if (pagination.type === 'byOffset') {
+		if (pagination?.type === 'byOffset') {
 			return getResultMetaFieldsForPaginationByOffset();
 		}
-	}
-
-	private getMetaSortingFields() {
-		const sorting = this.queryBuilder.config.getSorting();
-		if (!sorting) {
-			return;
-		}
-		return {
-			sortBy: {type: this.createOutputSortType()}
-		};
 	}
 
 	getResultType(): NonNullComposer<ObjectTypeComposer<Result<TEntityType>, TContext>> {
 		if (!this.resultType) {
 			const metaType = this.getResultMetaType();
 			this.resultType = ObjectTypeComposer.createTemp<Result<TEntityType>, TContext>({
-				name: `${this.getName()}_Result`,
+				name: `${this.getBaseName()}_Result`,
 				fields: {
 					results: {type: createResultListType(this.options.entityType)},
 					...(metaType ? {meta: {type: metaType}} : {})
@@ -143,7 +112,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 			}
 
 			this.queryType = InputTypeComposer.createTemp<TContext>({
-				name: this.getName() + '_Query',
+				name: this.getBaseName() + '_Query',
 				fields
 			});
 		}
@@ -156,7 +125,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 			return;
 		}
 		return createInputSortType({
-			baseName: this.getName(),
+			baseName: this.getBaseName(),
 			sortFieldType: this.getSortFieldType(),
 			isMulti: sorting.type === 'multi'
 		});
@@ -168,7 +137,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 			return;
 		}
 		return createResultSortType({
-			baseName: this.getName(),
+			baseName: this.getBaseName(),
 			sortFieldType: this.getSortFieldType(),
 			isMulti: sorting.type === 'multi'
 		});
@@ -176,7 +145,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 
 	private getSortFieldType() {
 		if (!this.sortFieldType) {
-			this.sortFieldType = createSortFieldType(this.getName(), this.queryBuilder.config.getSorting()!.sortableFields)
+			this.sortFieldType = createSortFieldType(this.getBaseName(), this.queryBuilder.config.getSorting()!.sortableFields)
 		}
 		return this.sortFieldType;
 	}
