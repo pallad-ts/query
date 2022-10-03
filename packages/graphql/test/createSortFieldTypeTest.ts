@@ -1,5 +1,4 @@
 import {createSortFieldType} from "@src/createSortFieldType";
-import {printEnum} from "graphql-compose";
 
 describe('createSortFieldType', () => {
 	it('fails if sortable fields is empty array', () => {

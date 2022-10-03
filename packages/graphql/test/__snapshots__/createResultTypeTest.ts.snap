@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createResultType creates result type: simple 1`] = `
+"type Base_Result {
+  results: [Entity!]!
+}"
+`;
+
+exports[`createResultType creates result type: with meta 1`] = `
+"type Base_Result {
+  results: [Entity!]!
+  meta: Base_Result_Meta!
+}"
+`;

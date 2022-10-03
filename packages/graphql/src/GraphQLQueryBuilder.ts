@@ -12,13 +12,13 @@ import * as is from 'predicates'
 import {QueryBuilder} from "@pallad/query-builder";
 import {GraphQLPositiveInt} from "graphql-scalars";
 import {NonNullComposer} from "graphql-compose/lib/NonNullComposer";
-import {createResultListType} from "./createResultListType";
 import {createSortFieldType} from "./createSortFieldType";
 import {createInputSortType} from "./createInputSortType";
 import {createResultSortType} from "./createResultSortType";
 import {getResultMetaFieldsForPaginationByCursor} from "./getResultMetaFieldsForPaginationByCursor";
 import {getResultMetaFieldsForPaginationByOffset} from "./getResultMetaFieldsForPaginationByOffset";
 import {createResultMetaType} from "./createResultMetaType";
+import {createResultType} from "./createResultType";
 
 const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
 
@@ -75,14 +75,11 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 
 	getResultType(): NonNullComposer<ObjectTypeComposer<Result<TEntityType>, TContext>> {
 		if (!this.resultType) {
-			const metaType = this.getResultMetaType();
-			this.resultType = ObjectTypeComposer.createTemp<Result<TEntityType>, TContext>({
-				name: `${this.getBaseName()}_Result`,
-				fields: {
-					results: {type: createResultListType(this.options.entityType)},
-					...(metaType ? {meta: {type: metaType}} : {})
-				}
-			}).NonNull;
+			this.resultType = createResultType({
+				metaType: this.getResultMetaType(),
+				entityType: this.options.entityType,
+				baseName: this.getBaseName()
+			})
 		}
 		return this.resultType;
 	}
