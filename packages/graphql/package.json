@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-graphql",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Helper for graphql to create @pallad/query related types",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
