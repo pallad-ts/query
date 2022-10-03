@@ -1,7 +1,7 @@
 export interface PaginableByCursor {
     after?: string;
     before?: string;
-    limit: number;
+    limit?: number;
 }
 
 export namespace PaginableByCursor {

@@ -13,11 +13,11 @@ exports[`GraphQLQueryBuilder cursor pagination schema 1`] = `
 }
 
 input Entity_Query {
-  filters: Filters
+  filters: Filters!
   sortBy: Entity_Query_Sort_Input
-  limit: PositiveInt
   after: String
   before: String
+  limit: PositiveInt
 }
 
 input Entity_Query_Sort_Input {
@@ -104,7 +104,7 @@ exports[`GraphQLQueryBuilder multi sorting schema 1`] = `
 }
 
 input Entity_Query {
-  filters: Filters
+  filters: Filters!
   sortBy: [Entity_Query_Sort_Input!]
 }
 
@@ -178,7 +178,7 @@ exports[`GraphQLQueryBuilder offset pagination schema 1`] = `
 }
 
 input Entity_Query {
-  filters: Filters
+  filters: Filters!
   limit: PositiveInt
   offset: PositiveInt
 }
@@ -230,7 +230,7 @@ exports[`GraphQLQueryBuilder simple schema 1`] = `
 }
 
 input Entity_Query {
-  filters: Filters
+  filters: Filters!
 }
 
 type Entity_Result {
@@ -268,7 +268,7 @@ exports[`GraphQLQueryBuilder single sorting schema 1`] = `
 }
 
 input Entity_Query {
-  filters: Filters
+  filters: Filters!
   sortBy: Entity_Query_Sort_Input
 }
 

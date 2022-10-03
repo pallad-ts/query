@@ -135,7 +135,7 @@ describe('GraphQLQueryBuilder', () => {
 				const result = await runQueryForBuilder(
 					builder,
 					QUERY,
-					{query: {}},
+					{query: {filters: {}}},
 					CONTEXT
 				);
 
@@ -292,7 +292,7 @@ describe('GraphQLQueryBuilder', () => {
 					}
 				}
 			`,
-			{query: {}},
+			{query: {filters: {}}},
 			CONTEXT
 		);
 

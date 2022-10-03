@@ -19,6 +19,9 @@ import {getResultMetaFieldsForPaginationByCursor} from "./getResultMetaFieldsFor
 import {getResultMetaFieldsForPaginationByOffset} from "./getResultMetaFieldsForPaginationByOffset";
 import {createResultMetaType} from "./createResultMetaType";
 import {createResultType} from "./createResultType";
+import {getQueryFieldsForPaginationByCursor} from "./getQueryFieldsForPaginationByCursor";
+import {getQueryFieldsForPaginationByOffset} from "./getQueryFieldsForPaginationByOffset";
+import {createQueryType} from "./createQueryType";
 
 const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
 
@@ -52,7 +55,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 	private getResultMetaType() {
 		if (!this.resultMetaType) {
 			this.resultMetaType = createResultMetaType({
-				paginationFields: this.getMetaPaginationFields(),
+				paginationFields: this.getResultMetaPaginationFields(),
 				sortType: this.createOutputSortType(),
 				baseName: this.getBaseName(),
 				extraMetaFields: this.extraMetaFields
@@ -61,7 +64,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 		return this.resultMetaType;
 	}
 
-	private getMetaPaginationFields() {
+	private getResultMetaPaginationFields() {
 		const pagination = this.queryBuilder.config.getPagination();
 
 		if (pagination?.type === 'byCursor') {
@@ -75,7 +78,7 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 
 	getResultType(): NonNullComposer<ObjectTypeComposer<Result<TEntityType>, TContext>> {
 		if (!this.resultType) {
-			this.resultType = createResultType({
+			this.resultType = createResultType<TEntityType, TContext>({
 				metaType: this.getResultMetaType(),
 				entityType: this.options.entityType,
 				baseName: this.getBaseName()
@@ -108,10 +111,12 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 				}
 			}
 
-			this.queryType = InputTypeComposer.createTemp<TContext>({
-				name: this.getBaseName() + '_Query',
-				fields
-			});
+			this.queryType = createQueryType<TContext>({
+				baseName: this.getBaseName(),
+				filtersType: this.getFiltersType(),
+				paginationFields: this.getQueryPaginationFields(),
+				sortType: this.createInputSortType()
+			})
 		}
 		return this.queryType;
 	}
@@ -126,6 +131,18 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 			sortFieldType: this.getSortFieldType(),
 			isMulti: sorting.type === 'multi'
 		});
+	}
+
+	private getQueryPaginationFields() {
+		const pagination = this.queryBuilder.config.getPagination();
+
+		if (pagination?.type === 'byCursor') {
+			return getQueryFieldsForPaginationByCursor();
+		}
+
+		if (pagination?.type === 'byOffset') {
+			return getQueryFieldsForPaginationByOffset();
+		}
 	}
 
 	private createOutputSortType() {

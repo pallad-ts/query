@@ -1,6 +1,6 @@
 export interface PaginableByOffset {
     offset?: number;
-    limit: number;
+    limit?: number;
 }
 
 export namespace PaginableByOffset {
