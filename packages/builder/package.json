@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-builder",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
@@ -27,7 +27,7 @@
   "gitHead": "3a67b5f523077c2e980fbe84b0c1feada5e59e46",
   "dependencies": {
     "@pallad/builder": "^1.0.1",
-    "@pallad/query": "^2.1.0",
+    "@pallad/query": "^3.0.0",
     "alpha-errors": "^0.4.0",
     "alpha-validator": "^0.6.0",
     "alpha-validator-bridge-yup": "^0.4.2",
