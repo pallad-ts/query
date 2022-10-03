@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createResultListType from raw GraphQL type 1`] = `
+"type BaseWrapper {
+  results: [Base!]!
+}"
+`;
+
+exports[`createResultListType from type composer 1`] = `
+"type BaseWrapper {
+  results: [Base!]!
+}"
+`;
