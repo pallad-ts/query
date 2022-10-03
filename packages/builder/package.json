@@ -24,7 +24,7 @@
     "url": "https://github.com/pallad-ts/query/issues"
   },
   "homepage": "https://github.com/pallad-ts/query#readme",
-  "gitHead": "3a67b5f523077c2e980fbe84b0c1feada5e59e46",
+  "gitHead": "708edb6ed6ae7a686d45384118ae7649723a09d2",
   "dependencies": {
     "@pallad/builder": "^1.0.1",
     "@pallad/query": "^4.0.0",
