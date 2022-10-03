@@ -1,16 +1,13 @@
 import {Builder as _Builder} from '@pallad/builder';
-import {InputTypeComposer, ListComposer, ObjectTypeComposer, Resolver, ResolverResolveParams, SchemaComposer} from "graphql-compose";
-import {GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString} from "graphql";
+import {InputTypeComposer, ObjectTypeComposer, Resolver, ResolverResolveParams, SchemaComposer} from "graphql-compose";
+import {GraphQLEnumType, GraphQLInputObjectType, GraphQLObjectType} from "graphql";
 import {Result} from "@pallad/query";
 import {
 	ObjectTypeComposerFieldConfigAsObjectDefinition,
 	ObjectTypeComposerFieldConfigMapDefinition
 } from "graphql-compose/lib/ObjectTypeComposer";
-import {ThunkWithSchemaComposer} from "graphql-compose/lib/utils/definitions";
-import {InputTypeComposerFieldConfigMapDefinition} from "graphql-compose/lib/InputTypeComposer";
 import * as is from 'predicates'
 import {QueryBuilder} from "@pallad/query-builder";
-import {GraphQLPositiveInt} from "graphql-scalars";
 import {NonNullComposer} from "graphql-compose/lib/NonNullComposer";
 import {createSortFieldType} from "./createSortFieldType";
 import {createInputSortType} from "./createInputSortType";
@@ -89,28 +86,6 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 
 	getQueryArgType() {
 		if (!this.queryType) {
-			const fields: ThunkWithSchemaComposer<InputTypeComposerFieldConfigMapDefinition, any> = {
-				filters: {type: this.getFiltersType()}
-			};
-
-			const sortByType = this.createInputSortType();
-			if (sortByType) {
-				fields.sortBy = {
-					type: sortByType
-				};
-			}
-
-			const pagination = this.queryBuilder.config.getPagination();
-			if (pagination) {
-				fields.limit = {type: GraphQLPositiveInt};
-				if (pagination.type === 'byOffset') {
-					fields.offset = {type: GraphQLPositiveInt};
-				} else if (pagination.type === 'byCursor') {
-					fields.after = {type: GraphQLString};
-					fields.before = {type: GraphQLString};
-				}
-			}
-
 			this.queryType = createQueryType<TContext>({
 				baseName: this.getBaseName(),
 				filtersType: this.getFiltersType(),
