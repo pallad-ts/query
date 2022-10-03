@@ -45,6 +45,16 @@ describe('createResultMetaType', () => {
 					name: {type: GraphQLString}
 				}
 			}
+		],
+		[
+			'with all options',
+			{
+				sortType: sortType!,
+				paginationFields: getResultMetaFieldsForPaginationByCursor(),
+				extraMetaFields: {
+					name: {type: GraphQLString}
+				}
+			}
 		]
 	])('creates result meta type: %s', (_, opts) => {
 		const type = createResultMetaType({

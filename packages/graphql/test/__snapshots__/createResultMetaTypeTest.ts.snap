@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`createResultMetaType creates result meta type: with all options 1`] = `
+"type Base_Result_Meta {
+  nextPage: String
+  previousPage: String
+  limit: PositiveInt!
+  sortBy: [Base_Result_Sort!]!
+  name: String
+}"
+`;
+
 exports[`createResultMetaType creates result meta type: with extra meta fields 1`] = `
 "type Base_Result_Meta {
   name: String
