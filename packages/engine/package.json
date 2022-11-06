@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-engine",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "description": "Simple query engine to handle @pallad/query results",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",

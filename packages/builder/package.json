@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-builder",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "",
   "main": "compiled/index.js",
   "types": "compiled/index.d.ts",
@@ -28,9 +28,9 @@
   "dependencies": {
     "@pallad/builder": "^1.0.1",
     "@pallad/query": "^4.0.1",
+    "@sweet-monads/maybe": "^3",
     "alpha-errors": "^0.4.0",
     "alpha-validator": "^0.7.0",
-    "@sweet-monads/maybe": "^3",
     "alpha-validator-bridge-yup": "^0.5.1",
     "yup": "^0.32.11"
   }
