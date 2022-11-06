@@ -2,10 +2,10 @@
 
 exports[`QueryBuilder filters uses filters schema if provided failure 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "filters.foo is a required field",
-      "path": Array [
+      "path": [
         "filters",
         "foo",
       ],
@@ -16,10 +16,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination by cursor allows "after" cursor property fails if not a string 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "after must be a \`string\` type, but the final value was: \`[]\`.",
-      "path": Array [
+      "path": [
         "after",
       ],
     },
@@ -29,10 +29,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination by cursor allows "before" cursor property fails if not a string 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "before must be a \`string\` type, but the final value was: \`[]\`.",
-      "path": Array [
+      "path": [
         "before",
       ],
     },
@@ -42,10 +42,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination by offset offset cannot be lower than 0 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "offset must be greater than or equal to 0",
-      "path": Array [
+      "path": [
         "offset",
       ],
     },
@@ -55,10 +55,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination by offset offset must be an integer 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
-      "message": "offset must be a \`number\` type, but the final value was: \`NaN\` (cast from the value \`\\"asdfasdf\\"\`).",
-      "path": Array [
+  "violations": [
+    {
+      "message": "offset must be a \`number\` type, but the final value was: \`NaN\` (cast from the value \`"asdfasdf"\`).",
+      "path": [
         "offset",
       ],
     },
@@ -68,10 +68,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination common (for by cursor) limit cannot be greater than max limit 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "limit must be less than or equal to 1000",
-      "path": Array [
+      "path": [
         "limit",
       ],
     },
@@ -81,10 +81,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination common (for by cursor) limit cannot be lower than 1 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "limit must be greater than or equal to 1",
-      "path": Array [
+      "path": [
         "limit",
       ],
     },
@@ -94,10 +94,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination common (for by cursor) limit must be integer 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
-      "message": "limit must be a \`number\` type, but the final value was: \`NaN\` (cast from the value \`\\"asdfa\\"\`).",
-      "path": Array [
+  "violations": [
+    {
+      "message": "limit must be a \`number\` type, but the final value was: \`NaN\` (cast from the value \`"asdfa"\`).",
+      "path": [
         "limit",
       ],
     },
@@ -107,10 +107,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination common (for by offset) limit cannot be greater than max limit 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "limit must be less than or equal to 1000",
-      "path": Array [
+      "path": [
         "limit",
       ],
     },
@@ -120,10 +120,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination common (for by offset) limit cannot be lower than 1 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "limit must be greater than or equal to 1",
-      "path": Array [
+      "path": [
         "limit",
       ],
     },
@@ -133,10 +133,10 @@ ViolationsList {
 
 exports[`QueryBuilder pagination common (for by offset) limit must be integer 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
-      "message": "limit must be a \`number\` type, but the final value was: \`NaN\` (cast from the value \`\\"asdfa\\"\`).",
-      "path": Array [
+  "violations": [
+    {
+      "message": "limit must be a \`number\` type, but the final value was: \`NaN\` (cast from the value \`"asdfa"\`).",
+      "path": [
         "limit",
       ],
     },
@@ -146,10 +146,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting common (for multi) fails for invalid sorting direction 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy[0].direction must be one of the following values: DESC, ASC",
-      "path": Array [
+      "path": [
         "sortBy[0]",
         "direction",
       ],
@@ -160,10 +160,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting common (for multi) forces to use only allowed sortable fields 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy[0].field must be one of the following values: foo, bar",
-      "path": Array [
+      "path": [
         "sortBy[0]",
         "field",
       ],
@@ -174,10 +174,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting common (for multi) sortable field is required 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy[0].field is a required field",
-      "path": Array [
+      "path": [
         "sortBy[0]",
         "field",
       ],
@@ -188,10 +188,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting common (for multi) sorting direction is required 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy[0].direction is a required field",
-      "path": Array [
+      "path": [
         "sortBy[0]",
         "direction",
       ],
@@ -202,10 +202,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting common (for single) fails for invalid sorting direction 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy.direction must be one of the following values: DESC, ASC",
-      "path": Array [
+      "path": [
         "sortBy",
         "direction",
       ],
@@ -216,10 +216,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting common (for single) forces to use only allowed sortable fields 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy.field must be one of the following values: foo, bar",
-      "path": Array [
+      "path": [
         "sortBy",
         "field",
       ],
@@ -230,10 +230,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting common (for single) sortable field is required 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy.field is a required field",
-      "path": Array [
+      "path": [
         "sortBy",
         "field",
       ],
@@ -244,10 +244,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting common (for single) sorting direction is required 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy.direction is a required field",
-      "path": Array [
+      "path": [
         "sortBy",
         "direction",
       ],
@@ -258,10 +258,10 @@ ViolationsList {
 
 exports[`QueryBuilder sorting multi sorting array cannot be empty 1`] = `
 ViolationsList {
-  "violations": Array [
-    Object {
+  "violations": [
+    {
       "message": "sortBy field must have at least 1 items",
-      "path": Array [
+      "path": [
         "sortBy",
       ],
     },

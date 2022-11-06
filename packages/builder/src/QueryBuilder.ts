@@ -4,10 +4,13 @@ import * as yup from 'yup';
 import {createSortableFieldSchema} from "./createSortableFieldSchema";
 import {byYup} from "alpha-validator-bridge-yup";
 import {QueryConfig} from "./QueryConfig";
-import {List, Maybe} from "monet";
+import {fromNullable, just, Maybe} from "@sweet-monads/maybe";
 
-function concatSchema(schema: yup.ObjectSchema<any>, anotherSchema: yup.ObjectSchema<any>) {
-	return schema.concat(anotherSchema);
+function concatSchema(schema: yup.ObjectSchema<any>, anotherSchema: Maybe<yup.ObjectSchema<any>>) {
+	if (anotherSchema.isJust()) {
+		return schema.concat(anotherSchema.value);
+	}
+	return schema;
 }
 
 export class QueryBuilder<T extends QueryConfig<any, any>> extends Builder {
@@ -21,7 +24,7 @@ export class QueryBuilder<T extends QueryConfig<any, any>> extends Builder {
 	}
 
 	private getPaginationSchema(): Maybe<yup.ObjectSchema<any>> {
-		return Maybe.fromUndefined(
+		return fromNullable(
 			this.config.getPagination()
 		)
 			.map(x => {
@@ -57,7 +60,7 @@ export class QueryBuilder<T extends QueryConfig<any, any>> extends Builder {
 	}
 
 	private getSortingSchema(): Maybe<yup.ObjectSchema<any>> {
-		return Maybe.fromUndefined(
+		return fromNullable(
 			this.config.getSorting()
 		).map(x => {
 			const sortByType = createSortableFieldSchema(x.sortableFields.slice());
@@ -96,8 +99,8 @@ export class QueryBuilder<T extends QueryConfig<any, any>> extends Builder {
 				})
 				.noUnknown();
 
-			schema = this.getPaginationSchema().foldLeft(schema)(concatSchema);
-			schema = this.getSortingSchema().foldLeft(schema)(concatSchema)
+			schema = concatSchema(schema, this.getPaginationSchema());
+			schema = concatSchema(schema, this.getSortingSchema());
 
 			this.validation = SchemaValidation.toValidationFunction<unknown, T['query'], undefined>(
 				'query builder',
@@ -107,7 +110,6 @@ export class QueryBuilder<T extends QueryConfig<any, any>> extends Builder {
 		return this.validation;
 	}
 }
-
 
 export namespace QueryBuilder {
 
