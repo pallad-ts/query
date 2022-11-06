@@ -1,25 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`createSortFieldType creates enum field with camel cased values: %S 1`] = `
-Object {
+{
   "astNode": undefined,
   "description": undefined,
-  "extensionASTNodes": Array [],
-  "extensions": Object {},
+  "extensionASTNodes": [],
+  "extensions": {},
   "name": "EntityName_Sort_Field",
-  "values": Object {
-    "lastName": Object {
+  "values": {
+    "lastName": {
       "astNode": undefined,
       "deprecationReason": undefined,
       "description": undefined,
-      "extensions": Object {},
+      "extensions": {},
       "value": "last_name",
     },
-    "name": Object {
+    "name": {
       "astNode": undefined,
       "deprecationReason": undefined,
       "description": undefined,
-      "extensions": Object {},
+      "extensions": {},
       "value": "name",
     },
   },
@@ -27,39 +27,39 @@ Object {
 `;
 
 exports[`createSortFieldType creates enum field with camel cased values: %S 2`] = `
-Object {
+{
   "astNode": undefined,
   "description": undefined,
-  "extensionASTNodes": Array [],
-  "extensions": Object {},
+  "extensionASTNodes": [],
+  "extensions": {},
   "name": "EntityName_Sort_Field",
-  "values": Object {
-    "createdAt": Object {
+  "values": {
+    "createdAt": {
       "astNode": undefined,
       "deprecationReason": undefined,
       "description": undefined,
-      "extensions": Object {},
+      "extensions": {},
       "value": "createdAt",
     },
-    "firstName": Object {
+    "firstName": {
       "astNode": undefined,
       "deprecationReason": undefined,
       "description": undefined,
-      "extensions": Object {},
+      "extensions": {},
       "value": "first_name",
     },
-    "id": Object {
+    "id": {
       "astNode": undefined,
       "deprecationReason": undefined,
       "description": undefined,
-      "extensions": Object {},
+      "extensions": {},
       "value": "id",
     },
-    "updatedAt": Object {
+    "updatedAt": {
       "astNode": undefined,
       "deprecationReason": undefined,
       "description": undefined,
-      "extensions": Object {},
+      "extensions": {},
       "value": "updatedAt",
     },
   },

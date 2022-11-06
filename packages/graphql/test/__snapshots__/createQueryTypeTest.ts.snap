@@ -2,20 +2,20 @@
 
 exports[`createQueryType created query input type 1`] = `
 "input Base_Query {
-  filters: Base_Filters!
+  filters: Base_Filters
 }"
 `;
 
 exports[`createQueryType created query input type 2`] = `
 "input Base_Query {
-  filters: Base_Filters!
+  filters: Base_Filters
   sortBy: Base_Query_Sort_Input
 }"
 `;
 
 exports[`createQueryType created query input type 3`] = `
 "input Base_Query {
-  filters: Base_Filters!
+  filters: Base_Filters
   after: String
   before: String
   limit: PositiveInt
@@ -24,7 +24,7 @@ exports[`createQueryType created query input type 3`] = `
 
 exports[`createQueryType created query input type 4`] = `
 "input Base_Query {
-  filters: Base_Filters!
+  filters: Base_Filters
   sortBy: Base_Query_Sort_Input
   after: String
   before: String
