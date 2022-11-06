@@ -1,10 +1,10 @@
 import {Builder} from "@pallad/builder";
-import {SchemaValidation, Validation, ValidatorError, ViolationsList} from "alpha-validator";
+import {Either, SchemaValidation, ValidatorError, ViolationsList} from "alpha-validator";
 import * as yup from 'yup';
 import {createSortableFieldSchema} from "./createSortableFieldSchema";
 import {byYup} from "alpha-validator-bridge-yup";
 import {QueryConfig} from "./QueryConfig";
-import {fromNullable, just, Maybe} from "@sweet-monads/maybe";
+import {fromNullable, Maybe} from "@sweet-monads/maybe";
 
 function concatSchema(schema: yup.ObjectSchema<any>, anotherSchema: Maybe<yup.ObjectSchema<any>>) {
 	if (anotherSchema.isJust()) {
@@ -17,7 +17,7 @@ export class QueryBuilder<T extends QueryConfig<any, any>> extends Builder {
 	private filtersSchemaObject = yup.object()
 		.default({})
 
-	private validation?: (data: unknown) => Promise<Validation<ViolationsList, T['query']>>;
+	private validation?: (data: unknown) => Promise<Either<ViolationsList, T['query']>>;
 
 	constructor(readonly config: T) {
 		super();
@@ -79,16 +79,16 @@ export class QueryBuilder<T extends QueryConfig<any, any>> extends Builder {
 		});
 	}
 
-	build(input: unknown): Promise<Validation<ViolationsList, T['query']>> {
+	build(input: unknown): Promise<Either<ViolationsList, T['query']>> {
 		return this.getValidationFunction()(input);
 	}
 
 	async buildOrFail(input: unknown, errorMessage?: string) {
 		const result = await this.build(input);
-		if (result.isFail()) {
-			throw new ValidatorError(result.fail(), errorMessage || 'Invalid query');
+		if (result.isLeft()) {
+			throw new ValidatorError(result.value, errorMessage || 'Invalid query');
 		}
-		return result.success();
+		return result.value;
 	}
 
 	private getValidationFunction() {
@@ -105,7 +105,7 @@ export class QueryBuilder<T extends QueryConfig<any, any>> extends Builder {
 			this.validation = SchemaValidation.toValidationFunction<unknown, T['query'], undefined>(
 				'query builder',
 				byYup<unknown, T['query']>(schema)
-			) as (data: unknown) => Promise<Validation<ViolationsList, T['query']>>;
+			) as (data: unknown) => Promise<Either<ViolationsList, T['query']>>;
 		}
 		return this.validation;
 	}

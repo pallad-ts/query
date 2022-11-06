@@ -1,11 +1,11 @@
 import {QueryConfig} from "@src/QueryConfig";
-import {Validation} from "monet";
 import * as yup from 'yup';
 import {assert, IsExact} from "conditional-type-checks";
 import {ViolationsList} from "alpha-validator";
 import {PaginableByCursor, PaginableByOffset, Query, SortableMulti, SortableSingle} from "@pallad/query";
 import {QueryBuilder} from "@src/QueryBuilder";
 import {DEFAULT_SORTING, Filters, SORTABLE_FIELDS} from "./fixtures";
+import {Either, left, right} from '@sweet-monads/either';
 
 describe('QueryBuilder', () => {
 	describe('filters', () => {
@@ -14,7 +14,7 @@ describe('QueryBuilder', () => {
 				.filters<Filters>()
 				.getQueryBuilder();
 
-			type Expected = Promise<Validation<ViolationsList, Query<Filters>>>;
+			type Expected = Promise<Either<ViolationsList, Query<Filters>>>;
 			assert<IsExact<ReturnType<typeof builder['build']>, Expected>>(true);
 		});
 
@@ -25,7 +25,7 @@ describe('QueryBuilder', () => {
 			return expect(builder.build({filters: {literally: 'anything'}}))
 				.resolves
 				.toEqual(
-					Validation.Success({
+					right({
 						filters: {literally: 'anything'}
 					})
 				);
@@ -48,7 +48,7 @@ describe('QueryBuilder', () => {
 					}
 				}))
 					.resolves
-					.toEqual(Validation.Success({
+					.toEqual(right({
 						filters: {foo: 'foo', bar: 'bar'}
 					}));
 			});
@@ -56,10 +56,10 @@ describe('QueryBuilder', () => {
 			it('failure', async () => {
 				const result = await builder.build({filters: {}});
 
-				expect(result.isFail())
+				expect(result.isLeft())
 					.toBe(true);
 
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 		});
@@ -85,25 +85,25 @@ describe('QueryBuilder', () => {
 		])('common (for %s)', (name, qb) => {
 			it('limit cannot be lower than 1', async () => {
 				const result = await qb.build({limit: 0})
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 
 			it('uses default limit', async () => {
 				const result = await qb.build({})
-				expect(result.success())
+				expect(result.value)
 					.toMatchObject({limit: 50});
 			});
 
 			it('limit cannot be greater than max limit', async () => {
 				const result = await qb.build({limit: 5000})
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 
 			it('limit must be integer', async () => {
 				const result = await qb.build({limit: 'asdfa'})
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 		});
@@ -115,7 +115,7 @@ describe('QueryBuilder', () => {
 				.getQueryBuilder();
 
 			it('types', () => {
-				type Expected = Promise<Validation<ViolationsList, Query<unknown> & PaginableByCursor & SortableSingle<'foo' | 'bar'>>>;
+				type Expected = Promise<Either<ViolationsList, Query<unknown> & PaginableByCursor & SortableSingle<'foo' | 'bar'>>>;
 
 				assert<IsExact<ReturnType<typeof builder['build']>, Expected>>(true);
 			});
@@ -126,7 +126,7 @@ describe('QueryBuilder', () => {
 			])('allows "%s" cursor property', property => {
 				it('fails if not a string', async () => {
 					const result = await builder.build({[property]: []})
-					expect(result.fail())
+					expect(result.value)
 						.toMatchSnapshot();
 				});
 
@@ -134,7 +134,7 @@ describe('QueryBuilder', () => {
 					const value = `${property} cursor`;
 					return expect(builder.build({[property]: value}))
 						.resolves
-						.toEqual(Validation.Success({
+						.toEqual(right({
 							filters: {},
 							[property]: value,
 							limit: 50,
@@ -150,7 +150,7 @@ describe('QueryBuilder', () => {
 				.getQueryBuilder();
 
 			it('types', () => {
-				type Expected = Promise<Validation<ViolationsList, Query<unknown> & PaginableByOffset>>;
+				type Expected = Promise<Either<ViolationsList, Query<unknown> & PaginableByOffset>>;
 				assert<IsExact<ReturnType<typeof builder['build']>, Expected>>(true);
 			});
 
@@ -158,7 +158,7 @@ describe('QueryBuilder', () => {
 				return expect(builder.build({}))
 					.resolves
 					.toEqual(
-						Validation.Success({
+						right({
 							filters: {},
 							limit: 50,
 							offset: 0
@@ -168,13 +168,13 @@ describe('QueryBuilder', () => {
 
 			it('offset cannot be lower than 0', async () => {
 				const result = await builder.build({offset: -1});
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 
 			it('offset must be an integer', async () => {
 				const result = await builder.build({offset: 'asdfasdf'});
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 		});
@@ -196,28 +196,28 @@ describe('QueryBuilder', () => {
 			it('forces to use only allowed sortable fields', async () => {
 				const result = await testCase({field: 'unsupported', direction: 'ASC'});
 
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 
 			it('sortable field is required', async () => {
 				const result = await testCase({direction: 'ASC'});
 
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 
 			it('sorting direction is required', async () => {
 				const result = await testCase({field: 'foo'});
 
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 
 			it('fails for invalid sorting direction', async () => {
 				const result = await testCase({field: 'foo', direction: 'bas'});
 
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 
@@ -229,7 +229,7 @@ describe('QueryBuilder', () => {
 				let sorting = {field: 'foo', direction};
 				return expect(testCase(sorting))
 					.resolves
-					.toEqual(Validation.Success({
+					.toEqual(right({
 						filters: {},
 						sortBy: isMulti ? [sorting] : sorting
 					}));
@@ -239,7 +239,7 @@ describe('QueryBuilder', () => {
 			it('applies default sorting if not explicitly set', () => {
 				return expect(qb.build({}))
 					.resolves
-					.toEqual(Validation.Success({
+					.toEqual(right({
 						filters: {},
 						sortBy: isMulti ? [DEFAULT_SORTING] : DEFAULT_SORTING
 					}))
@@ -252,7 +252,7 @@ describe('QueryBuilder', () => {
 				.getQueryBuilder();
 
 			it('types', () => {
-				type Expected = Promise<Validation<ViolationsList, Query<unknown> & SortableSingle<'foo' | 'bar'>>>
+				type Expected = Promise<Either<ViolationsList, Query<unknown> & SortableSingle<'foo' | 'bar'>>>
 				assert<IsExact<ReturnType<typeof builder['build']>, Expected>>(true)
 			});
 		});
@@ -263,7 +263,7 @@ describe('QueryBuilder', () => {
 				.getQueryBuilder()
 
 			it('types', () => {
-				type Expected = Promise<Validation<ViolationsList, Query<unknown> & SortableMulti<'foo' | 'bar'>>>
+				type Expected = Promise<Either<ViolationsList, Query<unknown> & SortableMulti<'foo' | 'bar'>>>
 				assert<IsExact<ReturnType<typeof builder['build']>, Expected>>(true)
 			});
 
@@ -271,7 +271,7 @@ describe('QueryBuilder', () => {
 				const result = await builder.build({
 					sortBy: []
 				});
-				expect(result.fail())
+				expect(result.value)
 					.toMatchSnapshot();
 			});
 		});
