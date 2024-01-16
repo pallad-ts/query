@@ -15,6 +15,9 @@
     "url": "git+https://github.com/pallad-ts/query.git",
     "directory": "packages/main"
   },
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
