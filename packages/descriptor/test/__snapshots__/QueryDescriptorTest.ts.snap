@@ -1,0 +1,305 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QueryDescriptor creating query filters uses filters schema if provided failure 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Invalid literal value, expected "foo"",
+      "params": undefined,
+      "path": [
+        "foo",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination by cursor allows "after" cursor property fails if not a string 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Expected string, received array",
+      "params": undefined,
+      "path": [
+        "after",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination by cursor allows "before" cursor property fails if not a string 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Expected string, received array",
+      "params": undefined,
+      "path": [
+        "before",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination by offset offset cannot be lower than 0 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Number must be greater than or equal to 0",
+      "params": undefined,
+      "path": [
+        "offset",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination by offset offset must be an integer 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Expected number, received string",
+      "params": undefined,
+      "path": [
+        "offset",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination common (for by cursor) limit cannot be greater than max limit 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Number must be less than or equal to 1000",
+      "params": undefined,
+      "path": [
+        "limit",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination common (for by cursor) limit cannot be lower than 1 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Number must be greater than or equal to 1",
+      "params": undefined,
+      "path": [
+        "limit",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination common (for by cursor) limit must be integer 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Expected number, received string",
+      "params": undefined,
+      "path": [
+        "limit",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination common (for by offset) limit cannot be greater than max limit 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Number must be less than or equal to 1000",
+      "params": undefined,
+      "path": [
+        "limit",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination common (for by offset) limit cannot be lower than 1 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Number must be greater than or equal to 1",
+      "params": undefined,
+      "path": [
+        "limit",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query pagination common (for by offset) limit must be integer 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Expected number, received string",
+      "params": undefined,
+      "path": [
+        "limit",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting common (for multi) fails for invalid sorting direction 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Invalid enum value. Expected 'DESC' | 'ASC', received 'bas'",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting common (for multi) forces to use only allowed sortable fields 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Invalid enum value. Expected 'foo' | 'bar', received 'unsupported'",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting common (for multi) sortable field is required 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Required",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting common (for multi) sorting direction is required 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Required",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting common (for single) fails for invalid sorting direction 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Invalid enum value. Expected 'DESC' | 'ASC', received 'bas'",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting common (for single) forces to use only allowed sortable fields 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Invalid enum value. Expected 'foo' | 'bar', received 'unsupported'",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting common (for single) sortable field is required 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Required",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting common (for single) sorting direction is required 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Required",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor creating query sorting multi sorting array cannot be empty 1`] = `
+ViolationsList {
+  "storage": [
+    {
+      "code": undefined,
+      "message": "Array must contain at least 1 element(s)",
+      "params": undefined,
+      "path": [
+        "sortBy",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`QueryDescriptor validation pagination by cursor cannot be used with multi sorting 1`] = `"Sorting by multiple fields is not allowed in pagination by cursor"`;
+
+exports[`QueryDescriptor validation pagination by cursor cannot be used without single sorting setup 1`] = `"Pagination by cursor cannot be used without single field sorting"`;

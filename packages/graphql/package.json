@@ -2,13 +2,14 @@
   "name": "@pallad/query-graphql",
   "version": "6.0.0",
   "description": "Helper for graphql to create @pallad/query related types",
-  "main": "compiled/index.js",
-  "types": "compiled/index.d.ts",
+  "main": "dist/pallad-query-graphql.cjs.js",
+  "types": "dist/pallad-query-graphql.cjs.d.ts",
   "scripts": {
     "test": "pallad-scripts test",
     "lint": "pallad-scripts lint",
-    "compile": "pallad-scripts compile",
-    "prepublishOnly": "npm run compile"
+    "compile": "npx preconstruct build",
+    "prepublishOnly": "npm run compile",
+    "postinstall": "preconstruct dev"
   },
   "repository": {
     "type": "git",
@@ -31,10 +32,15 @@
   "dependencies": {
     "@pallad/builder": "^1.0.1",
     "@pallad/query": "^4.0.1",
-    "@pallad/query-builder": "^4.0.0",
+    "@pallad/query-descriptor": "^4.0.0",
     "camel-case": "^4.1.2",
     "graphql-scalars": "^1.17.0",
     "predicates": "^2.0.3"
   },
-  "gitHead": "708edb6ed6ae7a686d45384118ae7649723a09d2"
+  "gitHead": "708edb6ed6ae7a686d45384118ae7649723a09d2",
+  "devDependencies": {
+    "@pallad/violations-zod": "^1.0.0",
+    "yup": "^1.3.3",
+    "zod": "^3.22.4"
+  }
 }

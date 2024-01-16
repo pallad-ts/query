@@ -2,12 +2,13 @@
   "name": "@pallad/query",
   "version": "4.0.1",
   "description": "",
-  "main": "compiled/index.js",
-  "types": "compiled/index.d.ts",
+  "main": "dist/pallad-query.cjs.js",
+  "types": "dist/pallad-query.cjs.d.ts",
   "scripts": {
     "lint": "pallad-scripts lint",
-    "compile": "pallad-scripts compile",
-    "prepublishOnly": "npm run compile"
+    "compile": "npx preconstruct build",
+    "prepublishOnly": "npm run compile",
+    "postinstall": "preconstruct dev"
   },
   "repository": {
     "type": "git",

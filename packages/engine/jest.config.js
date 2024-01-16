@@ -1,3 +1,4 @@
 module.exports = {
-    preset: '@pallad/scripts'
+	preset: "@pallad/scripts",
+	setupFilesAfterEnv: ["@pallad/errors-dev"],
 };

@@ -1,4 +1,4 @@
-import {SortableFieldDefinition} from "./SortableFieldDefinition";
+import { SortableFieldDefinition } from "./SortableFieldDefinition";
 
 export interface SortableMulti<TField extends string> {
     sortBy: Array<SortableFieldDefinition<TField>>;
@@ -9,4 +9,3 @@ export namespace SortableMulti {
         sortBy: Array<SortableFieldDefinition<TField>>;
     }
 }
-

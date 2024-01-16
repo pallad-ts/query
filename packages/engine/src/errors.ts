@@ -1,11 +1,14 @@
-import {Domain, generators} from "alpha-errors";
+import { Domain, formatCodeFactory, ErrorDescriptor } from "@pallad/errors";
 
-export const ERRORS = Domain.create({
-	codeGenerator: generators.formatCode('E_QUERY_ENGINE_%d'),
-})
-	.createErrors(create => {
-		return {
-			NO_MIDDLEWARES: create('Could not find any results in query engine due to lack of middlewares'),
-			NO_FURTHER_MIDDLEWARE: create('No further middleware to call')
-		}
-	})
+const code = formatCodeFactory("E_QUERY_ENGINE_%c");
+export const errorsDomain = new Domain();
+export const ERRORS = errorsDomain.addErrorsDescriptorsMap({
+	NO_MIDDLEWARES: ErrorDescriptor.useDefaultMessage(
+		code(1),
+		"Could not find any results in query engine due to lack of middlewares"
+	),
+	NO_FURTHER_MIDDLEWARE: ErrorDescriptor.useDefaultMessage(
+		code(2),
+		"No further middleware to call"
+	),
+});

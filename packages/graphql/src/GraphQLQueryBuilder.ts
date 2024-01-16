@@ -1,28 +1,41 @@
-import {Builder as _Builder} from '@pallad/builder';
-import {InputTypeComposer, ObjectTypeComposer, Resolver, ResolverResolveParams, SchemaComposer} from "graphql-compose";
-import {GraphQLEnumType, GraphQLInputObjectType, GraphQLObjectType} from "graphql";
-import {Result} from "@pallad/query";
+import { Builder as _Builder } from "@pallad/builder";
+import {
+	InputTypeComposer,
+	ObjectTypeComposer,
+	Resolver,
+	ResolverResolveParams,
+	SchemaComposer,
+} from "graphql-compose";
+import { GraphQLEnumType, GraphQLInputObjectType, GraphQLObjectType } from "graphql";
+import { Result } from "@pallad/query";
 import {
 	ObjectTypeComposerFieldConfigAsObjectDefinition,
-	ObjectTypeComposerFieldConfigMapDefinition
+	ObjectTypeComposerFieldConfigMapDefinition,
 } from "graphql-compose/lib/ObjectTypeComposer";
-import * as is from 'predicates'
-import {QueryBuilder} from "@pallad/query-builder";
-import {NonNullComposer} from "graphql-compose/lib/NonNullComposer";
-import {createSortFieldType} from "./createSortFieldType";
-import {createInputSortType} from "./createInputSortType";
-import {createResultSortType} from "./createResultSortType";
-import {getResultMetaFieldsForPaginationByCursor} from "./getResultMetaFieldsForPaginationByCursor";
-import {getResultMetaFieldsForPaginationByOffset} from "./getResultMetaFieldsForPaginationByOffset";
-import {createResultMetaType} from "./createResultMetaType";
-import {createResultType} from "./createResultType";
-import {getQueryFieldsForPaginationByCursor} from "./getQueryFieldsForPaginationByCursor";
-import {getQueryFieldsForPaginationByOffset} from "./getQueryFieldsForPaginationByOffset";
-import {createQueryType} from "./createQueryType";
+import * as is from "predicates";
+import { NonNullComposer } from "graphql-compose/lib/NonNullComposer";
+import { createSortFieldType } from "./createSortFieldType";
+import { createInputSortType } from "./createInputSortType";
+import { createResultSortType } from "./createResultSortType";
+import { getResultMetaFieldsForPaginationByCursor } from "./getResultMetaFieldsForPaginationByCursor";
+import { getResultMetaFieldsForPaginationByOffset } from "./getResultMetaFieldsForPaginationByOffset";
+import { createResultMetaType } from "./createResultMetaType";
+import { createResultType } from "./createResultType";
+import { getQueryFieldsForPaginationByCursor } from "./getQueryFieldsForPaginationByCursor";
+import { getQueryFieldsForPaginationByOffset } from "./getQueryFieldsForPaginationByOffset";
+import { createQueryType } from "./createQueryType";
+import { QueryDescriptor } from "@pallad/query-descriptor";
 
-const assertEntityTypeIsObjectTypeComposer = is.assert(is.instanceOf(ObjectTypeComposer), 'Entity type must be a type of ObjectTypeComposer');
+const assertEntityTypeIsObjectTypeComposer = is.assert(
+	is.instanceOf(ObjectTypeComposer),
+	"Entity type must be a type of ObjectTypeComposer"
+);
 
-export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder<any>, TContext> extends _Builder {
+export class GraphQLQueryBuilder<
+	TEntityType,
+	TQueryDescriptor extends QueryDescriptor<any, any>,
+	TContext,
+> extends _Builder {
 	private extraMetaFields?: ObjectTypeComposerFieldConfigMapDefinition<TEntityType, TContext>;
 
 	private sortFieldType?: GraphQLEnumType;
@@ -31,8 +44,13 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 	private resultType?: NonNullComposer<ObjectTypeComposer>;
 
 	constructor(
-		private queryBuilder: TQueryBuilder,
-		private options: GraphQLQueryBuilder.Options<TQueryBuilder['config']['query'], TEntityType, TContext>) {
+		private queryDescriptor: TQueryDescriptor,
+		private options: GraphQLQueryBuilder.Options<
+			QueryDescriptor.QueryType<TQueryDescriptor>,
+			TEntityType,
+			TContext
+		>
+	) {
 		super();
 	}
 
@@ -41,10 +59,14 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 			return this.options.name;
 		}
 
-		return this.options.entityType instanceof GraphQLObjectType ? this.options.entityType.name : this.options.entityType.getTypeName();
+		return this.options.entityType instanceof GraphQLObjectType
+			? this.options.entityType.name
+			: this.options.entityType.getTypeName();
 	}
 
-	useExtraMetaFields(extraMetaFields: ObjectTypeComposerFieldConfigMapDefinition<TEntityType, TContext>): this {
+	useExtraMetaFields(
+		extraMetaFields: ObjectTypeComposerFieldConfigMapDefinition<TEntityType, TContext>
+	): this {
 		this.extraMetaFields = extraMetaFields;
 		return this;
 	}
@@ -55,20 +77,20 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 				paginationFields: this.getResultMetaPaginationFields(),
 				sortType: this.createOutputSortType(),
 				baseName: this.getBaseName(),
-				extraMetaFields: this.extraMetaFields
+				extraMetaFields: this.extraMetaFields,
 			});
 		}
 		return this.resultMetaType;
 	}
 
 	private getResultMetaPaginationFields() {
-		const pagination = this.queryBuilder.config.getPagination();
+		const pagination = this.queryDescriptor.paginationConfig;
 
-		if (pagination?.type === 'byCursor') {
+		if (pagination?.type === "byCursor") {
 			return getResultMetaFieldsForPaginationByCursor();
 		}
 
-		if (pagination?.type === 'byOffset') {
+		if (pagination?.type === "byOffset") {
 			return getResultMetaFieldsForPaginationByOffset();
 		}
 	}
@@ -78,8 +100,8 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 			this.resultType = createResultType<TEntityType, TContext>({
 				metaType: this.getResultMetaType(),
 				entityType: this.options.entityType,
-				baseName: this.getBaseName()
-			})
+				baseName: this.getBaseName(),
+			});
 		}
 		return this.resultType;
 	}
@@ -90,51 +112,54 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 				baseName: this.getBaseName(),
 				filtersType: this.getFiltersType(),
 				paginationFields: this.getQueryPaginationFields(),
-				sortType: this.createInputSortType()
-			})
+				sortType: this.createInputSortType(),
+			});
 		}
 		return this.queryType;
 	}
 
 	private createInputSortType() {
-		const sorting = this.queryBuilder.config.getSorting();
+		const sorting = this.queryDescriptor.sortingConfig;
 		if (!sorting) {
 			return;
 		}
 		return createInputSortType({
 			baseName: this.getBaseName(),
 			sortFieldType: this.getSortFieldType(),
-			isMulti: sorting.type === 'multi'
+			isMulti: sorting.type === "multi",
 		});
 	}
 
 	private getQueryPaginationFields() {
-		const pagination = this.queryBuilder.config.getPagination();
+		const pagination = this.queryDescriptor.paginationConfig;
 
-		if (pagination?.type === 'byCursor') {
+		if (pagination?.type === "byCursor") {
 			return getQueryFieldsForPaginationByCursor();
 		}
 
-		if (pagination?.type === 'byOffset') {
+		if (pagination?.type === "byOffset") {
 			return getQueryFieldsForPaginationByOffset();
 		}
 	}
 
 	private createOutputSortType() {
-		const sorting = this.queryBuilder.config.getSorting();
+		const sorting = this.queryDescriptor.sortingConfig;
 		if (!sorting) {
 			return;
 		}
 		return createResultSortType({
 			baseName: this.getBaseName(),
 			sortFieldType: this.getSortFieldType(),
-			isMulti: sorting.type === 'multi'
+			isMulti: sorting.type === "multi",
 		});
 	}
 
 	private getSortFieldType() {
 		if (!this.sortFieldType) {
-			this.sortFieldType = createSortFieldType(this.getBaseName(), this.queryBuilder.config.getSorting()!.sortableFields)
+			this.sortFieldType = createSortFieldType(
+				this.getBaseName(),
+				this.queryDescriptor.sortingConfig!.sortableFields
+			);
 		}
 		return this.sortFieldType;
 	}
@@ -143,34 +168,44 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 		return this.options.filtersType;
 	}
 
-	getQueryField(): ObjectTypeComposerFieldConfigAsObjectDefinition<unknown, TContext, { query: TQueryBuilder['config']['query'] }> {
+	getQueryField(): ObjectTypeComposerFieldConfigAsObjectDefinition<
+		unknown,
+		TContext,
+		{ query: QueryDescriptor.QueryType<TQueryDescriptor> }
+	> {
 		return {
 			type: this.getResultType(),
 			args: {
 				query: {
-					type: this.getQueryArgType()
-				}
+					type: this.getQueryArgType(),
+				},
 			},
 			resolve: async (source, args, context) => {
-				const query = await this.queryBuilder.buildOrFail(args.query, 'Invalid query');
+				const query = await this.queryDescriptor.createQueryOrFail(
+					args.query,
+					"Invalid query"
+				);
 				return this.options.fetcher(query, context);
-			}
-		}
+			},
+		};
 	}
 
-	getResolver(schemaComposer: SchemaComposer, name: string = 'query') {
+	getResolver(schemaComposer: SchemaComposer, name: string = "query") {
 		const queryField = this.getQueryField();
-		return new Resolver({
-			name,
-			args: queryField.args,
-			type: queryField.type,
-			resolve: (rp: ResolverResolveParams<any, any>) => {
-				return queryField.resolve!(rp.source, rp.args, rp.context, rp.info);
-			}
-		}, schemaComposer);
+		return new Resolver(
+			{
+				name,
+				args: queryField.args,
+				type: queryField.type,
+				resolve: (rp: ResolverResolveParams<any, any>) => {
+					return queryField.resolve!(rp.source, rp.args, rp.context, rp.info);
+				},
+			},
+			schemaComposer
+		);
 	}
 
-	attachQueryResolverToEntity(name: string = 'query') {
+	attachQueryResolverToEntity(name: string = "query") {
 		this.assertResolverConfig();
 		const entityType = this.options.entityType as ObjectTypeComposer;
 		const resolver = this.getResolver(entityType.schemaComposer, name);
@@ -186,8 +221,13 @@ export class GraphQLQueryBuilder<TEntityType, TQueryBuilder extends QueryBuilder
 export namespace GraphQLQueryBuilder {
 	export interface Options<TQuery, TEntityType, TContext> {
 		name?: string;
-		fetcher: (query: TQuery, context: TContext) => Promise<Result<TEntityType>> | Result<TEntityType>,
-		entityType: ObjectTypeComposer<TEntityType, TContext> | GraphQLObjectType<TEntityType, TContext>
+		fetcher: (
+			query: TQuery,
+			context: TContext
+		) => Promise<Result<TEntityType>> | Result<TEntityType>;
+		entityType:
+			| ObjectTypeComposer<TEntityType, TContext>
+			| GraphQLObjectType<TEntityType, TContext>;
 		filtersType: GraphQLInputObjectType | InputTypeComposer<TContext>;
 	}
 }

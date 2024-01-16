@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`QueryConfig query builder required config to be valid before returning query builder 1`] = `"Pagination by cursor cannot be used without single field sorting"`;
-
-exports[`QueryConfig result builder required config to be valid before returning result builder 1`] = `"Pagination by cursor cannot be used without single field sorting"`;
-
-exports[`QueryConfig validation pagination by cursor cannot be used with multi sorting 1`] = `"Sorting by multiple fields is not allowed in pagination by cursor"`;
-
-exports[`QueryConfig validation pagination by cursor cannot be used without single sorting setup 1`] = `"Pagination by cursor cannot be used without single field sorting"`;

@@ -1,9 +1,16 @@
 {
   "private": true,
   "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/preset-typescript": "^7.23.3",
+    "@pallad/errors-dev": "^1.1.0",
     "@pallad/scripts": "^3",
+    "@preconstruct/cli": "^2.8.3",
     "conditional-type-checks": "^1.0.5",
-    "lerna": "^5.0.0",
-    "yup": "^0.32.11"
-  }
+    "lerna": "^8.0.0",
+    "prettier": "^3.2.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
