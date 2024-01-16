@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "",
   "main": "dist/pallad-query.cjs.js",
   "types": "dist/pallad-query.cjs.d.ts",

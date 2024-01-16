@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-descriptor",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "",
   "main": "dist/pallad-query-descriptor.cjs.js",
   "types": "dist/pallad-query-descriptor.cjs.d.ts",
@@ -32,7 +32,7 @@
   "dependencies": {
     "@pallad/builder": "^1.0.1",
     "@pallad/errors": "^1.0.1",
-    "@pallad/query": "^4.0.2",
+    "@pallad/query": "^4.0.3",
     "@pallad/violations": "^1.3.0",
     "@pallad/violations-zod": "^1.0.0",
     "@sweet-monads/either": "^3.3.1",
