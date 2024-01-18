@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-graphql",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "Helper for graphql to create @pallad/query related types",
   "main": "dist/pallad-query-graphql.cjs.js",
   "types": "dist/pallad-query-graphql.cjs.d.ts",
@@ -35,7 +35,7 @@
   "dependencies": {
     "@pallad/builder": "^1.0.1",
     "@pallad/query": "^4.0.3",
-    "@pallad/query-descriptor": "^5.0.1",
+    "@pallad/query-descriptor": "^5.1.0",
     "camel-case": "^4.1.2",
     "graphql-scalars": "^1.17.0",
     "predicates": "^2.0.3"

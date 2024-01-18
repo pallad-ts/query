@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-descriptor",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "",
   "main": "dist/pallad-query-descriptor.cjs.js",
   "types": "dist/pallad-query-descriptor.cjs.d.ts",
