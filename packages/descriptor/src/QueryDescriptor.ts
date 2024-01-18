@@ -231,6 +231,13 @@ export namespace QueryDescriptor {
 	export type ResultMetaType<T extends QueryDescriptor<any, any>> =
 		ReturnType<T["createResult"]> extends { meta: infer TMeta } ? TMeta : never;
 
+	export type ConfigType<T extends QueryDescriptor<any, any>> =
+		T extends QueryDescriptor<any, infer TConfig> ? TConfig : never;
+	export type ResultType<TEntity, T extends QueryDescriptor<any, any>> = Result<
+		TEntity,
+		ConfigType<T>
+	>;
+
 	export type Result<TEntity, TConfig extends Config> = _Result<TEntity> & Result.Meta<TConfig>;
 
 	export namespace Result {
