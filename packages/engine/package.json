@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-engine",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "Simple query engine to handle @pallad/query results",
   "main": "dist/pallad-query-engine.cjs.js",
   "types": "dist/pallad-query-engine.cjs.d.ts",
@@ -30,7 +30,7 @@
   "homepage": "https://github.com/pallad-ts/query#readme",
   "dependencies": {
     "@pallad/errors": "^1.0.1",
-    "@pallad/query": "^4.0.3"
+    "@pallad/query": "^4.0.4"
   },
   "gitHead": "708edb6ed6ae7a686d45384118ae7649723a09d2"
 }
