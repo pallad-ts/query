@@ -9,7 +9,7 @@
     "lint": "pallad-scripts lint",
     "compile": "npx preconstruct build",
     "prepack": "npm run compile",
-    "postinstall": "preconstruct dev"
+    "setup-dev": "preconstruct dev"
   },
   "repository": {
     "type": "git",
