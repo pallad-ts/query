@@ -1,5 +1,5 @@
 import { GraphQLNonNull } from "graphql";
-import { GraphQLPositiveInt } from "graphql-scalars";
+import {GraphQLNonNegativeInt, GraphQLPositiveInt} from "graphql-scalars";
 import { ObjectTypeComposerFieldConfigMapDefinition } from "graphql-compose/lib/ObjectTypeComposer";
 import { PaginableByOffset } from "@pallad/query";
 
@@ -8,7 +8,7 @@ export function getResultMetaFieldsForPaginationByOffset(): ObjectTypeComposerFi
 	any
 > {
 	return {
-		limit: { type: new GraphQLNonNull(GraphQLPositiveInt) },
-		offset: { type: new GraphQLNonNull(GraphQLPositiveInt) },
+		limit: { type: new GraphQLNonNull(GraphQLNonNegativeInt) },
+		offset: { type: new GraphQLNonNull(GraphQLNonNegativeInt) },
 	};
 }
