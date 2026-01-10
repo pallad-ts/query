@@ -7,7 +7,7 @@ export const ERRORS = errorsDomain.addErrorsDescriptorsMap({
 		code(1),
 		"Pagination by cursor cannot be used without single field sorting"
 	),
-	MULTI_SORTING_FOR_ALLOWED_FOR_CURSOR_PAGINATION: ErrorDescriptor.useDefaultMessage(
+	MULTI_SORTING_NOT_ALLOWED_FOR_CURSOR_PAGINATION: ErrorDescriptor.useDefaultMessage(
 		code(2),
 		"Sorting by multiple fields is not allowed in pagination by cursor"
 	),

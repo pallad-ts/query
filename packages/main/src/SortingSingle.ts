@@ -1,10 +1,11 @@
 import { SortableFieldDefinition } from "./SortableFieldDefinition";
 
-export interface SortableSingle<TField extends string> {
+export interface SortingSingle<TField extends string> {
     sortBy: SortableFieldDefinition<TField>;
 }
 
-export namespace SortableSingle {
+export namespace SortingSingle {
+    export type Input<TField extends string> = Partial<SortingSingle<TField>>;
     export interface ResultMeta<TField extends string> {
         sortBy: SortableFieldDefinition<TField>;
     }

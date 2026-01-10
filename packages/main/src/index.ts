@@ -1,11 +1,9 @@
-export * from "./PaginableByCursor";
-export * from "./PaginableByOffset";
+export * from "./PaginationByCursor";
+export * from "./PaginationByOffset";
 export * from "./Query";
 export * from "./QueryRunner";
-export * from "./Result";
-export * from "./ResultMeta";
 export * from "./SortableFieldDefinition";
-export * from "./SortableMulti";
-export * from "./SortableSingle";
+export * from "./SortingMulti";
+export * from "./SortingSingle";
 export * from "./SortDirection";
-
+export * from "./NoPagination";

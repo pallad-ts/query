@@ -1,5 +1,7 @@
-import { Result } from "./Result";
+import { PaginationByCursor } from "./PaginationByCursor";
+import { PaginationByOffset } from "./PaginationByOffset";
 
-export type QueryRunner<TQuery, TResult extends Result<any>> = (
-    query: TQuery
-) => Promise<TResult> | TResult;
+export type QueryRunner<
+    TQuery,
+    TResult extends PaginationByCursor.Result<any> | PaginationByOffset.Result<any>,
+> = (query: TQuery) => Promise<TResult> | TResult;
