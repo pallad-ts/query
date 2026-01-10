@@ -2,14 +2,11 @@
   "name": "@pallad/query-descriptor",
   "version": "5.1.2",
   "description": "",
-  "main": "dist/pallad-query-descriptor.cjs.js",
-  "types": "dist/pallad-query-descriptor.cjs.d.ts",
   "scripts": {
     "test": "pallad-scripts test",
     "lint": "pallad-scripts lint",
     "compile": "npx preconstruct build",
-    "prepublishOnly": "npm run compile",
-    "setup-dev": "preconstruct dev"
+    "prepublishOnly": "npm run compile"
   },
   "repository": {
     "type": "git",

@@ -2,11 +2,11 @@
   "name": "@pallad/query",
   "version": "4.0.5",
   "description": "",
-  "main": "dist/pallad-query.cjs.js",
-  "types": "dist/pallad-query.cjs.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint": "pallad-scripts lint",
-    "compile": "npx preconstruct build",
+    "compile": "yarn run -TB tsc --build",
     "prepublishOnly": "npm run compile",
     "setup-dev": "preconstruct dev"
   },

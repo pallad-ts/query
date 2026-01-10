@@ -1,0 +1,8 @@
+{
+  "extends": "@pallad/scripts/dist/tsconfig-node.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true
+  }
+}

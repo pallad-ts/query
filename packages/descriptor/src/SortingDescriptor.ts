@@ -1,17 +1,7 @@
-import { SortableFieldDefinition } from "@pallad/query";
+import { z } from "zod";
 
-export interface SortingDescriptorSingle<TSortableField extends string> {
-	type: "SINGLE";
-	sortableFields: readonly [TSortableField, ...TSortableField[]];
-	defaultSorting: SortableFieldDefinition<TSortableField>;
+export interface SortingDescriptor<TSortableField extends string, TInput, TOutput> {
+	type: string;
+	fields: readonly [TSortableField, ...TSortableField[]];
+	readonly schema: z.ZodType<TOutput, TInput>;
 }
-
-export interface SortingDescriptorMulti<TSortableField extends string> {
-	type: "MULTI";
-	sortableFields: readonly [TSortableField, ...TSortableField[]];
-	defaultSorting: Array<SortableFieldDefinition<TSortableField>>;
-}
-
-export type SortingDescriptor<TSortableField extends string> =
-	| SortingDescriptorSingle<TSortableField>
-	| SortingDescriptorMulti<TSortableField>;

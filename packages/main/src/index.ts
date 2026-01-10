@@ -2,7 +2,7 @@ export * from "./PaginationByCursor";
 export * from "./PaginationByOffset";
 export * from "./Query";
 export * from "./QueryRunner";
-export * from "./SortableFieldDefinition";
+export * from "./SortingFieldDefinition";
 export * from "./SortingMulti";
 export * from "./SortingSingle";
 export * from "./SortDirection";

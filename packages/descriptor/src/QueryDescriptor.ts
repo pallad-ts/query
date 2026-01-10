@@ -1,56 +1,23 @@
-import { Query, SortableFieldDefinition, SortingSingle, SortingMulti } from "@pallad/query";
+import { Query, SortingSingle, SortingMulti } from "@pallad/query";
 import { Builder } from "@pallad/builder";
 import { ERRORS } from "./errors";
-import { createResult } from "./utils/createResult";
-import { validateSortableFields } from "./utils/validateSortableFields";
 import { z } from "zod";
 import { PaginationByCursor, PaginationByOffset } from "@pallad/query";
-import { createPaginationCursorSchema } from "./schema/createPaginationCursorSchema";
-import { createPaginationOffsetSchema } from "./schema/createPaginationOffsetSchema";
-import { createSortingSingleSchema } from "./schema/createSortingSingleSchema";
-import { createSortingMultiSchema } from "./schema/createSortingMultiSchema";
-import {
-	PaginationDescriptor,
-	PaginationDescriptorCursor,
-	PaginationDescriptorByOffset,
-} from "./PaginationDescriptor";
+import { PaginationDescriptor } from "./PaginationDescriptor";
 import { SortingDescriptor } from "./SortingDescriptor";
 import { PaginationDescriptorByCursor } from "./PaginationDescriptorByCursor";
-function composeDefaultPaginationOptions<T extends Partial<Omit<PaginationDescriptor, "type">>>(
-	options?: T
-) {
-	return {
-		...QueryDescriptor.defaultPaginationOptions,
-		...(options || {}),
-	};
-}
-
+import { SortingDescriptorSingle } from "./SortingDescriptorSingle";
+import { PaginationDescriptorByOffset } from "./PaginationDescriptorByOffset";
+import { SortingDescriptorMulti } from "./SortingDescriptorMulti";
 export class QueryDescriptor<
 	TQueryInput extends Partial<Query<any>> = Partial<Query<unknown>>,
 	TQuery extends Query<any> = Query<unknown>,
 > extends Builder {
-	#config: {
-		pagination: PaginationDescriptor | undefined;
-		sorting: SortingDescriptor<any> | undefined;
-	} = {
-		pagination: undefined,
-		sorting: undefined,
-	};
 	#paginationDescriptor?: PaginationDescriptor<any, any>;
+	#sortingDescriptor?: SortingDescriptor<any, any, any>;
+
 	#schema?: z.ZodType<TQuery, TQueryInput>;
 	#filtersSchema?: z.ZodTypeAny;
-
-	static defaultPaginationOptions: Omit<PaginationDescriptor, "type"> = {
-		defaultLimit: 50,
-		maxLimit: 1000,
-	};
-
-	get schema() {
-		if (!this.#schema) {
-			this.#schema = this.#createSchema();
-		}
-		return this.#schema;
-	}
 
 	#createSchema() {
 		this.#validate();
@@ -65,17 +32,20 @@ export class QueryDescriptor<
 			yield ["filters", this.#filtersSchema];
 		}
 
-		if (this.#config.pagination?.type === "CURSOR") {
-			yield* Object.entries(createPaginationCursorSchema(this.#config.pagination).shape);
-		} else if (this.#config.pagination?.type === "OFFSET") {
-			yield* Object.entries(createPaginationOffsetSchema(this.#config.pagination).shape);
+		if (this.#paginationDescriptor) {
+			yield* Object.entries((this.#paginationDescriptor.schema as z.ZodObject).shape);
 		}
 
-		if (this.#config.sorting?.type === "SINGLE") {
-			yield* Object.entries(createSortingSingleSchema(this.#config.sorting).shape);
-		} else if (this.#config.sorting?.type === "MULTI") {
-			yield* Object.entries(createSortingMultiSchema(this.#config.sorting).shape);
+		if (this.#sortingDescriptor) {
+			yield* Object.entries((this.#sortingDescriptor.schema as z.ZodObject).shape);
 		}
+	}
+
+	get querySchema(): z.ZodType<TQuery, TQueryInput> {
+		if (!this.#schema) {
+			this.#schema = this.#createSchema();
+		}
+		return this.#schema;
 	}
 
 	filtersSchema<T extends z.ZodObject>(
@@ -95,62 +65,47 @@ export class QueryDescriptor<
 	paginationByCursor(
 		options?: PaginationDescriptorByCursor.Config
 	): QueryDescriptor<TQueryInput & PaginationByCursor.Input, TQuery & PaginationByCursor> {
-		this.#paginationDescriptor = new PaginationDescriptorByCursor(options)
+		this.#paginationDescriptor = new PaginationDescriptorByCursor(options);
 		this.#reset();
 		return this as never;
 	}
 
-	paginationOffset(
-		options?: Partial<Omit<PaginationDescriptorByOffset, "type">>
+	paginationByOffset(
+		options?: PaginationDescriptorByOffset.Config
 	): QueryDescriptor<TQueryInput & PaginationByOffset.Input, TQuery & PaginationByOffset> {
-		this.#config.pagination = {
-			type: "OFFSET",
-			...composeDefaultPaginationOptions(options),
-		};
+		this.#paginationDescriptor = new PaginationDescriptorByOffset(options);
 		this.#reset();
 		return this as never;
 	}
 
-	singleSorting<TSortableField extends string>(
-		sortableFields: TSortableField[],
-		defaultSorting: SortableFieldDefinition<TSortableField>
+	sortingBySingleField<TSortableField extends string>(
+		config: SortingDescriptorSingle.Config<TSortableField>
 	): QueryDescriptor<
 		TQuery & SortingSingle.Input<TSortableField>,
 		TQuery & SortingSingle<TSortableField>
 	> {
-		validateSortableFields(sortableFields);
-		this.#config.sorting = {
-			type: "SINGLE",
-			sortableFields,
-			defaultSorting,
-		};
+		this.#sortingDescriptor = new SortingDescriptorSingle(config);
 		this.#reset();
 		return this as never;
 	}
 
-	sortingMulti<TSortableField extends string>(
-		sortableFields: TSortableField[],
-		defaultSorting: Array<SortableFieldDefinition<TSortableField>>
+	sortingByMultipleFields<TSortableField extends string>(
+		config: SortingDescriptorMulti.Config<TSortableField>
 	): QueryDescriptor<
 		TQueryInput & SortingMulti.Input<TSortableField>,
 		TQuery & SortingMulti<TSortableField>
 	> {
-		validateSortableFields(sortableFields);
-		this.#config.sorting = {
-			type: "MULTI",
-			sortableFields,
-			defaultSorting,
-		};
+		this.#sortingDescriptor = new SortingDescriptorMulti(config);
 		this.#reset();
 		return this as never;
 	}
 
-	get sortingConfig() {
-		return this.#config.sorting;
+	get paginationDescriptor() {
+		return this.#paginationDescriptor;
 	}
 
-	get paginationConfig() {
-		return this.#config.pagination;
+	get sortingDescriptor() {
+		return this.#sortingDescriptor;
 	}
 
 	#reset() {
@@ -158,18 +113,29 @@ export class QueryDescriptor<
 	}
 
 	#validate() {
-		if (this.#config.pagination && this.#config.pagination.type === "CURSOR") {
-			if (!this.#config.sorting) {
+		if (this.#paginationDescriptor?.type === "CURSOR") {
+			if (!this.#sortingDescriptor) {
 				throw ERRORS.MISSING_SINGLE_SORTING_FOR_CURSOR_PAGINATION.create();
 			}
 
-			if (this.#config.sorting.type === "MULTI") {
+			if (this.#sortingDescriptor.type === "MULTI") {
 				throw ERRORS.MULTI_SORTING_NOT_ALLOWED_FOR_CURSOR_PAGINATION.create();
 			}
 		}
 	}
 
+	createQuery(input: TQueryInput): TQuery {
+		return this.querySchema.parse(input);
+	}
+
 	createResult<T>(query: TQuery, list: T[]) {}
+}
+
+export namespace QueryDescriptor {
+	export type Query<T extends QueryDescriptor<any, any>> =
+		T extends QueryDescriptor<infer U> ? U : never;
+	export type QueryInput<T extends QueryDescriptor<any, any>> =
+		T extends QueryDescriptor<any, infer U> ? U : never;
 }
 
 type RequiredKeys<T extends object> = {

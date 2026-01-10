@@ -1,14 +1,15 @@
 {
   "private": true,
+  "packageManager": "yarn@4.11.0",
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/preset-typescript": "^7.23.3",
     "@pallad/errors-dev": "^1.1.0",
-    "@pallad/scripts": "^3",
-    "@preconstruct/cli": "^2.8.3",
+    "@pallad/scripts": "^4",
     "conditional-type-checks": "^1.0.5",
     "lerna": "^8.0.0",
-    "prettier": "^3.2.2"
+    "prettier": "^3.2.2",
+    "typescript": "^5"
   },
   "workspaces": [
     "packages/*"
