@@ -128,7 +128,9 @@ export class QueryDescriptor<
 		return this.querySchema.parse(input);
 	}
 
-	createResult<T>(query: TQuery, list: T[]) {}
+	createResult<T>(query: TQuery, entityList: T[]) {
+
+	}
 }
 
 export namespace QueryDescriptor {
