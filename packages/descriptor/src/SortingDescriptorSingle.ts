@@ -8,7 +8,6 @@ export class SortingDescriptorSingle<TField extends string> implements SortingDe
 	SortingSingle.Input<TField>,
 	SortingSingle<TField>
 > {
-	readonly type = "SINGLE";
 	readonly fields: [TField, ...TField[]];
 	readonly default: SortingFieldDefinition<TField>;
 	readonly schema: z.ZodType<SortingSingle<TField>, SortingSingle.Input<TField>>;

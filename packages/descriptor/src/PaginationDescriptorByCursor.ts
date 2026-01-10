@@ -7,8 +7,6 @@ export class PaginationDescriptorByCursor implements PaginationDescriptor<
 	PaginationByCursor.Input,
 	PaginationByCursor
 > {
-	readonly type = "CURSOR";
-
 	readonly defaultLimit: number;
 	readonly maxLimit: number;
 	readonly schema: z.ZodType<PaginationByCursor, PaginationByCursor.Input>;

@@ -8,20 +8,16 @@ export class SortingDescriptorMulti<TField extends string> implements SortingDes
 	SortingMulti.Input<TField>,
 	SortingMulti<TField>
 > {
-	readonly type = "MULTI";
 	readonly fields: [TField, ...TField[]];
-	readonly defaultSorting: Array<SortingFieldDefinition<TField>>;
+	readonly default: Array<SortingFieldDefinition<TField>>;
 
 	readonly schema: z.ZodType<SortingMulti<TField>, SortingMulti.Input<TField>>;
 	constructor(config: SortingDescriptorMulti.Config<TField>) {
 		this.fields = config.sortableFields;
-		this.defaultSorting = config.defaultSorting;
+		this.default = config.defaultSorting;
 
 		this.schema = z.object({
-			sortBy: createSortingFieldSchema(this.fields)
-				.array()
-				.nonempty()
-				.default(this.defaultSorting),
+			sortBy: createSortingFieldSchema(this.fields).array().nonempty().default(this.default),
 		});
 	}
 }

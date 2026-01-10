@@ -7,15 +7,15 @@ export class PaginationDescriptorByOffset implements PaginationDescriptor<
 	PaginationByOffset.Input,
 	PaginationByOffset
 > {
-	readonly type = "OFFSET";
-
 	readonly defaultLimit: number;
 	readonly maxLimit: number;
+	readonly maxOffset?: number;
 	readonly schema: z.ZodType<PaginationByOffset, PaginationByOffset.Input>;
 
 	constructor(config?: PaginationDescriptorByOffset.Config) {
 		this.defaultLimit = config?.defaultLimit ?? DEFAULT_LIMIT;
 		this.maxLimit = config?.maxOffset ?? DEFAULT_MAX_LIMIT;
+		this.maxOffset = config?.maxOffset;
 		this.schema = z.object({
 			offset: createOffsetSchema(config).default(0),
 			limit: createLimitSchema(this.maxLimit, this.defaultLimit),
