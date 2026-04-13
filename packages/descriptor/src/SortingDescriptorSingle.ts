@@ -22,6 +22,12 @@ export class SortingDescriptorSingle<TField extends string> implements SortingDe
 
 		Object.freeze(this);
 	}
+
+	createMeta(query: SortingSingle<TField>): SortingSingle.ResultMeta<TField> {
+		return {
+			sortBy: query.sortBy,
+		};
+	}
 }
 
 export namespace SortingDescriptorSingle {

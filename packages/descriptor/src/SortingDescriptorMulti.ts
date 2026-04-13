@@ -20,6 +20,12 @@ export class SortingDescriptorMulti<TField extends string> implements SortingDes
 			sortBy: createSortingFieldSchema(this.fields).array().nonempty().default(this.default),
 		});
 	}
+
+	createMeta(query: SortingMulti<TField>): SortingMulti.ResultMeta<TField> {
+		return {
+			sortBy: query.sortBy,
+		};
+	}
 }
 
 export namespace SortingDescriptorMulti {

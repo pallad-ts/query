@@ -1,17 +1,27 @@
-import { Query, SortingSingle, SortingMulti } from "@pallad/query";
+import {
+	NoPagination,
+	PaginationByCursor,
+	PaginationByOffset,
+	Query,
+	SortingMulti,
+	SortingSingle,
+	SetResultType,
+} from "@pallad/query";
 import { Builder } from "@pallad/builder";
 import { ERRORS } from "./errors";
 import { z } from "zod";
-import { PaginationByCursor, PaginationByOffset } from "@pallad/query";
 import { PaginationDescriptor } from "./PaginationDescriptor";
 import { SortingDescriptor } from "./SortingDescriptor";
 import { PaginationDescriptorByCursor } from "./PaginationDescriptorByCursor";
 import { SortingDescriptorSingle } from "./SortingDescriptorSingle";
 import { PaginationDescriptorByOffset } from "./PaginationDescriptorByOffset";
 import { SortingDescriptorMulti } from "./SortingDescriptorMulti";
+
 export class QueryDescriptor<
 	TQueryInput extends Partial<Query<any>> = Partial<Query<unknown>>,
 	TQuery extends Query<any> = Query<unknown>,
+	TPaginationDescriptor extends PaginationDescriptor<any, any> = never,
+	TSortingDescriptor extends SortingDescriptor<any, any, any> = never,
 > extends Builder {
 	#paginationDescriptor?: PaginationDescriptor<any, any>;
 	#sortingDescriptor?: SortingDescriptor<any, any, any>;
@@ -55,7 +65,9 @@ export class QueryDescriptor<
 			(HasRequiredKeys<z.input<T>> extends true
 				? { filters: z.input<T> }
 				: { filters?: z.input<T> }),
-		Omit<TQuery, "filters"> & { filters: z.infer<T> }
+		Omit<TQuery, "filters"> & { filters: z.infer<T> },
+		TPaginationDescriptor,
+		TSortingDescriptor
 	> {
 		this.#filtersSchema = schema;
 		this.#reset();
@@ -64,7 +76,12 @@ export class QueryDescriptor<
 
 	paginationByCursor(
 		options?: PaginationDescriptorByCursor.Config
-	): QueryDescriptor<TQueryInput & PaginationByCursor.Input, TQuery & PaginationByCursor> {
+	): QueryDescriptor<
+		TQueryInput & PaginationByCursor.Input,
+		TQuery & PaginationByCursor,
+		PaginationDescriptorByCursor,
+		TSortingDescriptor
+	> {
 		this.#paginationDescriptor = new PaginationDescriptorByCursor(options);
 		this.#reset();
 		return this as never;
@@ -72,7 +89,12 @@ export class QueryDescriptor<
 
 	paginationByOffset(
 		options?: PaginationDescriptorByOffset.Config
-	): QueryDescriptor<TQueryInput & PaginationByOffset.Input, TQuery & PaginationByOffset> {
+	): QueryDescriptor<
+		TQueryInput & PaginationByOffset.Input,
+		TQuery & PaginationByOffset,
+		PaginationDescriptorByOffset,
+		TSortingDescriptor
+	> {
 		this.#paginationDescriptor = new PaginationDescriptorByOffset(options);
 		this.#reset();
 		return this as never;
@@ -82,7 +104,9 @@ export class QueryDescriptor<
 		config: SortingDescriptorSingle.Config<TSortableField>
 	): QueryDescriptor<
 		TQuery & SortingSingle.Input<TSortableField>,
-		TQuery & SortingSingle<TSortableField>
+		TQuery & SortingSingle<TSortableField>,
+		TPaginationDescriptor,
+		SortingDescriptorSingle<TSortableField>
 	> {
 		this.#sortingDescriptor = new SortingDescriptorSingle(config);
 		this.#reset();
@@ -93,7 +117,9 @@ export class QueryDescriptor<
 		config: SortingDescriptorMulti.Config<TSortableField>
 	): QueryDescriptor<
 		TQueryInput & SortingMulti.Input<TSortableField>,
-		TQuery & SortingMulti<TSortableField>
+		TQuery & SortingMulti<TSortableField>,
+		TPaginationDescriptor,
+		SortingDescriptorMulti<TSortableField>
 	> {
 		this.#sortingDescriptor = new SortingDescriptorMulti(config);
 		this.#reset();
@@ -113,12 +139,12 @@ export class QueryDescriptor<
 	}
 
 	#validate() {
-		if (this.#paginationDescriptor?.type === "CURSOR") {
+		if (this.#paginationDescriptor instanceof PaginationDescriptorByCursor) {
 			if (!this.#sortingDescriptor) {
 				throw ERRORS.MISSING_SINGLE_SORTING_FOR_CURSOR_PAGINATION.create();
 			}
 
-			if (this.#sortingDescriptor.type === "MULTI") {
+			if (this.#sortingDescriptor instanceof SortingDescriptorMulti) {
 				throw ERRORS.MULTI_SORTING_NOT_ALLOWED_FOR_CURSOR_PAGINATION.create();
 			}
 		}
@@ -128,8 +154,23 @@ export class QueryDescriptor<
 		return this.querySchema.parse(input);
 	}
 
-	createResult<T>(query: TQuery, entityList: T[]) {
+	createResult<T>(
+		query: TQuery,
+		entityList: T[],
+		...args: [TPaginationDescriptor] extends [never]
+			? []
+			: [Parameters<TPaginationDescriptor["createInitialResult"]>[2]]
+	): QueryDescriptor.ResultForEntity<T, TPaginationDescriptor, TSortingDescriptor> {
+		const result = this.#paginationDescriptor?.createInitialResult(
+			query,
+			entityList,
+			args[0]
+		) ?? { list: entityList };
 
+		if (this.#sortingDescriptor) {
+			Object.assign(result, this.#sortingDescriptor.createMeta(query));
+		}
+		return result;
 	}
 }
 
@@ -138,6 +179,15 @@ export namespace QueryDescriptor {
 		T extends QueryDescriptor<infer U> ? U : never;
 	export type QueryInput<T extends QueryDescriptor<any, any>> =
 		T extends QueryDescriptor<any, infer U> ? U : never;
+
+	export type ResultForEntity<
+		TEntity,
+		TPaginationDescription extends PaginationDescriptor<any, any>,
+		TSortingDescriptor extends SortingDescriptor<any, any, any>,
+	> = ([TPaginationDescription] extends [never]
+		? NoPagination.Result<TEntity>
+		: SetResultType<TEntity, ReturnType<TPaginationDescription["createInitialResult"]>>) &
+		([TSortingDescriptor] extends [never] ? {} : ReturnType<TSortingDescriptor["createMeta"]>);
 }
 
 type RequiredKeys<T extends object> = {

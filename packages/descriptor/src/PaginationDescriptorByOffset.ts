@@ -22,6 +22,25 @@ export class PaginationDescriptorByOffset implements PaginationDescriptor<
 		});
 		Object.freeze(this);
 	}
+
+	createInitialResult<T>(
+		query: PaginationByOffset,
+		list: T[],
+		context: {
+			hasNextPage: boolean;
+			hasPreviousPage: boolean;
+		}
+	): PaginationByOffset.Result<T> {
+		return {
+			list,
+			pageInfo: {
+				limit: query.limit,
+				offset: query.offset ?? 0,
+				hasNextPage: context.hasNextPage,
+				hasPreviousPage: context.hasPreviousPage,
+			},
+		};
+	}
 }
 
 function createOffsetSchema(config?: PaginationDescriptorByOffset.Config) {

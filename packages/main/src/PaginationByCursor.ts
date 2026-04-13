@@ -10,7 +10,6 @@ export interface PaginationByCursor {
 }
 
 export namespace PaginationByCursor {
-
     export type Input = Partial<PaginationByCursor>;
 
     export interface PageInfo {

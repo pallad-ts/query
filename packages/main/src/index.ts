@@ -7,3 +7,4 @@ export * from "./SortingMulti";
 export * from "./SortingSingle";
 export * from "./SortDirection";
 export * from "./NoPagination";
+export * from "./SetResultType";
