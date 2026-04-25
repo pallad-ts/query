@@ -1,13 +1,13 @@
-import {GraphQLEnumType} from "graphql";
+import { GraphQLEnumType } from "graphql";
 
 export const GraphQLSortDirection = new GraphQLEnumType({
-	name: 'SortDirection',
+	name: "SortDirection",
 	values: {
 		ASC: {
-			value: 'ASC'
+			value: "ASC",
 		},
 		DESC: {
-			value: 'DESC'
-		}
-	}
+			value: "DESC",
+		},
+	},
 });

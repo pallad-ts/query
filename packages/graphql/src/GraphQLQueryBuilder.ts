@@ -7,7 +7,6 @@ import {
 	SchemaComposer,
 } from "graphql-compose";
 import { GraphQLEnumType, GraphQLInputObjectType, GraphQLObjectType } from "graphql";
-import { Result } from "@pallad/query";
 import {
 	ObjectTypeComposerFieldConfigAsObjectDefinition,
 	ObjectTypeComposerFieldConfigMapDefinition,

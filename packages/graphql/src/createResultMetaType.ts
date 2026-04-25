@@ -1,9 +1,16 @@
-import {ObjectTypeComposerFieldConfigMapDefinition} from "graphql-compose/lib/ObjectTypeComposer";
-import {PaginableByCursor, PaginableByOffset} from "@pallad/query";
-import {ObjectTypeComposer} from "graphql-compose";
-import {NonNullComposer} from "graphql-compose/lib/NonNullComposer";
+import {
+	ObjectTypeComposer,
+	NonNullComposer,
+	ObjectTypeComposerFieldConfigMapDefinition,
+} from "graphql-compose";
+import { PaginationByCursor } from "@pallad/query";
 
-export function createResultMetaType({baseName, paginationFields, sortType, extraMetaFields}: createResultMetaType.Options) {
+export function createResultMetaType({
+	baseName,
+	paginationFields,
+	sortType,
+	extraMetaFields,
+}: createResultMetaType.Options) {
 	const metaFields: ObjectTypeComposerFieldConfigMapDefinition<any, any> = {};
 	if (paginationFields) {
 		Object.assign(metaFields, paginationFields);
@@ -11,8 +18,8 @@ export function createResultMetaType({baseName, paginationFields, sortType, extr
 
 	if (sortType) {
 		Object.assign(metaFields, {
-			sortBy: {type: sortType}
-		})
+			sortBy: { type: sortType },
+		});
 	}
 
 	if (extraMetaFields) {
@@ -25,15 +32,17 @@ export function createResultMetaType({baseName, paginationFields, sortType, extr
 
 	return ObjectTypeComposer.createTemp({
 		name: `${baseName}_Result_Meta`,
-		fields: metaFields
+		fields: metaFields,
 	}).NonNull;
 }
 
 export namespace createResultMetaType {
 	export interface Options {
 		baseName: string;
-		paginationFields?: ObjectTypeComposerFieldConfigMapDefinition<PaginableByCursor.ResultMeta, any> | ObjectTypeComposerFieldConfigMapDefinition<PaginableByOffset.ResultMeta, any>,
+		paginationFields?:
+			| ObjectTypeComposerFieldConfigMapDefinition<PaginationByCursor.PageInfo, any>
+			| ObjectTypeComposerFieldConfigMapDefinition<PaginableByOffset.ResultMeta, any>;
 		sortType?: ObjectTypeComposer | NonNullComposer;
-		extraMetaFields?: ObjectTypeComposerFieldConfigMapDefinition<any, any>
+		extraMetaFields?: ObjectTypeComposerFieldConfigMapDefinition<any, any>;
 	}
 }

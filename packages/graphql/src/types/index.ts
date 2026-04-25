@@ -1,1 +1,1 @@
-export * from './GraphQLSortDirection';
+export * from "./GraphQLSortDirection";

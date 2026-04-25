@@ -1,7 +1,11 @@
-import {GraphQLEnumType} from "graphql";
-import {createSortTypeBase} from "./createSortTypeBase";
+import { GraphQLEnumType } from "graphql";
+import { createSortTypeBase } from "./createSortTypeBase";
 
-export function createResultSortType({baseName, sortFieldType, isMulti}: createResultSortType.Options) {
+export function createResultSortType({
+	baseName,
+	sortFieldType,
+	isMulti,
+}: createResultSortType.Options) {
 	const type = createSortTypeBase(`${baseName}_Result_Sort`, sortFieldType);
 	if (isMulti) {
 		return type.NonNull.List.NonNull;
@@ -11,8 +15,8 @@ export function createResultSortType({baseName, sortFieldType, isMulti}: createR
 
 export namespace createResultSortType {
 	export interface Options {
-		baseName: string,
-		sortFieldType: GraphQLEnumType,
+		baseName: string;
+		sortFieldType: GraphQLEnumType;
 		/**
 		 * Whether multiple sorting fields are allowed
 		 */

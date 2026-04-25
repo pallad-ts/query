@@ -1,5 +1,5 @@
 import { GraphQLNonNull } from "graphql";
-import {GraphQLNonNegativeInt, GraphQLPositiveInt} from "graphql-scalars";
+import { GraphQLNonNegativeInt, GraphQLPositiveInt } from "graphql-scalars";
 import { ObjectTypeComposerFieldConfigMapDefinition } from "graphql-compose/lib/ObjectTypeComposer";
 import { PaginableByOffset } from "@pallad/query";
 

@@ -5,11 +5,14 @@
     "@babel/core": "^7.23.7",
     "@babel/preset-typescript": "^7.23.3",
     "@pallad/errors-dev": "^1.1.0",
-    "@pallad/scripts": "^4",
+    "@pallad/eslint-config": "^2",
+    "@pallad/plop-templates": "^1.0.0",
     "conditional-type-checks": "^1.0.5",
-    "lerna": "^8.0.0",
+    "eslint": "^9",
+    "lerna": "^9",
     "prettier": "^3.2.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.4"
   },
   "workspaces": [
     "packages/*"

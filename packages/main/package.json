@@ -2,13 +2,13 @@
   "name": "@pallad/query",
   "version": "4.0.5",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/pallad-query.cjs.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "pallad-scripts lint",
-    "compile": "yarn run -TB tsc --build",
-    "prepublishOnly": "npm run compile",
-    "setup-dev": "preconstruct dev"
+    "test": "yarn run -TB vitest run --passWithNoTests",
+    "lint": "yarn run -TB eslint src/**/*.ts",
+    "compile": "rm tsconfig.tsbuildinfo && yarn run -TB tsc --build",
+    "prepublishOnly": "npm run compile"
   },
   "repository": {
     "type": "git",
@@ -27,5 +27,8 @@
     "url": "https://github.com/pallad-ts/query/issues"
   },
   "homepage": "https://github.com/pallad-ts/query#readme",
-  "gitHead": "eaff64c0db2982f628ca841467a940cced51b568"
+  "gitHead": "eaff64c0db2982f628ca841467a940cced51b568",
+  "dependencies": {
+    "@pallad/cursor-encoder": "^1.1.0"
+  }
 }

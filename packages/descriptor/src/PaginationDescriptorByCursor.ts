@@ -2,8 +2,7 @@ import { DEFAULT_LIMIT, DEFAULT_MAX_LIMIT, PaginationDescriptor } from "./Pagina
 import { PaginationByCursor, SortingSingle } from "@pallad/query";
 import { createLimitSchema } from "./internal/createLimitSchema";
 import { z } from "zod";
-import * as sqlite from "node:sqlite";
-import { Cursor, CursorEncoder } from "@pallad/cursor-encoder";
+import { Cursor } from "@pallad/cursor-encoder";
 
 function defaultIdExtractor<T>(item: T): string {
 	if (item && typeof item === "object" && "id" in item && typeof item.id === "string") {
@@ -39,7 +38,6 @@ export class PaginationDescriptorByCursor implements PaginationDescriptor<
 			idExtractor?: (item: T) => string;
 			hasNextPage: boolean;
 			hasPreviousPage: boolean;
-			cursorEncoder: CursorEncoder;
 		}
 	): PaginationByCursor.Result<T> {
 		const idExtractor = context.idExtractor ?? defaultIdExtractor;
@@ -62,7 +60,7 @@ export class PaginationDescriptorByCursor implements PaginationDescriptor<
 			edges: list.map(item => {
 				return {
 					node: item,
-					cursor: context.cursorEncoder.encode(computeCursor(item)),
+					cursor: computeCursor(item),
 				};
 			}),
 			nodes: list,
@@ -70,14 +68,8 @@ export class PaginationDescriptorByCursor implements PaginationDescriptor<
 				hasNextPage: context.hasNextPage,
 				hasPreviousPage: context.hasPreviousPage,
 				limit: query.limit,
-				startCursor:
-					list.length > 0
-						? context.cursorEncoder.encode(computeCursor(list[0]))
-						: undefined,
-				endCursor:
-					list.length > 0
-						? context.cursorEncoder.encode(computeCursor(list[list.length - 1]))
-						: undefined,
+				startCursor: list.length > 0 ? computeCursor(list[0]) : undefined,
+				endCursor: list.length > 0 ? computeCursor(list[list.length - 1]) : undefined,
 			},
 		};
 	}

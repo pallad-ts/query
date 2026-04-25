@@ -3,15 +3,17 @@
   "version": "5.1.2",
   "description": "",
   "scripts": {
-    "test": "pallad-scripts test",
-    "lint": "pallad-scripts lint",
-    "compile": "npx preconstruct build",
+    "test": "yarn run -TB vitest run --passWithNoTests",
+    "lint": "yarn run -TB eslint src/**/*.ts",
+    "compile": "rm tsconfig.tsbuildinfo && yarn run -TB tsc --build",
     "prepublishOnly": "npm run compile"
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pallad-ts/query.git",
-    "directory": "packages/builder"
+    "directory": "packages/descriptor"
   },
   "publishConfig": {
     "access": "public"
@@ -31,7 +33,7 @@
     "@pallad/cursor-encoder": "^1.1.0",
     "@pallad/errors": "^1.0.1",
     "@pallad/query": "^4.0.5",
-    "@sweet-monads/either": "^3.3.1",
+    "@sweet-monads/either": "^3",
     "@sweet-monads/maybe": "^3",
     "zod": "^4"
   }

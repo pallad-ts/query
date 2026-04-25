@@ -5,7 +5,6 @@ import {
 	Query,
 	SortingMulti,
 	SortingSingle,
-	SetResultType,
 } from "@pallad/query";
 import { Builder } from "@pallad/builder";
 import { ERRORS } from "./errors";
@@ -179,14 +178,15 @@ export namespace QueryDescriptor {
 		T extends QueryDescriptor<infer U> ? U : never;
 	export type QueryInput<T extends QueryDescriptor<any, any>> =
 		T extends QueryDescriptor<any, infer U> ? U : never;
-
 	export type ResultForEntity<
 		TEntity,
 		TPaginationDescription extends PaginationDescriptor<any, any>,
 		TSortingDescriptor extends SortingDescriptor<any, any, any>,
 	> = ([TPaginationDescription] extends [never]
 		? NoPagination.Result<TEntity>
-		: SetResultType<TEntity, ReturnType<TPaginationDescription["createInitialResult"]>>) &
+		: TPaginationDescription extends PaginationDescriptorByCursor
+			? PaginationByCursor.Result<TEntity>
+			: PaginationByOffset.Result<TEntity>) &
 		([TSortingDescriptor] extends [never] ? {} : ReturnType<TSortingDescriptor["createMeta"]>);
 }
 

@@ -1,6 +1,6 @@
-import {GraphQLEnumType} from "graphql";
-import * as is from 'predicates'
-import {camelCase} from "camel-case";
+import { GraphQLEnumType } from "graphql";
+import * as is from "predicates";
+import { camelCase } from "camel-case";
 
 const assertSortableFields = is.assert(is.notEmptyArr);
 
@@ -13,8 +13,8 @@ export function createSortFieldType(baseName: string, sortableFields: readonly s
 		name: `${baseName}_Sort_Field`,
 		values: Object.fromEntries(
 			sortableFields.map(x => {
-				return [camelCase(x), {value: x}]
+				return [camelCase(x), { value: x }];
 			})
-		)
-	})
+		),
+	});
 }

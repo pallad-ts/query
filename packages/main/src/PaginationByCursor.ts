@@ -1,3 +1,4 @@
+import { Cursor } from "@pallad/cursor-encoder";
 export interface PaginationByCursor {
     after?: string;
     before?: string;
@@ -12,22 +13,22 @@ export interface PaginationByCursor {
 export namespace PaginationByCursor {
     export type Input = Partial<PaginationByCursor>;
 
-    export interface PageInfo {
+    export interface PageInfo<TCursorKey = unknown> {
         limit: number;
         hasNextPage: boolean;
         hasPreviousPage: boolean;
-        startCursor?: string;
-        endCursor?: string;
+        startCursor?: Cursor<TCursorKey>;
+        endCursor?: Cursor<TCursorKey>;
     }
 
-    export interface Result<T> {
-        edges: Array<Node<T>>;
+    export interface Result<T, TCursorKey = unknown> {
+        edges: Array<Node<T, TCursorKey>>;
         nodes: T[];
-        pageInfo: PageInfo;
+        pageInfo: PageInfo<TCursorKey>;
     }
 
-    export interface Node<T> {
+    export interface Node<T, TCursorKey = unknown> {
         node: T;
-        cursor: string;
+        cursor: Cursor<TCursorKey>;
     }
 }
