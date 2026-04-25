@@ -2,11 +2,11 @@
   "private": true,
   "packageManager": "yarn@4.11.0",
   "devDependencies": {
-    "@babel/core": "^7.23.7",
-    "@babel/preset-typescript": "^7.23.3",
+    "@pallad/entrysmith": "^0.2.1",
     "@pallad/errors-dev": "^1.1.0",
     "@pallad/eslint-config": "^2",
-    "@pallad/plop-templates": "^1.0.0",
+    "@pallad/plop-templates": "^1.7.0",
+    "barrelsby": "^2.8.1",
     "conditional-type-checks": "^1.0.5",
     "eslint": "^9",
     "lerna": "^9",
@@ -15,6 +15,6 @@
     "vitest": "^4.1.4"
   },
   "workspaces": [
-    "packages/*"
+    "package/*"
   ]
 }

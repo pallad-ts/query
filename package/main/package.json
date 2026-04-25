@@ -7,8 +7,12 @@
   "scripts": {
     "test": "yarn run -TB vitest run --passWithNoTests",
     "lint": "yarn run -TB eslint src/**/*.ts",
-    "compile": "rm tsconfig.tsbuildinfo && yarn run -TB tsc --build",
-    "prepublishOnly": "npm run compile"
+    "build:clean": "yarn run -TB tsc --build --clean tsconfig.build.json",
+    "entrysmith": "yarn run generate-barrels && yarn run -TB entrysmith fix",
+    "prepare": "yarn run entrysmith",
+    "prepublish": "yarn run compile",
+    "compile": "yarn run entrysmith && yarn run build:clean && yarn run -TB tsc --build tsconfig.build.json",
+    "generate-barrels": "yarn run -TB barrelsby -l replace -L --delete -d ./src"
   },
   "repository": {
     "type": "git",
