@@ -40,5 +40,11 @@
     "@sweet-monads/either": "^3",
     "@sweet-monads/maybe": "^3",
     "zod": "^4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   }
 }

@@ -1,7 +1,25 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "exclude": [
     "node_modules",
     "**/__tests__/**"
-  ]
+  ],
+  "references": [
+    {
+      "path": "../descriptor/tsconfig.build.json"
+    },
+    {
+      "path": "../main/tsconfig.build.json"
+    }
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@pallad/query": [
+        "../main/src/index"
+      ],
+      "@pallad/query-descriptor": [
+        "../descriptor/src/index"
+      ]
+    }
+  }
 }

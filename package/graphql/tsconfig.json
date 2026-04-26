@@ -1,14 +1,30 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../config/tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
     "composite": true,
     "outDir": "dist",
     "types": [
       "vitest/globals"
-    ]
+    ],
+    "paths": {
+      "@pallad/query": [
+        "../main/src/index"
+      ],
+      "@pallad/query-descriptor": [
+        "../descriptor/src/index"
+      ]
+    }
   },
   "include": [
     "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../descriptor/tsconfig.build.json"
+    },
+    {
+      "path": "../main/tsconfig.build.json"
+    }
   ]
 }

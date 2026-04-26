@@ -34,5 +34,11 @@
   "gitHead": "eaff64c0db2982f628ca841467a940cced51b568",
   "dependencies": {
     "@pallad/cursor-encoder": "^1.1.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   }
 }

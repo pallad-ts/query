@@ -49,5 +49,11 @@
   "devDependencies": {
     "@pallad/violations-zod": "^1.0.0",
     "zod": "^4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   }
 }
