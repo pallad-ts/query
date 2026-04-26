@@ -45,8 +45,8 @@ export class GraphQLQueryBuilder<
 	constructor(
 		private queryDescriptor: TQueryDescriptor,
 		private options: GraphQLQueryBuilder.Options<
-			QueryDescriptor.QueryType<TQueryDescriptor>,
-			TEntityType,
+			QueryDescriptor.Query<TQueryDescriptor>,
+			QueryDescriptor.ResultForEntity<TEntityType>,
 			TContext
 		>
 	) {

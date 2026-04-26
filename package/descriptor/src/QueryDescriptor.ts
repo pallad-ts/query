@@ -159,7 +159,7 @@ export class QueryDescriptor<
 		...args: [TPaginationDescriptor] extends [never]
 			? []
 			: [Parameters<TPaginationDescriptor["createInitialResult"]>[2]]
-	): QueryDescriptor.ResultForEntity<T, TPaginationDescriptor, TSortingDescriptor> {
+	): QueryDescriptor.ResultForEntityType<T, TPaginationDescriptor, TSortingDescriptor> {
 		const result = this.#paginationDescriptor?.createInitialResult(
 			query,
 			entityList,
@@ -174,11 +174,11 @@ export class QueryDescriptor<
 }
 
 export namespace QueryDescriptor {
-	export type Query<T extends QueryDescriptor<any, any>> =
+	export type QueryType<T extends QueryDescriptor<any, any, any, any>> =
 		T extends QueryDescriptor<infer U> ? U : never;
-	export type QueryInput<T extends QueryDescriptor<any, any>> =
+	export type QueryInputType<T extends QueryDescriptor<any, any, any, any>> =
 		T extends QueryDescriptor<any, infer U> ? U : never;
-	export type ResultForEntity<
+	export type ResultForEntityType<
 		TEntity,
 		TPaginationDescription extends PaginationDescriptor<any, any>,
 		TSortingDescriptor extends SortingDescriptor<any, any, any>,
@@ -188,6 +188,12 @@ export namespace QueryDescriptor {
 			? PaginationByCursor.Result<TEntity>
 			: PaginationByOffset.Result<TEntity>) &
 		([TSortingDescriptor] extends [never] ? {} : ReturnType<TSortingDescriptor["createMeta"]>);
+
+	export type PaginationDescriptorType<T extends QueryDescriptor<any, any, any, any>> =
+		T extends QueryDescriptor<any, any, infer T2, any> ? T2 : never;
+
+	export type SortingDescriptorType<T extends QueryDescriptor<any, any, any, any>> =
+		T extends QueryDescriptor<any, any, any, infer T2> ? T2 : never;
 }
 
 type RequiredKeys<T extends object> = {
