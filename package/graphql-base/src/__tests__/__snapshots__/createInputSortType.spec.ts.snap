@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`createInputSortType > creates input sort type 1`] = `
+"input Base_Query_Sort_Input {
+  """Direction used to sort results."""
+  direction: SortDirection!
+
+  """Field used to sort results."""
+  field: Base_Sort_Field!
+}"
+`;
+
+exports[`createInputSortType > creates input sort type 2`] = `
+"input Base {
+  sortBy: [Base_Query_Sort_Input!]
+}"
+`;
+
+exports[`createInputSortType > creates input sort type 3`] = `
+"input Base_Query_Sort_Input {
+  """Direction used to sort results."""
+  direction: SortDirection!
+
+  """Field used to sort results."""
+  field: Base_Sort_Field!
+}"
+`;
+
+exports[`createInputSortType > creates input sort type 4`] = `
+"input Base {
+  sortBy: Base_Query_Sort_Input
+}"
+`;

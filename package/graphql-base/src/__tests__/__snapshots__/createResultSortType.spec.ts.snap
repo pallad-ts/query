@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`createResultSortType > creates object type: { isMulti: false } 1`] = `
+"type Base_Result_Sort {
+  """Direction used to sort results."""
+  direction: SortDirection!
+
+  """Field used to sort results."""
+  field: Base_Sort_Field!
+}"
+`;
+
+exports[`createResultSortType > creates object type: { isMulti: false } 2`] = `
+"type Base {
+  sortBy: Base_Result_Sort!
+}"
+`;
+
+exports[`createResultSortType > creates object type: { isMulti: true } 1`] = `
+"type Base_Result_Sort {
+  """Direction used to sort results."""
+  direction: SortDirection!
+
+  """Field used to sort results."""
+  field: Base_Sort_Field!
+}"
+`;
+
+exports[`createResultSortType > creates object type: { isMulti: true } 2`] = `
+"type Base {
+  sortBy: [Base_Result_Sort!]!
+}"
+`;

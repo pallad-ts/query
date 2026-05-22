@@ -1,0 +1,67 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`createSortFieldType > creates enum field with camel cased values: ["first_name","id","createdAt","updatedAt"] 1`] = `
+{
+  "astNode": undefined,
+  "description": undefined,
+  "extensionASTNodes": [],
+  "extensions": {},
+  "name": "EntityName_Sort_Field",
+  "values": {
+    "createdAt": {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": {},
+      "value": "createdAt",
+    },
+    "firstName": {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": {},
+      "value": "first_name",
+    },
+    "id": {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": {},
+      "value": "id",
+    },
+    "updatedAt": {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": {},
+      "value": "updatedAt",
+    },
+  },
+}
+`;
+
+exports[`createSortFieldType > creates enum field with camel cased values: ["name","last_name"] 1`] = `
+{
+  "astNode": undefined,
+  "description": undefined,
+  "extensionASTNodes": [],
+  "extensions": {},
+  "name": "EntityName_Sort_Field",
+  "values": {
+    "lastName": {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": {},
+      "value": "last_name",
+    },
+    "name": {
+      "astNode": undefined,
+      "deprecationReason": undefined,
+      "description": undefined,
+      "extensions": {},
+      "value": "name",
+    },
+  },
+}
+`;

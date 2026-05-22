@@ -1,7 +1,7 @@
 {
-  "name": "@pallad/query-descriptor",
-  "version": "5.1.2",
-  "description": "",
+  "name": "@pallad/query-graphql-base",
+  "version": "1.0.0",
+  "description": "Base GraphQL types for @pallad/query",
   "scripts": {
     "test": "yarn run -TB vitest run --passWithNoTests",
     "lint": "yarn run -TB eslint src/**/*.ts",
@@ -17,7 +17,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pallad-ts/query.git",
-    "directory": "packages/descriptor"
+    "directory": "package/graphql-base"
   },
   "publishConfig": {
     "access": "public"
@@ -31,15 +31,16 @@
     "url": "https://github.com/pallad-ts/query/issues"
   },
   "homepage": "https://github.com/pallad-ts/query#readme",
-  "gitHead": "eaff64c0db2982f628ca841467a940cced51b568",
+  "peerDependencies": {
+    "graphql": "^16"
+  },
   "dependencies": {
-    "@pallad/builder": "^1.0.1",
-    "@pallad/cursor-encoder": "^1.1.0",
-    "@pallad/errors": "^1.0.1",
-    "@pallad/query": "^4.0.5",
-    "@sweet-monads/either": "^3",
-    "@sweet-monads/maybe": "^3",
-    "zod": "^4"
+    "@pallad/cursor-encoder": "^2.0.0",
+    "@pallad/cursor-encoder-graphql": "^1.0.0",
+    "camel-case": "^4.1.2",
+    "graphql": "^16",
+    "graphql-scalars": "^1.17.0",
+    "predicates": "^2.0.3"
   },
   "exports": {
     ".": {

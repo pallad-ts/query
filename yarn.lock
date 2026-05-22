@@ -1123,6 +1123,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pallad/cursor-encoder-graphql@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@pallad/cursor-encoder-graphql@npm:1.0.0"
+  dependencies:
+    "@pallad/cursor-encoder": "npm:^2.0.0"
+    graphql: "npm:^16.13.2"
+  checksum: 10/5e196fa60739a3089dba74c2e94b5d46fc74c6d01fbe9a15a406fd7b69e61290555e7a9429b2a6a9f74896cd49d239e5fa0246a3d9ff8a42e4cc75368b462891
+  languageName: node
+  linkType: hard
+
 "@pallad/cursor-encoder@npm:^1.1.0":
   version: 1.1.0
   resolution: "@pallad/cursor-encoder@npm:1.1.0"
@@ -1132,6 +1142,18 @@ __metadata:
   peerDependencies:
     tslib: ^2
   checksum: 10/3a956964d4f048078e2684b12036b6aacea8433cbd5ccecaf347ef4b0181d975c0f2ce9fded1a454e94d5c98882286cf4bfd9305d406d092bf25fec17f86a2ed
+  languageName: node
+  linkType: hard
+
+"@pallad/cursor-encoder@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@pallad/cursor-encoder@npm:2.0.0"
+  dependencies:
+    "@pallad/errors": "npm:^1.0.1"
+    alpha-serializer: "npm:^0.5.6"
+  peerDependencies:
+    tslib: ^2
+  checksum: 10/3666d62d28446ca04fe68508d4c35ab95cb93b50aedffb44ecacf71d884f6ed4e239ca44e04961c32a6b1895ef318163ddfe78290fc7015cc5edc78aecb30825
   languageName: node
   linkType: hard
 
@@ -1206,15 +1228,32 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@pallad/query-graphql@workspace:package/graphql":
+"@pallad/query-graphql-base@npm:^1.0.0, @pallad/query-graphql-base@workspace:package/graphql-base":
   version: 0.0.0-use.local
-  resolution: "@pallad/query-graphql@workspace:package/graphql"
+  resolution: "@pallad/query-graphql-base@workspace:package/graphql-base"
+  dependencies:
+    "@pallad/cursor-encoder": "npm:^2.0.0"
+    "@pallad/cursor-encoder-graphql": "npm:^1.0.0"
+    camel-case: "npm:^4.1.2"
+    graphql: "npm:^16"
+    graphql-scalars: "npm:^1.17.0"
+    predicates: "npm:^2.0.3"
+  peerDependencies:
+    graphql: ^16
+  languageName: unknown
+  linkType: soft
+
+"@pallad/query-graphql-compose@workspace:package/graphql-compose":
+  version: 0.0.0-use.local
+  resolution: "@pallad/query-graphql-compose@workspace:package/graphql-compose"
   dependencies:
     "@pallad/builder": "npm:^1.0.1"
+    "@pallad/cursor-encoder": "npm:^2.0.0"
+    "@pallad/cursor-encoder-graphql": "npm:^1.0.0"
     "@pallad/query": "npm:^4.0.5"
     "@pallad/query-descriptor": "npm:^5.1.2"
+    "@pallad/query-graphql-base": "npm:^1.0.0"
     "@pallad/violations-zod": "npm:^1.0.0"
-    camel-case: "npm:^4.1.2"
     graphql: "npm:^16"
     graphql-compose: "npm:^9"
     graphql-scalars: "npm:^1.17.0"
@@ -3995,7 +4034,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^16":
+"graphql@npm:^16, graphql@npm:^16.13.2":
   version: 16.13.2
   resolution: "graphql@npm:16.13.2"
   checksum: 10/9ede86f0a7227d47a41e2076e0132839f66fbd14899abfd818d7de2ab81076ee249c8788ad42243367d68a027a8763cc4c7be2e441ccfb03a8549490c7b66c2f
