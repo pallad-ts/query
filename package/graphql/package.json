@@ -37,8 +37,9 @@
   "dependencies": {
     "@pallad/cursor-encoder": "^2.0.0",
     "@pallad/cursor-encoder-graphql": "^1.0.0",
+    "@pallad/query-descriptor": "^5.1.2",
     "camel-case": "^4.1.2",
-    "graphql": "^16",
+    "graphql": "^16.13.2",
     "graphql-scalars": "^1.17.0",
     "predicates": "^2.0.3"
   },

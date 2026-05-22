@@ -4,6 +4,7 @@
 
 export * from "./GraphQLPageInfoPaginationByCursor";
 export * from "./GraphQLPageInfoPaginationByOffset";
+export * from "./GraphQLQueryBuilder";
 export * from "./GraphQLSortDirection";
 export * from "./createInputSortType";
 export * from "./createQueryType";

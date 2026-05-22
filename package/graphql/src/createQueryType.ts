@@ -9,7 +9,11 @@ export function createQueryType({
 	return new GraphQLInputObjectType({
 		name: `${baseName}_Query`,
 		fields: {
-			filters: { type: filtersType },
+			...(filtersType
+				? {
+						filters: { type: filtersType },
+					}
+				: undefined),
 			...(sortType
 				? {
 						sortBy: {
@@ -25,7 +29,7 @@ export function createQueryType({
 export namespace createQueryType {
 	export interface Options {
 		baseName: string;
-		filtersType: GraphQLInputObjectType;
+		filtersType?: GraphQLInputObjectType;
 		paginationFields?: GraphQLInputFieldConfigMap;
 		sortType?: GraphQLInputType;
 	}

@@ -3,5 +3,10 @@
   "exclude": [
     "node_modules",
     "**/__tests__/**"
+  ],
+  "references": [
+    {
+      "path": "../descriptor/tsconfig.build.json"
+    }
   ]
 }

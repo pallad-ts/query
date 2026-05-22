@@ -6,9 +6,19 @@
     "outDir": "dist",
     "types": [
       "vitest/globals"
-    ]
+    ],
+    "paths": {
+      "@pallad/query-descriptor": [
+        "../descriptor/src/index"
+      ]
+    }
   },
   "include": [
     "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../descriptor/tsconfig.build.json"
+    }
   ]
 }
