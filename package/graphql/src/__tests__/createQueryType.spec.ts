@@ -37,7 +37,7 @@ describe("createQueryType", () => {
 			"with pagination fields",
 			{
 				filtersType,
-				paginationFields: {
+				fields: {
 					limit: { type: GraphQLString },
 				},
 			},
@@ -47,12 +47,12 @@ describe("createQueryType", () => {
 			{
 				filtersType,
 				sortType,
-				paginationFields: {
+				fields: {
 					limit: { type: GraphQLString },
 				},
 			},
 		],
-	])("creates query input type", (caseName, opts) => {
+	])("creates query input type: %s", (caseName, opts) => {
 		void caseName;
 		expect(
 			printType(

@@ -1,29 +1,29 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`createQueryType > creates query input type 1`] = `
+exports[`createQueryType > creates query input type: simple 1`] = `
 "input Base_Query {
   filters: Base_Filters
 }"
 `;
 
-exports[`createQueryType > creates query input type 2`] = `
+exports[`createQueryType > creates query input type: with all options 1`] = `
 "input Base_Query {
   filters: Base_Filters
   sortBy: Base_Query_Sort_Input
+  limit: String
 }"
 `;
 
-exports[`createQueryType > creates query input type 3`] = `
+exports[`createQueryType > creates query input type: with pagination fields 1`] = `
 "input Base_Query {
   filters: Base_Filters
   limit: String
 }"
 `;
 
-exports[`createQueryType > creates query input type 4`] = `
+exports[`createQueryType > creates query input type: with sort type 1`] = `
 "input Base_Query {
   filters: Base_Filters
   sortBy: Base_Query_Sort_Input
-  limit: String
 }"
 `;

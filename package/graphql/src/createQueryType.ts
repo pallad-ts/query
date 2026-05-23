@@ -3,7 +3,7 @@ import { GraphQLInputFieldConfigMap, GraphQLInputObjectType, GraphQLInputType } 
 export function createQueryType({
 	baseName,
 	filtersType,
-	paginationFields,
+	fields,
 	sortType,
 }: createQueryType.Options) {
 	return new GraphQLInputObjectType({
@@ -21,7 +21,7 @@ export function createQueryType({
 						},
 					}
 				: undefined),
-			...paginationFields,
+			...fields,
 		},
 	});
 }
@@ -30,7 +30,7 @@ export namespace createQueryType {
 	export interface Options {
 		baseName: string;
 		filtersType?: GraphQLInputObjectType;
-		paginationFields?: GraphQLInputFieldConfigMap;
+		fields?: GraphQLInputFieldConfigMap;
 		sortType?: GraphQLInputType;
 	}
 }

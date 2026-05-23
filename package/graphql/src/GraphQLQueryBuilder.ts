@@ -14,6 +14,7 @@ import { GraphQLCursor } from "@pallad/cursor-encoder-graphql";
 import {
 	PaginationDescriptorByCursor,
 	PaginationDescriptorByOffset,
+	PaginationDescriptor,
 	QueryDescriptor,
 	SortingDescriptorMulti,
 } from "@pallad/query-descriptor";
@@ -47,17 +48,24 @@ export class GraphQLQueryBuilder<
 		this.#inputType ??= createQueryType({
 			baseName: this.options.baseName,
 			filtersType: this.options.filtersType,
-			paginationFields: this.#getPaginationInputFields(),
+			fields: this.#getPaginationInputFields(),
 			sortType: this.#getInputSortType(),
 		});
 
 		return this.#inputType;
 	}
 
-	getResolver(): GraphQLFieldResolver<TSource, TContext> {
+	getResolver(
+		options: GraphQLQueryBuilder.ResolverOptions<
+			TSource,
+			TContext,
+			ReturnType<TDescriptor["createQuery"]>,
+			GraphQLQueryBuilder.ExecuteResult<TEntity, TDescriptor>
+		>
+	): GraphQLFieldResolver<TSource, TContext> {
 		return async (source, args: GraphQLQueryBuilder.Args, context, info) => {
 			const query = this.options.descriptor.createQuery(args.query ?? {});
-			const result = await this.options.execute(query, source, context, info);
+			const result = await options.execute(query, source, context, info);
 
 			return this.options.descriptor.createResult(
 				query,
@@ -67,7 +75,14 @@ export class GraphQLQueryBuilder<
 		};
 	}
 
-	getField(): GraphQLFieldConfig<TSource, TContext> {
+	getField(
+		options: GraphQLQueryBuilder.FieldOptions<
+			TSource,
+			TContext,
+			ReturnType<TDescriptor["createQuery"]>,
+			GraphQLQueryBuilder.ExecuteResult<TEntity, TDescriptor>
+		>
+	): GraphQLFieldConfig<TSource, TContext> {
 		return {
 			type: this.getResultType(),
 			args: {
@@ -75,7 +90,7 @@ export class GraphQLQueryBuilder<
 					type: this.getInputType(),
 				},
 			},
-			resolve: this.getResolver(),
+			resolve: this.getResolver(options),
 		};
 	}
 
@@ -220,25 +235,51 @@ export namespace GraphQLQueryBuilder {
 		descriptor: TDescriptor;
 		filtersType?: GraphQLInputObjectType;
 		entityType: GraphQLObjectType<TEntity, TContext>;
-		execute: Execute<TSource, TContext, TEntity, TDescriptor>;
 	}
 
-	export interface ExecuteResult<TEntity> {
-		list: TEntity[];
-		pagination?: unknown;
-	}
-
-	export type Execute<
+	export interface ResolverOptions<
 		TSource,
 		TContext,
+		TQuery,
+		TResult extends ExecuteResultBase<any>,
+	> {
+		execute: Execute<TSource, TContext, TQuery, TResult>;
+	}
+
+	export type FieldOptions<
+		TSource,
+		TContext,
+		TQuery,
+		TResult extends ExecuteResultBase<any>,
+	> = ResolverOptions<TSource, TContext, TQuery, TResult>;
+
+	export interface ExecuteResultBase<TEntity> {
+		list: TEntity[];
+	}
+
+	export type ExecuteResult<
 		TEntity,
 		TDescriptor extends QueryDescriptor<any, any, any, any>,
-	> = (
-		query: ReturnType<TDescriptor["createQuery"]>,
+	> = ExecuteResultBase<TEntity> &
+		ExecutePaginationResult<QueryDescriptor.PaginationDescriptorType<TDescriptor>>;
+
+	export type ExecutePaginationResult<TPaginationDescriptor> = [TPaginationDescriptor] extends [
+		never,
+	]
+		? { pagination?: never }
+		: { pagination: PaginationContext<TPaginationDescriptor> };
+
+	export type PaginationContext<TPaginationDescriptor> =
+		TPaginationDescriptor extends PaginationDescriptor<any, any>
+			? Parameters<TPaginationDescriptor["createInitialResult"]>[2]
+			: never;
+
+	export type Execute<TSource, TContext, TQuery, TResult extends ExecuteResultBase<any>> = (
+		query: TQuery,
 		source: TSource,
 		context: TContext,
 		info: GraphQLResolveInfo
-	) => Promise<ExecuteResult<TEntity>> | ExecuteResult<TEntity>;
+	) => Promise<TResult> | TResult;
 
 	export interface Args {
 		query?: unknown;

@@ -43,7 +43,6 @@ describe("GraphQLQueryBuilder", () => {
 			descriptor,
 			filtersType,
 			entityType,
-			execute: () => ({ list: [] }),
 		});
 
 		expect(printType(builder.getInputType())).toMatchSnapshot();
@@ -78,7 +77,6 @@ describe("GraphQLQueryBuilder", () => {
 			baseName: "Users",
 			descriptor,
 			entityType,
-			execute: () => ({ list: [] }),
 		});
 
 		expect(printType(builder.getResultType())).toMatchSnapshot();
@@ -97,14 +95,21 @@ describe("GraphQLQueryBuilder", () => {
 			descriptor,
 			filtersType,
 			entityType,
-			execute: () => ({ list: [] }),
 		});
 
 		const schema = new GraphQLSchema({
 			query: new GraphQLObjectType({
 				name: "Query",
 				fields: {
-					users: builder.getField(),
+					users: builder.getField({
+						execute: () => ({
+							list: [],
+							pagination: {
+								hasNextPage: false,
+								hasPreviousPage: false,
+							},
+						}),
+					}),
 				},
 			}),
 		});
@@ -124,23 +129,32 @@ describe("GraphQLQueryBuilder", () => {
 			baseName: "Users",
 			descriptor,
 			entityType,
-			execute: (query, source, context, info) => {
-				calls.push([query, source, context, info.fieldName]);
-				return {
-					list: [{ id: "1", name: "Ann", age: 35 }],
-					pagination: {
-						hasNextPage: true,
-						hasPreviousPage: false,
-					},
-				};
-			},
 		});
+
+		const execute: GraphQLQueryBuilder.Execute<
+			unknown,
+			unknown,
+			ReturnType<typeof descriptor.createQuery>,
+			GraphQLQueryBuilder.ExecuteResult<
+				{ id: string; name: string; age: number },
+				typeof descriptor
+			>
+		> = (query, source, context, info) => {
+			calls.push([query, source, context, info.fieldName]);
+			return {
+				list: [{ id: "1", name: "Ann", age: 35 }],
+				pagination: {
+					hasNextPage: true,
+					hasPreviousPage: false,
+				},
+			};
+		};
 
 		const schema = new GraphQLSchema({
 			query: new GraphQLObjectType({
 				name: "Query",
 				fields: {
-					users: builder.getField(),
+					users: builder.getField({ execute }),
 				},
 			}),
 		});
