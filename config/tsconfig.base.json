@@ -2,8 +2,9 @@
   "compilerOptions": {
     "declaration": true,
     "importHelpers": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node20",
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
     "strict": true,
     "target": "es2024",
     "declarationMap": true,

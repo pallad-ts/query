@@ -1,0 +1,9 @@
+import { z } from "zod";
+
+export const DEFAULT_LIMIT = 20;
+export const DEFAULT_MAX_LIMIT = 1000;
+
+export interface PaginationDescriptor<TInput, TOutput> {
+	readonly schema: z.ZodType<TOutput, TInput>;
+	createInitialResult<T>(query: TOutput, list: T[], context: unknown): any;
+}

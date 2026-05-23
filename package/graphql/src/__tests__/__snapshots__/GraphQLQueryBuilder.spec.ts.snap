@@ -1,0 +1,128 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`GraphQLQueryBuilder > creates cursor pagination and single sorting result type 1`] = `
+"type Users_Result {
+  edges: [Users_Edge!]!
+  nodes: [User!]!
+  pageInfo: PageInfo_ByCursor!
+  sortBy: Users_Result_Sort!
+}"
+`;
+
+exports[`GraphQLQueryBuilder > creates field definition 1`] = `
+"type Query {
+  users(query: Users_Query): Users_Result
+}
+
+type Users_Result {
+  edges: [Users_Edge!]!
+  nodes: [User!]!
+  pageInfo: PageInfo_ByCursor!
+  sortBy: Users_Result_Sort!
+}
+
+type Users_Edge {
+  node: User!
+  cursor: Cursor!
+}
+
+type User {
+  id: String!
+  name: String!
+  age: Int
+}
+
+"""Cursor for pagination"""
+scalar Cursor
+
+type PageInfo_ByCursor {
+  """Maximum number of items requested for the current page."""
+  limit: NonNegativeInt!
+
+  """Whether more items exist after the current page."""
+  hasNextPage: Boolean!
+
+  """Whether more items exist before the current page."""
+  hasPreviousPage: Boolean!
+
+  """Cursor for the first item in the current page."""
+  startCursor: Cursor
+
+  """Cursor for the last item in the current page."""
+  endCursor: Cursor
+}
+
+"""Integers that will have a value of 0 or more."""
+scalar NonNegativeInt
+
+type Users_Result_Sort {
+  """Direction used to sort results."""
+  direction: SortDirection!
+
+  """Field used to sort results."""
+  field: Users_Sort_Field!
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+enum Users_Sort_Field {
+  name
+  age
+}
+
+input Users_Query {
+  filter: User_Filter
+  sortBy: Users_Query_Sort_Input
+
+  """Return items after this cursor."""
+  after: Cursor
+
+  """Return items before this cursor."""
+  before: Cursor
+
+  """Maximum number of items to return."""
+  limit: NonNegativeInt
+}
+
+input User_Filter {
+  name: String
+}
+
+input Users_Query_Sort_Input {
+  """Direction used to sort results."""
+  direction: SortDirection!
+
+  """Field used to sort results."""
+  field: Users_Sort_Field!
+}"
+`;
+
+exports[`GraphQLQueryBuilder > creates input type from descriptor 1`] = `
+"input Users_Query {
+  filter: User_Filter
+  sortBy: [Users_Query_Sort_Input!]
+
+  """Maximum number of items to return."""
+  limit: NonNegativeInt
+
+  """Zero-based number of items to skip before returning results."""
+  offset: NonNegativeInt
+}"
+`;
+
+exports[`GraphQLQueryBuilder > creates list result type 1`] = `
+"type Users_Result {
+  list: [User!]!
+}"
+`;
+
+exports[`GraphQLQueryBuilder > creates offset pagination and multi sorting result type 1`] = `
+"type Users_Result {
+  list: [User!]!
+  pageInfo: PageInfo_ByOffset!
+  sortBy: [Users_Result_Sort!]!
+}"
+`;
