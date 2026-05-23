@@ -1,3 +1,5 @@
-import baseConfig from "../../vitest.base.config.js";
+import { defineConfig, mergeConfig } from "vitest/config";
 
-export default baseConfig;
+import baseConfig from "../../config/vitest.config.base.js";
+
+export default mergeConfig(baseConfig, defineConfig({}));

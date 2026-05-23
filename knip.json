@@ -1,5 +1,5 @@
 {
-  "ignore": ["package/*/entrysmith.config.js"],
+  "ignore": ["config/entrysmith.config.base.js", "package/*/entrysmith.config.js"],
   "ignoreDependencies": [
     "@pallad/entrysmith",
     "@pallad/errors-dev",

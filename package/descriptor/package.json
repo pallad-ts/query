@@ -37,8 +37,6 @@
     "@pallad/cursor-encoder": "^1.1.0",
     "@pallad/errors": "^1.0.1",
     "@pallad/query": "^4.0.5",
-    "@sweet-monads/either": "^3",
-    "@sweet-monads/maybe": "^3",
     "zod": "^4"
   },
   "exports": {

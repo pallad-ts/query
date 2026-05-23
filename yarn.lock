@@ -1536,8 +1536,6 @@ __metadata:
     "@pallad/cursor-encoder": "npm:^1.1.0"
     "@pallad/errors": "npm:^1.0.1"
     "@pallad/query": "npm:^4.0.5"
-    "@sweet-monads/either": "npm:^3"
-    "@sweet-monads/maybe": "npm:^3"
     zod: "npm:^4"
   languageName: unknown
   linkType: soft
@@ -1546,7 +1544,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pallad/query-graphql@workspace:package/graphql"
   dependencies:
-    "@pallad/cursor-encoder": "npm:^2.0.0"
+    "@pallad/cursor-encoder": "npm:^1.1.0"
     "@pallad/cursor-encoder-graphql": "npm:^1.0.0"
     "@pallad/query-descriptor": "npm:^5.1.2"
     camel-case: "npm:^4.1.2"
@@ -1822,15 +1820,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sweet-monads/either@npm:^3":
-  version: 3.3.1
-  resolution: "@sweet-monads/either@npm:3.3.1"
-  dependencies:
-    "@sweet-monads/interfaces": "npm:^3.3.0"
-  checksum: 10/42b8525272eb0390e91cd6fd8557215dfb4f783eedbbd09d9f6260b64a53c17419bf63bc0bf8619ca696d55c4879ddc8b8b4bc8e64339246d66d1edf56cae89b
-  languageName: node
-  linkType: hard
-
 "@sweet-monads/interfaces@npm:^3.3.0":
   version: 3.3.0
   resolution: "@sweet-monads/interfaces@npm:3.3.0"
@@ -1838,7 +1827,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sweet-monads/maybe@npm:^3, @sweet-monads/maybe@npm:^3.3.1":
+"@sweet-monads/maybe@npm:^3.3.1":
   version: 3.3.1
   resolution: "@sweet-monads/maybe@npm:3.3.1"
   dependencies:

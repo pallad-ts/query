@@ -3,6 +3,7 @@
   "private": true,
   "packageManager": "yarn@4.11.0",
   "scripts": {
+    "validate": "yarn check && yarn workspaces foreach -A --topological-dev run lint && yarn workspaces foreach -A --topological-dev run test && yarn workspaces foreach -A --topological run compile",
     "check": "yarn check:manypkg && yarn check:knip",
     "check:knip": "knip",
     "check:manypkg": "manypkg check",

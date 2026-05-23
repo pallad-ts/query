@@ -1,10 +1,14 @@
-import baseConfig from "../../vitest.base.config.js";
+import { defineConfig, mergeConfig } from "vitest/config";
 
-export default {
-	...baseConfig,
-	resolve: {
-		alias: {
-			graphql: "graphql/index.js",
+import baseConfig from "../../config/vitest.config.base.js";
+
+export default mergeConfig(
+	baseConfig,
+	defineConfig({
+		resolve: {
+			alias: {
+				graphql: "graphql/index.js",
+			},
 		},
-	},
-};
+	})
+);
