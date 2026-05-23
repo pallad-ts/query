@@ -1528,7 +1528,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pallad/query-descriptor@npm:^5.1.2, @pallad/query-descriptor@workspace:package/descriptor":
+"@pallad/query-descriptor@npm:^5.1.2":
+  version: 5.1.2
+  resolution: "@pallad/query-descriptor@npm:5.1.2"
+  dependencies:
+    "@pallad/builder": "npm:^1.0.1"
+    "@pallad/errors": "npm:^1.0.1"
+    "@pallad/query": "npm:^4.0.5"
+    "@pallad/violations": "npm:^1.3.0"
+    "@pallad/violations-zod": "npm:^1.0.0"
+    "@sweet-monads/either": "npm:^3.3.1"
+    "@sweet-monads/maybe": "npm:^3"
+    zod: "npm:^3.22.4"
+  checksum: 10/4e9e3d2e65a372b87bd169d97faad392b73728b0d5e839260ca6d19bc5bda13d5768c3779018413c67a1e073abdbfb61b6317d0312c1ee8b94eb09f60b8b966d
+  languageName: node
+  linkType: hard
+
+"@pallad/query-descriptor@workspace:package/descriptor":
   version: 0.0.0-use.local
   resolution: "@pallad/query-descriptor@workspace:package/descriptor"
   dependencies:
@@ -1588,6 +1604,27 @@ __metadata:
   version: 1.2.0
   resolution: "@pallad/type-check@npm:1.2.0"
   checksum: 10/11847e2b391c99fc4b51a71b90c39d21a7394bff14f7a87a058e86261bf7d127434ea8b58e3c0adfb7753a10e8379114a093f1b8b61f976937565c219bf383f4
+  languageName: node
+  linkType: hard
+
+"@pallad/violations-zod@npm:^1.0.0":
+  version: 1.2.2
+  resolution: "@pallad/violations-zod@npm:1.2.2"
+  dependencies:
+    "@pallad/violations": "npm:^1.3.2"
+    "@sweet-monads/either": "npm:^3.3.1"
+  peerDependencies:
+    zod: ^3
+  checksum: 10/f7622161920f7caaa9565aa544df391359ec11d4392cd9bc1727af938d2575059761941bb3905ff8bae3cb0c7c57a9a3f2b6047a0bf239cea1845a60dd7a8f91
+  languageName: node
+  linkType: hard
+
+"@pallad/violations@npm:^1.3.0, @pallad/violations@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@pallad/violations@npm:1.3.2"
+  dependencies:
+    "@pallad/type-check": "npm:^1.2.0"
+  checksum: 10/cab90e03863f8ae7cc77403a392142fee6982ea457c7d05e76f4b4e35430b03e28ec19ae30e2be10654806509174a6617523ed824882180a655d94c385cc804f
   languageName: node
   linkType: hard
 
@@ -1820,6 +1857,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sweet-monads/either@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "@sweet-monads/either@npm:3.3.1"
+  dependencies:
+    "@sweet-monads/interfaces": "npm:^3.3.0"
+  checksum: 10/42b8525272eb0390e91cd6fd8557215dfb4f783eedbbd09d9f6260b64a53c17419bf63bc0bf8619ca696d55c4879ddc8b8b4bc8e64339246d66d1edf56cae89b
+  languageName: node
+  linkType: hard
+
 "@sweet-monads/interfaces@npm:^3.3.0":
   version: 3.3.0
   resolution: "@sweet-monads/interfaces@npm:3.3.0"
@@ -1827,7 +1873,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sweet-monads/maybe@npm:^3.3.1":
+"@sweet-monads/maybe@npm:^3, @sweet-monads/maybe@npm:^3.3.1":
   version: 3.3.1
   resolution: "@sweet-monads/maybe@npm:3.3.1"
   dependencies:
@@ -9129,6 +9175,13 @@ __metadata:
   version: 2.1.3
   resolution: "yoctocolors-cjs@npm:2.1.3"
   checksum: 10/b2144b38807673a4254dae06fe1a212729550609e606289c305e45c585b36fab1dbba44fe6cde90db9b28be465ec63f4c2a50867aeec6672f6bc36b6c9a361a0
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.22.4":
+  version: 3.25.76
+  resolution: "zod@npm:3.25.76"
+  checksum: 10/f0c963ec40cd96858451d1690404d603d36507c1fc9682f2dae59ab38b578687d542708a7fdbf645f77926f78c9ed558f57c3d3aa226c285f798df0c4da16995
   languageName: node
   linkType: hard
 
