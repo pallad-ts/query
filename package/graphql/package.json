@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-graphql",
-  "version": "7.1.1",
+  "version": "8.0.0",
   "description": "GraphQL types for @pallad/query",
   "scripts": {
     "test": "yarn run -TB vitest run --passWithNoTests",
