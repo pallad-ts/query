@@ -1,7 +1,15 @@
 {
+  "name": "@pallad/query-monorepo",
   "private": true,
   "packageManager": "yarn@4.11.0",
+  "scripts": {
+    "check": "yarn check:manypkg && yarn check:knip",
+    "check:knip": "knip",
+    "check:manypkg": "manypkg check",
+    "fix:manypkg": "manypkg fix"
+  },
   "devDependencies": {
+    "@manypkg/cli": "^0.25.1",
     "@pallad/entrysmith": "^0.2.1",
     "@pallad/errors-dev": "^1.1.0",
     "@pallad/eslint-config": "^2",
@@ -9,6 +17,7 @@
     "barrelsby": "^2.8.1",
     "conditional-type-checks": "^1.0.5",
     "eslint": "^9",
+    "knip": "^6.14.2",
     "lerna": "^9",
     "prettier": "^3.2.2",
     "typescript": "^5",
@@ -16,5 +25,6 @@
   },
   "workspaces": [
     "package/*"
-  ]
+  ],
+  "manypkg": {}
 }

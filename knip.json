@@ -1,0 +1,14 @@
+{
+  "ignore": ["package/*/entrysmith.config.js"],
+  "ignoreDependencies": [
+    "@pallad/entrysmith",
+    "@pallad/errors-dev",
+    "@pallad/plop-templates",
+    "barrelsby",
+    "conditional-type-checks",
+    "eslint",
+    "lerna",
+    "prettier"
+  ],
+  "ignoreUnresolved": ["tslib"]
+}

@@ -74,7 +74,7 @@ enum Users_Sort_Field {
 }
 
 input Users_Query {
-  filters: User_Filters
+  filter: User_Filter
   sortBy: Users_Query_Sort_Input
 
   """Return items after this cursor."""
@@ -87,7 +87,7 @@ input Users_Query {
   limit: NonNegativeInt
 }
 
-input User_Filters {
+input User_Filter {
   name: String
 }
 
@@ -102,7 +102,7 @@ input Users_Query_Sort_Input {
 
 exports[`GraphQLQueryBuilder > creates input type from descriptor 1`] = `
 "input Users_Query {
-  filters: User_Filters
+  filter: User_Filter
   sortBy: [Users_Query_Sort_Input!]
 
   """Maximum number of items to return."""

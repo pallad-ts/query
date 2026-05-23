@@ -1,3 +1,3 @@
-export interface Query<TFilters> {
-    filters: TFilters;
+export interface Query<TFilter> {
+	filter: TFilter;
 }

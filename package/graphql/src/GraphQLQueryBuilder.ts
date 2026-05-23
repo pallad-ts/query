@@ -47,7 +47,7 @@ export class GraphQLQueryBuilder<
 	getInputType(): GraphQLInputObjectType {
 		this.#inputType ??= createQueryType({
 			baseName: this.options.baseName,
-			filtersType: this.options.filtersType,
+			filterType: this.options.filterType,
 			fields: this.#getPaginationInputFields(),
 			sortType: this.#getInputSortType(),
 		});
@@ -233,7 +233,7 @@ export namespace GraphQLQueryBuilder {
 	> {
 		baseName: string;
 		descriptor: TDescriptor;
-		filtersType?: GraphQLInputObjectType;
+		filterType?: GraphQLInputObjectType;
 		entityType: GraphQLObjectType<TEntity, TContext>;
 	}
 

@@ -6,7 +6,7 @@ describe("QueryDescriptor", () => {
 			const descriptor = new QueryDescriptor();
 			const list = [{ id: "1" }, { id: "2" }];
 
-			expect(descriptor.createResult({ filters: {} }, list)).toEqual({
+			expect(descriptor.createResult({ filter: {} }, list)).toEqual({
 				list,
 			});
 		});
@@ -17,7 +17,7 @@ describe("QueryDescriptor", () => {
 				default: { field: "name", direction: "ASC" },
 			});
 			const query = {
-				filters: {},
+				filter: {},
 				sortBy: { field: "age" as const, direction: "DESC" as const },
 			};
 
@@ -35,7 +35,7 @@ describe("QueryDescriptor", () => {
 					defaultSorting: [{ field: "name", direction: "ASC" }],
 				});
 			const query = {
-				filters: {},
+				filter: {},
 				offset: 10,
 				limit: 2,
 				sortBy: [
@@ -72,7 +72,7 @@ describe("QueryDescriptor", () => {
 					default: { field: "name", direction: "ASC" },
 				});
 			const query = {
-				filters: {},
+				filter: {},
 				limit: 2,
 				sortBy: { field: "name" as const, direction: "ASC" as const },
 			};

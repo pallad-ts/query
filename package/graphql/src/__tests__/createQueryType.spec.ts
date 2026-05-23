@@ -6,8 +6,8 @@ import { createSortFieldType } from "../createSortFieldType";
 import { SORTABLE_FIELDS } from "./fixtures";
 
 describe("createQueryType", () => {
-	const filtersType = new GraphQLInputObjectType({
-		name: "Base_Filters",
+	const filterType = new GraphQLInputObjectType({
+		name: "Base_Filter",
 		fields: {
 			name: { type: new GraphQLNonNull(GraphQLString) },
 		},
@@ -23,20 +23,20 @@ describe("createQueryType", () => {
 		[
 			"simple",
 			{
-				filtersType,
+				filterType,
 			},
 		],
 		[
 			"with sort type",
 			{
-				filtersType,
+				filterType,
 				sortType,
 			},
 		],
 		[
 			"with pagination fields",
 			{
-				filtersType,
+				filterType,
 				fields: {
 					limit: { type: GraphQLString },
 				},
@@ -45,7 +45,7 @@ describe("createQueryType", () => {
 		[
 			"with all options",
 			{
-				filtersType,
+				filterType,
 				sortType,
 				fields: {
 					limit: { type: GraphQLString },

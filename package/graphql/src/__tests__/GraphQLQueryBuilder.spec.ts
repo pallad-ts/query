@@ -14,8 +14,8 @@ import {
 import { GraphQLQueryBuilder } from "../GraphQLQueryBuilder";
 
 describe("GraphQLQueryBuilder", () => {
-	const filtersType = new GraphQLInputObjectType({
-		name: "User_Filters",
+	const filterType = new GraphQLInputObjectType({
+		name: "User_Filter",
 		fields: {
 			name: { type: GraphQLString },
 		},
@@ -41,7 +41,7 @@ describe("GraphQLQueryBuilder", () => {
 		const builder = new GraphQLQueryBuilder({
 			baseName: "Users",
 			descriptor,
-			filtersType,
+			filterType,
 			entityType,
 		});
 
@@ -93,7 +93,7 @@ describe("GraphQLQueryBuilder", () => {
 		const builder = new GraphQLQueryBuilder({
 			baseName: "Users",
 			descriptor,
-			filtersType,
+			filterType,
 			entityType,
 		});
 

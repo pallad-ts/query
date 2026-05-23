@@ -26,7 +26,7 @@ export class QueryDescriptor<
 	#sortingDescriptor?: SortingDescriptor<any, any, any>;
 
 	#schema?: z.ZodType<TQuery, TQueryInput>;
-	#filtersSchema?: z.ZodTypeAny;
+	#filterSchema?: z.ZodTypeAny;
 
 	#createSchema() {
 		this.#validate();
@@ -37,8 +37,8 @@ export class QueryDescriptor<
 	}
 
 	*#schemaGenerator(): Generator<[string, z.ZodType]> {
-		if (this.#filtersSchema) {
-			yield ["filters", this.#filtersSchema];
+		if (this.#filterSchema) {
+			yield ["filter", this.#filterSchema];
 		}
 
 		if (this.#paginationDescriptor) {
@@ -57,18 +57,18 @@ export class QueryDescriptor<
 		return this.#schema;
 	}
 
-	filtersSchema<T extends z.ZodObject>(
+	filterSchema<T extends z.ZodObject>(
 		schema: T
 	): QueryDescriptor<
-		Omit<TQueryInput, "filters"> &
+		Omit<TQueryInput, "filter"> &
 			(HasRequiredKeys<z.input<T>> extends true
-				? { filters: z.input<T> }
-				: { filters?: z.input<T> }),
-		Omit<TQuery, "filters"> & { filters: z.infer<T> },
+				? { filter: z.input<T> }
+				: { filter?: z.input<T> }),
+		Omit<TQuery, "filter"> & { filter: z.infer<T> },
 		TPaginationDescriptor,
 		TSortingDescriptor
 	> {
-		this.#filtersSchema = schema;
+		this.#filterSchema = schema;
 		this.#reset();
 		return this as never;
 	}

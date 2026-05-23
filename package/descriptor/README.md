@@ -8,7 +8,7 @@ The main entry point is `QueryDescriptor`. It combines optional filter validatio
 
 `QueryDescriptor` is a builder for query objects. It supports:
 
-- `filtersSchema(schema)` - adds a Zod object schema under `filters`.
+- `filterSchema(schema)` - adds a Zod object schema under `filter`.
 - `paginationByOffset(options?)` - adds `offset` and `limit` pagination.
 - `paginationByCursor(options?)` - adds `before`, `after`, and `limit` cursor pagination.
 - `sortingBySingleField(config)` - allows one sortable field.
@@ -25,7 +25,7 @@ import { QueryDescriptor } from "@pallad/query-descriptor";
 import { z } from "zod";
 
 const descriptor = new QueryDescriptor()
-	.filtersSchema(
+	.filterSchema(
 		z.object({
 			status: z.enum(["active", "archived"]).optional(),
 		})
@@ -37,7 +37,7 @@ const descriptor = new QueryDescriptor()
 	});
 
 const query = descriptor.createQuery({
-	filters: { status: "active" },
+	filter: { status: "active" },
 	offset: 0,
 	sortBy: [{ field: "name", direction: "ASC" }],
 });
@@ -48,7 +48,7 @@ const result = descriptor.createResult(query, [{ id: "user-1", name: "Ada" }], {
 });
 ```
 
-`query` contains parsed filters, pagination defaults, and validated sorting. `result` contains the entity list, pagination `pageInfo`, and `sortBy` metadata.
+`query` contains parsed filter, pagination defaults, and validated sorting. `result` contains the entity list, pagination `pageInfo`, and `sortBy` metadata.
 
 ## Pagination
 

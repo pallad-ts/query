@@ -2,16 +2,16 @@ import { GraphQLInputFieldConfigMap, GraphQLInputObjectType, GraphQLInputType } 
 
 export function createQueryType({
 	baseName,
-	filtersType,
+	filterType,
 	fields,
 	sortType,
 }: createQueryType.Options) {
 	return new GraphQLInputObjectType({
 		name: `${baseName}_Query`,
 		fields: {
-			...(filtersType
+			...(filterType
 				? {
-						filters: { type: filtersType },
+						filter: { type: filterType },
 					}
 				: undefined),
 			...(sortType
@@ -29,7 +29,7 @@ export function createQueryType({
 export namespace createQueryType {
 	export interface Options {
 		baseName: string;
-		filtersType?: GraphQLInputObjectType;
+		filterType?: GraphQLInputObjectType;
 		fields?: GraphQLInputFieldConfigMap;
 		sortType?: GraphQLInputType;
 	}

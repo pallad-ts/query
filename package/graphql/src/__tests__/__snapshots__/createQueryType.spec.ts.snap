@@ -2,13 +2,13 @@
 
 exports[`createQueryType > creates query input type: simple 1`] = `
 "input Base_Query {
-  filters: Base_Filters
+  filter: Base_Filter
 }"
 `;
 
 exports[`createQueryType > creates query input type: with all options 1`] = `
 "input Base_Query {
-  filters: Base_Filters
+  filter: Base_Filter
   sortBy: Base_Query_Sort_Input
   limit: String
 }"
@@ -16,14 +16,14 @@ exports[`createQueryType > creates query input type: with all options 1`] = `
 
 exports[`createQueryType > creates query input type: with pagination fields 1`] = `
 "input Base_Query {
-  filters: Base_Filters
+  filter: Base_Filter
   limit: String
 }"
 `;
 
 exports[`createQueryType > creates query input type: with sort type 1`] = `
 "input Base_Query {
-  filters: Base_Filters
+  filter: Base_Filter
   sortBy: Base_Query_Sort_Input
 }"
 `;
