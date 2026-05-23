@@ -41,5 +41,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Compile packages
+        run: yarn workspaces foreach -A --topological run compile
+
       - name: Validate
         run: yarn validate
