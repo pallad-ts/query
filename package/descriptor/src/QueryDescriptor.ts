@@ -174,9 +174,9 @@ export class QueryDescriptor<
 }
 
 export namespace QueryDescriptor {
-	export type QueryType<T extends QueryDescriptor<any, any, any, any>> =
-		T extends QueryDescriptor<infer U> ? U : never;
 	export type QueryInputType<T extends QueryDescriptor<any, any, any, any>> =
+		T extends QueryDescriptor<infer U> ? U : never;
+	export type QueryType<T extends QueryDescriptor<any, any, any, any>> =
 		T extends QueryDescriptor<any, infer U> ? U : never;
 	export type ResultForEntityType<
 		TEntity,

@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-descriptor",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "",
   "scripts": {
     "test": "yarn run -TB vitest run --passWithNoTests",
