@@ -34,14 +34,15 @@
   "gitHead": "eaff64c0db2982f628ca841467a940cced51b568",
   "dependencies": {
     "@pallad/builder": "^1.0.1",
-    "@pallad/cursor-encoder": "^1.1.0",
+    "@pallad/cursor-encoder": "^2",
     "@pallad/errors": "^1.0.1",
     "@pallad/query": "^4.0.5",
     "zod": "^4"
   },
   "exports": {
     ".": {
-      "import": "./dist/index.js"
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
     },
     "./package.json": "./package.json"
   }

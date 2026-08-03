@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@manypkg/cli": "^0.25.1",
-    "@pallad/entrysmith": "^0.2.1",
+    "@pallad/entrysmith": "^0.3",
     "@pallad/errors-dev": "^1.1.0",
     "@pallad/eslint-config": "^2",
     "@pallad/plop-templates": "^1.7.0",

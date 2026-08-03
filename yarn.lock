@@ -1459,7 +1459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pallad/cursor-encoder@npm:^2.0.0":
+"@pallad/cursor-encoder@npm:^2, @pallad/cursor-encoder@npm:^2.0.0":
   version: 2.0.0
   resolution: "@pallad/cursor-encoder@npm:2.0.0"
   dependencies:
@@ -1471,9 +1471,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pallad/entrysmith@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "@pallad/entrysmith@npm:0.2.1"
+"@pallad/entrysmith@npm:^0.3":
+  version: 0.3.0
+  resolution: "@pallad/entrysmith@npm:0.3.0"
   dependencies:
     "@manypkg/get-packages": "npm:^3.1.0"
     "@pallad/common-errors": "npm:^2.2.0"
@@ -1486,7 +1486,7 @@ __metadata:
     zod: "npm:^4"
   bin:
     entrysmith: dist/index.js
-  checksum: 10/0442f5945d3255a2f2bca5eb223ef2c25939a1ba3dc04424c001650f99af9a27be74569d782619767d5c34d95509c185e5d97832b7f32ae4730d069d8f6e4613
+  checksum: 10/552f4876f7da361723daee32f59e1594f13eec2a2ea3e877b9e60adf685415a58a634f955bf4bb39b27a126786cc35788f1a5567b29d4f9d826897cd34e1ad5c
   languageName: node
   linkType: hard
 
@@ -1549,7 +1549,7 @@ __metadata:
   resolution: "@pallad/query-descriptor@workspace:package/descriptor"
   dependencies:
     "@pallad/builder": "npm:^1.0.1"
-    "@pallad/cursor-encoder": "npm:^1.1.0"
+    "@pallad/cursor-encoder": "npm:^2"
     "@pallad/errors": "npm:^1.0.1"
     "@pallad/query": "npm:^4.0.5"
     zod: "npm:^4"
@@ -1577,7 +1577,7 @@ __metadata:
   resolution: "@pallad/query-monorepo@workspace:."
   dependencies:
     "@manypkg/cli": "npm:^0.25.1"
-    "@pallad/entrysmith": "npm:^0.2.1"
+    "@pallad/entrysmith": "npm:^0.3"
     "@pallad/errors-dev": "npm:^1.1.0"
     "@pallad/eslint-config": "npm:^2"
     "@pallad/plop-templates": "npm:^1.7.0"
