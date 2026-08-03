@@ -19,7 +19,7 @@
     "conditional-type-checks": "^1.0.5",
     "eslint": "^9",
     "knip": "^6.14.2",
-    "lerna": "^9",
+    "lerna": "^10",
     "prettier": "^3.2.2",
     "typescript": "^5",
     "vitest": "^4.1.4"

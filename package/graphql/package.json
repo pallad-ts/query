@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query-graphql",
-  "version": "8.0.1",
+  "version": "8.0.3",
   "description": "GraphQL types for @pallad/query",
   "scripts": {
     "test": "yarn run -TB vitest run --passWithNoTests",
@@ -38,16 +38,18 @@
     "graphql": "^16.13.2"
   },
   "dependencies": {
-    "@pallad/cursor-encoder": "^1.1.0",
+    "@pallad/cursor-encoder": "^2",
     "@pallad/cursor-encoder-graphql": "^1.0.0",
-    "@pallad/query-descriptor": "^5.1.2",
+    "@pallad/query-descriptor": "^6",
     "camel-case": "^4.1.2",
     "graphql-scalars": "^1.17.0",
-    "predicates": "^2.0.3"
+    "predicates": "^2.0.3",
+    "tslib": "^2.8.1"
   },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
       "require": "./dist/index.js"
     },
     "./package.json": "./package.json"

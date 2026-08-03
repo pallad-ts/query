@@ -1,6 +1,6 @@
 {
   "name": "@pallad/query",
-  "version": "4.0.5",
+  "version": "4.0.7",
   "description": "",
   "main": "dist/pallad-query.cjs.js",
   "types": "dist/index.d.ts",
@@ -33,11 +33,13 @@
   "homepage": "https://github.com/pallad-ts/query#readme",
   "gitHead": "eaff64c0db2982f628ca841467a940cced51b568",
   "dependencies": {
-    "@pallad/cursor-encoder": "^1.1.0"
+    "@pallad/cursor-encoder": "^2",
+    "tslib": "^2.8.1"
   },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
       "require": "./dist/index.js"
     },
     "./package.json": "./package.json"
